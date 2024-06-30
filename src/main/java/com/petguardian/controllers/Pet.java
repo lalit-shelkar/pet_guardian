@@ -2,6 +2,7 @@ package com.petguardian.controllers;
 
 import com.petguardian.views.HomeView;
 import com.petguardian.views.LoginUser;
+import com.petguardian.views.ShopView;
 import com.petguardian.views.VetarnaryView;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -20,6 +21,9 @@ public class Pet extends Application {
     // VetarnaryView
     private VetarnaryView vetarnaryView;
     private Scene vetarScene;
+    // shopScreen
+    private ShopView shopView;
+    private Scene shopScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,8 +42,12 @@ public class Pet extends Application {
         //
         vetarnaryView = new VetarnaryView(this);
         vetarScene = new Scene(vetarnaryView.getView(), 1920, 1080);
+
+        /// shopscreen
+        shopView = new ShopView(this);
+        shopScene = new Scene(shopView.getView(), 1920, 1080);
         /// initial screen
-        primaryStage.setScene(vetarScene);
+        primaryStage.setScene(loginScene);
         primaryStage.show();
     }
 
@@ -58,6 +66,12 @@ public class Pet extends Application {
     ///
     public void navigateToVetarnaryView() {
         primaryStage.setScene(vetarScene);
+        primaryStage.show();
+    }
+
+    /// navigate to shop screen(amars )
+    public void navigateToShopView() {
+        primaryStage.setScene(shopScene);
         primaryStage.show();
     }
 }

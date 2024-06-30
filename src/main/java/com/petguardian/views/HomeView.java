@@ -1,4 +1,5 @@
 package com.petguardian.views;
+
 import javafx.util.Duration;
 
 import com.petguardian.controllers.Pet;
@@ -34,16 +35,17 @@ import javafx.stage.Screen;
 public class HomeView {
     private Pet app;
     private Pane rootpane;
-    public HomeView(Pet app){
-        this.app=app;
+
+    public HomeView(Pet app) {
+        this.app = app;
         initialize();
     }
 
-    private void initialize(){
-        rootpane=new Pane();
+    private void initialize() {
+        rootpane = new Pane();
         rootpane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 50% 50%, #F5D7C3, #ffffff);");
 
-        ImageView iv=new ImageView(new Image("dog.png"));
+        ImageView iv = new ImageView(new Image("dog.png"));
         iv.setLayoutX(1116);
         iv.setLayoutY(100);
 
@@ -54,34 +56,41 @@ public class HomeView {
 
     }
 
-    public Pane getView(){
+    public Pane getView() {
         return rootpane;
     }
 
-    private GridPane categoryView(){
-        GridPane categoryView=new GridPane();
+    private GridPane categoryView() {
+        GridPane categoryView = new GridPane();
         categoryView.setLayoutX(100);
         categoryView.setLayoutY(700);
-       // categoryView.setPrefHeight(500);
-        //categoryView.setPrefWidth(900);
+        // categoryView.setPrefHeight(500);
+        // categoryView.setPrefWidth(900);
         categoryView.setHgap(60);
         categoryView.setVgap(60);
         categoryView.setPadding(new Insets(10, 10, 10, 10));
 
-        BorderPane b1=category(new Label("Veitenary"), "category/v.png");
-        BorderPane b2=category(new Label("Grooming"), "category/groom.png");
-        BorderPane b3=category(new Label("Training"), "category/train.png");
-        BorderPane b4=category(new Label("Pet Store"), "category/shop.png");
+        BorderPane b1 = category(new Label("Veitenary"), "category/v.png");
+        BorderPane b2 = category(new Label("Grooming"), "category/groom.png");
+        BorderPane b3 = category(new Label("Training"), "category/train.png");
+        BorderPane b4 = category(new Label("Pet Store"), "category/shop.png");
         categoryView.setConstraints(b1, 0, 0);
         categoryView.setConstraints(b2, 1, 0);
         categoryView.setConstraints(b3, 2, 0);
         categoryView.setConstraints(b4, 3, 0);
-        categoryView.getChildren().addAll(b1,b2,b3,b4);
+        categoryView.getChildren().addAll(b1, b2, b3, b4);
+
+        b1.setOnMouseClicked(e -> {
+            app.navigateToVetarnaryView();
+        });
+        b4.setOnMouseClicked(e -> {
+            app.navigateToShopView();
+        });
         return categoryView;
     }
 
-    private Label categoryLabel(){
-        Label category=new Label("Categories");
+    private Label categoryLabel() {
+        Label category = new Label("Categories");
         category.setFont(new Font(50));
         category.setTextFill(Color.ORANGE);
         category.setStyle("-fx-font-weight: bold;-fx-font-family: 'Times New Roman';");
@@ -90,36 +99,35 @@ public class HomeView {
         return category;
     }
 
-    private BorderPane category(Label name,String url){
-        
-        Label label1=name;
+    private BorderPane category(Label name, String url) {
+
+        Label label1 = name;
         label1.setAlignment(Pos.BOTTOM_CENTER);
-        ImageView c1=new ImageView(new Image(url));
+        ImageView c1 = new ImageView(new Image(url));
         c1.setFitHeight(150);
         c1.setFitWidth(150);
         c1.setPreserveRatio(true);
         c1.setStyle("-fx-background-color: transparent;");
-       
+
         double radius = 70;
-        Circle clip = new Circle(c1.getFitWidth()/2,c1.getFitHeight()/2,radius);
+        Circle clip = new Circle(c1.getFitWidth() / 2, c1.getFitHeight() / 2, radius);
         c1.setClip(clip);
-        
-        VBox vb1=new VBox();
+
+        VBox vb1 = new VBox();
         vb1.setAlignment(Pos.CENTER);
         vb1.setSpacing(5);
-        vb1.setPadding(new Insets(0,0,10,0));
-        vb1.getChildren().addAll(c1,label1);
+        vb1.setPadding(new Insets(0, 0, 10, 0));
+        vb1.getChildren().addAll(c1, label1);
         vb1.setMinWidth(170);
 
         BorderPane borderPane = new BorderPane(vb1);
         borderPane.setBorder(new Border(new BorderStroke(
-            Color.ORANGE,
-            BorderStrokeStyle.SOLID,
-            new CornerRadii(5),
-            new BorderWidths(5)
-        )));
+                Color.ORANGE,
+                BorderStrokeStyle.SOLID,
+                new CornerRadii(5),
+                new BorderWidths(5))));
 
-         borderPane.setOnMouseEntered(event -> {
+        borderPane.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), borderPane);
             scaleTransition.setToX(1.1); // Scale 110% in X direction
             scaleTransition.setToY(1.1); // Scale 110% in Y direction
