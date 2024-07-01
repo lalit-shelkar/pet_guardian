@@ -90,6 +90,7 @@ public class HomeView {
         return category;
     }
 
+
     private BorderPane category(Label name,String url){
         
         Label label1=name;
@@ -121,15 +122,15 @@ public class HomeView {
 
          borderPane.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), borderPane);
-            scaleTransition.setToX(1.1); // Scale 110% in X direction
-            scaleTransition.setToY(1.1); // Scale 110% in Y direction
+            scaleTransition.setToX(1.1); 
+            scaleTransition.setToY(1.1); 
             scaleTransition.play();
         });
 
         borderPane.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), borderPane);
-            scaleTransition.setToX(1.0); // Revert to original scale
-            scaleTransition.setToY(1.0); // Revert to original scale
+            scaleTransition.setToX(1.0); 
+            scaleTransition.setToY(1.0); 
             scaleTransition.play();
         });
         return borderPane;
