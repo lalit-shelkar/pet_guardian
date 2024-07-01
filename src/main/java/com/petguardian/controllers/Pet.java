@@ -47,7 +47,7 @@ public class Pet extends Application {
         shopView = new ShopView(this);
         shopScene = new Scene(shopView.getView(), 1920, 1080);
         /// initial screen
-        primaryStage.setScene(loginScene);
+        primaryStage.setScene(vetarScene);
         primaryStage.show();
     }
 

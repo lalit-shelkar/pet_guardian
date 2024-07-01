@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,11 +45,13 @@ public class VetarnaryView {
 
         rootpane = new Pane();
         rootpane.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
-        cardsContainer = new VBox(20); // VBox to hold doctor cards
-        cardsContainer.setLayoutX(150);
-        cardsContainer.setLayoutY(490);
 
-        rootpane.getChildren().addAll(backButton(), getTopBox(), cardsContainer);
+        // Create the VBox to hold the doctor cards
+        cardsContainer = new VBox(20); // VBox to hold doctor cards
+        cardsContainer.setPadding(new Insets(20));
+        cardsContainer.setAlignment(Pos.TOP_CENTER);
+
+        rootpane.getChildren().addAll(backButton(), getTopBox(), getScrollpane());
 
         // Initially display all doctors
         displayDoctors(doctorList);
@@ -66,23 +69,46 @@ public class VetarnaryView {
         }
     }
 
+    private ScrollPane getScrollpane() {
+        // Wrap the VBox in a ScrollPane
+        ScrollPane scrollPane = new ScrollPane(cardsContainer);
+        scrollPane.setLayoutX(50);
+        scrollPane.setLayoutY(450);
+        scrollPane.setPrefSize(1700, 600);
+        scrollPane.setStyle(
+                "-fx-background: rgba(0, 0, 0, 0); " + // Transparent background
+                        "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent;");
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setContent(cardsContainer);
+        cardsContainer.setStyle("-fx-background-color: transparent;");
+        return scrollPane;
+    }
+
     private HBox createDoctorCard(DoctorModelClass doctor) {
-        ImageView doctorImageView = new ImageView(new Image("vetarnary/doctor2.png"));
+        ImageView doctorImageView = new ImageView(new Image(doctor.getImg()));
         doctorImageView.setFitWidth(250);
         doctorImageView.setFitHeight(250);
         doctorImageView.setPreserveRatio(true);
 
         Label doctorNameLabel = new Label(doctor.getName());
         doctorNameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        doctorNameLabel.setTextFill(Color.BLACK);
+        //
         Label qualificationLabel = new Label(doctor.getQulification());
         qualificationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
+        qualificationLabel.setTextFill(Color.BLACK);
+        //
         Label experienceLabel = new Label(doctor.getExperience() + " Years Experience Overall");
         experienceLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-
+        experienceLabel.setTextFill(Color.BLACK);
+        //
         HBox ratingBox = new HBox(5);
         Label ratingLabel = new Label(String.valueOf(doctor.getRating()) + "/5");
-        ratingLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        ratingLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         ratingBox.getChildren().add(ratingLabel);
+        ratingLabel.setTextFill(Color.BLACK);
 
         for (int i = 0; i < (int) doctor.getRating(); i++) {
             Image star = new Image("vetarnary/star.png");
@@ -104,12 +130,14 @@ public class VetarnaryView {
             Label tagLabel = new Label(specialization);
             tagLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
             tagLabel.setStyle("-fx-background-color: #e0e0e0; -fx-padding: 5px;");
+            tagLabel.setTextFill(Color.BLACK);
             tagsBox.getChildren().add(tagLabel);
         }
 
         Label descriptionLabel = new Label(doctor.getAbout());
         descriptionLabel.setWrapText(true);
         descriptionLabel.setMaxWidth(300);
+        descriptionLabel.setTextFill(Color.BLACK);
 
         VBox leftVBox = new VBox(10, doctorNameLabel, qualificationLabel, experienceLabel, ratingBox, tagsBox,
                 descriptionLabel);
@@ -118,10 +146,11 @@ public class VetarnaryView {
         VBox contactVBox = new VBox(20);
         contactVBox.setAlignment(Pos.CENTER);
         contactVBox.setPadding(new Insets(10));
-
+        // location
         Label locationLabel = new Label("Location: " + doctor.getLocation());
         locationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-
+        locationLabel.setTextFill(Color.BLACK);
+        // Avable
         Label availabilityLabel = new Label(doctor.isAvailable() ? "Available" : "Not Available");
         availabilityLabel.setTextFill(doctor.isAvailable() ? Color.GREEN : Color.RED);
         availabilityLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
@@ -185,15 +214,19 @@ public class VetarnaryView {
         topSection.setAlignment(Pos.CENTER_LEFT);
 
         Label titleLabel = new Label("Which Doctor to Consult for Piles - Top Piles Doctors in India");
+        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         titleLabel.setTextFill(Color.WHITE);
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 34));
+        titleLabel.setWrapText(true);
+        titleLabel.setAlignment(Pos.TOP_LEFT);
 
         ComboBox<String> cityComboBox = new ComboBox<>();
         cityComboBox.setPromptText("Select City");
-        cityComboBox.getItems().addAll("pune", "mumbai", "shirur","jalgaon","narhe","nashik");
+        cityComboBox.getItems().addAll(
+                "Kolkata", "Delhi", "Chennai", "Bangalore", "Hyderabad", "Pune", "Mumbai", "Jaipur", "Lucknow");
+        cityComboBox.setStyle("-fx-font-size: 20px; -fx-background-radius: 10;");
 
         HBox ratingBox = new HBox(10);
-        Label ratingLabel = new Label("Rating");
+        Label ratingLabel = new Label("4.5/5");
         ratingLabel.setTextFill(Color.WHITE);
         ratingLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         ratingBox.getChildren().add(ratingLabel);
@@ -226,34 +259,37 @@ public class VetarnaryView {
 
         statsBox.getChildren().addAll(patientsLabel, hospitalsLabel, citiesLabel);
 
+        // Search button
         Button searchButton = new Button("Search");
         searchButton.setStyle(
                 "-fx-background-color: orange; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px 20px; -fx-background-radius: 10;");
         searchButton.setOnAction(e -> {
             String selectedCity = cityComboBox.getValue();
-           
             if (selectedCity != null) {
-                List<DoctorModelClass> filteredDoctors = doctorList;
-                filteredDoctors = doctorList.stream()
+                List<DoctorModelClass> filteredDoctors = doctorList.stream()
                         .filter(doctor -> doctor.getLocation().trim().equalsIgnoreCase(selectedCity.trim()))
                         .collect(Collectors.toList());
-
                 displayDoctors(filteredDoctors);
             }
         });
+
+        // See All button
         Button seeAllButton = new Button("See All");
         seeAllButton.setStyle(
                 "-fx-background-color: orange; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px 20px; -fx-background-radius: 10;");
         seeAllButton.setOnAction(e -> {
-
             displayDoctors(doctorList);
-
         });
 
-        HBox filterbutton = new HBox(30, searchButton, seeAllButton);
+        HBox filterButtonBox = new HBox(30, searchButton, seeAllButton);
 
-        topSection.getChildren().addAll(titleLabel, cityComboBox, ratingBox, statsBox, filterbutton);
-        mainLayout.setTop(topSection);
+        ImageView doctorImageLogo = new ImageView(new Image("vetarnary/doctor.png"));
+        doctorImageLogo.setFitHeight(350);
+        doctorImageLogo.setFitWidth(400);
+
+        topSection.getChildren().addAll(titleLabel, cityComboBox, ratingBox, statsBox, filterButtonBox);
+        HBox mainHBox = new HBox(110, topSection, doctorImageLogo);
+        mainLayout.setTop(mainHBox);
 
         return mainLayout;
     }
