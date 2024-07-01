@@ -2,54 +2,84 @@ package com.petguardian.Model;
 
 import java.util.Set;
 
-// dr name=xxx
-// qulification = MBBS, MS - General Surgery
-// experience = 23 Years Experience Overall
-// rating  out of 5
-// image
-// tags = { "Proctology", "Urology", "Laparoscopy", "Vascular", "Aesthetics" };
-// discription  ="Dr. Milind Joshi is an expert and experienced General Surgeon, Proctologist, and Laparoscopic Surgeon with an experience of 23 years, and specializes in Proctology, Vascular, Laparoscopy, and Urology. He graduated and obtained his MBBS degree from...");
-// Location:Aanvii Hearing Solutions
-// Available  yes or no
-
-// specializes :Piles Specialist
-// contact no  
-
 public class DoctorModelClass {
-    String drName;
-    String qulification;
-    String experience;
-    double rating;
-    String image;
-    Set tags;
-    String discription;
-    String location;
-    boolean isAvalable;
-    String spetilization;
-    String contactNo;
+    private String name;
+    private String qulification;
+    private String experience;
+    private double rating;
+    private String img;
+    private Set<String> tags;
+    private String about;
+    private String location;
+    private boolean available;
+    private String specializes;
+    private String contact;
 
-    DoctorModelClass(String drName,
+    public DoctorModelClass(String name,
             String qulification,
             String experience,
             double rating,
-            String image,
-            Set tags,
-            String discription,
+            String img,
+            Set<String> tags,
+            String about,
             String location,
-            boolean isAvalable,
-            String spetilization,
-            String contactNo) {
-        this.drName = drName;
+            boolean available,
+            String specializes, String contact) {
+        this.name = name;
         this.qulification = qulification;
         this.experience = experience;
         this.rating = rating;
-        this.image = image;
+        this.img = img;
         this.tags = tags;
-        this.discription = discription;
+        this.about = about;
         this.location = location;
-        this.isAvalable = isAvalable;
-        this.spetilization = spetilization;
-        this.contactNo = contactNo;
+        this.available = available;
+        this.specializes = specializes;
+        this.contact = contact;
+    }
 
-    };
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public String getQulification() {
+        return qulification;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public String getSpecializes() {
+        return specializes;
+    }
+
+    public String getContact() {
+        return contact;
+    }
 }
