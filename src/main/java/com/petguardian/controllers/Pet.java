@@ -53,10 +53,10 @@ public class Pet extends Application {
         shopScene = new Scene(shopView.getView(), 1920, 1080);
 
         /// shopscreen
-        doctorView =new DoctorView (this);
+        doctorView = new DoctorView(this);
         doctorScene = new Scene(doctorView.getView(), 1920, 1080);
         /// initial screen
-        primaryStage.setScene(doctorScene);
+        primaryStage.setScene(loginScene);
         primaryStage.show();
     }
 

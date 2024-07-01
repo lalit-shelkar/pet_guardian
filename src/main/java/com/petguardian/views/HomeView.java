@@ -2,7 +2,11 @@ package com.petguardian.views;
 
 import javafx.util.Duration;
 
+import java.util.Map;
+
+import com.google.api.Authentication;
 import com.petguardian.controllers.Pet;
+import com.petguardian.firebase.MyAuthentication;
 import com.petguardian.views.common.Navbar;
 
 import javafx.animation.ScaleTransition;
@@ -33,10 +37,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
 public class HomeView {
+    // Object x = MyAuthentication.getUserInfo().get("userName");
     private Pet app;
     private Pane rootpane;
 
     public HomeView(Pet app) {
+
         this.app = app;
         initialize();
     }
@@ -101,7 +107,7 @@ public class HomeView {
 
     private BorderPane category(Label name, String url) {
 
-        Label label1= name;
+        Label label1 = name;
         label1.setAlignment(Pos.BOTTOM_CENTER);
         ImageView c1 = new ImageView(new Image(url));
         c1.setFitHeight(150);
@@ -129,15 +135,15 @@ public class HomeView {
 
         borderPane.setOnMouseEntered(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), borderPane);
-            scaleTransition.setToX(1.1); 
-            scaleTransition.setToY(1.1); 
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
             scaleTransition.play();
         });
 
         borderPane.setOnMouseExited(event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), borderPane);
-            scaleTransition.setToX(1.0); 
-            scaleTransition.setToY(1.0); 
+            scaleTransition.setToX(1.0);
+            scaleTransition.setToY(1.0);
             scaleTransition.play();
         });
         return borderPane;
