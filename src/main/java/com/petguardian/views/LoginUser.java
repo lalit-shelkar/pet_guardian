@@ -71,7 +71,8 @@ public class LoginUser {
                 "    -fx-padding: 0 0 2px 0; \n" + //
                 "");
         emailFieldContainer.getChildren().add(emailField);
-
+        /////
+        // password fild
         HBox passwordFieldContainer = new HBox(10);
         passwordFieldContainer.setAlignment(Pos.CENTER_LEFT);
         // image
@@ -89,6 +90,25 @@ public class LoginUser {
                 "    -fx-padding: 0 0 2px 0; \n" + //
                 "");
         passwordFieldContainer.getChildren().add(passwordField);
+        /////
+        // Username TextField
+        HBox userFieldContainer = new HBox(10);
+        userFieldContainer.setAlignment(Pos.CENTER_LEFT);
+
+        ImageView userIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/login/mail.png")));
+        emailIcon.setFitWidth(24); // Set the desired width for the email icon
+        emailIcon.setFitHeight(24); // Set the desired height for the email icon
+        emailFieldContainer.getChildren().add(userIcon);
+
+        TextField userField = new TextField();
+        userField.setPromptText("Email");
+        userField.setStyle("-fx-pref-width: 300; -fx-padding: 10;-fx-background-color: transparent; \n" + //
+                "    -fx-border-color: transparent transparent black transparent; \n" + //
+                "    -fx-border-width: 0 0 2px 0; \n" + //
+                "    -fx-padding: 0 0 2px 0; \n" + //
+                "");
+        userFieldContainer.getChildren().add(userField);
+        //
 
         Button loginButton = new Button("Login");
         loginButton.setStyle("-fx-background-color: linear-gradient(to right, #FFAA00, #FF6600);\n" +
@@ -98,19 +118,27 @@ public class LoginUser {
                 "    -fx-font-weight: bold;\n" +
                 "    -fx-background-radius: 20;\n" +
                 "    -fx-border-radius: 20;-fx-pref-width: 300;");
-        // loginButton.setText("Sign up");
 
+        // sign up lable
         Label signUpLabel = new Label("Don't have an account? Sign Up");
         signUpLabel.setFont(Font.font("BOLD", 24));
-        signUpLabel.setTextFill(Color.ORANGE);
+        signUpLabel.setTextFill(Color.BLACK);
         signUpLabel.setOnMouseClicked(e -> {
+
             if (islogin) {
                 loginButton.setText("signUp");
+                loginForm.getChildren().clear();
+
+                // loginForm.getChildren().addAll(welcomeLabel, emailFieldContainer,
+                // passwordFieldContainer, loginButton,
+                // signUpLabel);
 
             } else {
                 loginButton.setText("Login");
             }
             islogin = !islogin;
+            signUpLabel.setText((islogin) ? "Don't have an account? Sign Up" : "Already have an account");
+
         });
 
         loginForm.getChildren().addAll(welcomeLabel, emailFieldContainer, passwordFieldContainer, loginButton,

@@ -51,7 +51,7 @@ public class VetarnaryView {
         cardsContainer.setPadding(new Insets(20));
         cardsContainer.setAlignment(Pos.TOP_CENTER);
 
-        rootpane.getChildren().addAll(backButton(), getTopBox(), getScrollpane());
+        rootpane.getChildren().addAll(navBar(), getTopBox(), getScrollpane());
 
         // Initially display all doctors
         displayDoctors(doctorList);
@@ -164,12 +164,15 @@ public class VetarnaryView {
         specialistLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
 
         Button callButton = new Button("Call Us : " + doctor.getContact());
-        callButton.setStyle("-fx-background-color: #FFA500; " +
-                "-fx-text-fill: white; " +
+        callButton.setStyle("-fx-background-color: white; " +
+                "-fx-text-fill: #FFA500; " +
                 "-fx-font-weight: bold; " +
-                "-fx-font-size: 20px; " +
-                "-fx-background-radius: 10; " +
-                "-fx-pref-width: 300; -fx-pref-height: 35;");
+                "-fx-font-size: 20px;  " +
+                "-fx-background-radius: 20; " +
+                "-fx-pref-width: 300; " +
+                "-fx-pref-height: 35; " +
+                "-fx-border-color:  #FFA500; " + // Set the border color
+                "-fx-border-width: 2; ");
         Button appointmentButton = new Button("Book Free Appointment");
         appointmentButton.setStyle("-fx-background-color: #FFA500; " +
                 "-fx-text-fill: white; " +
@@ -201,7 +204,7 @@ public class VetarnaryView {
         return backButton;
     }
 
-    BorderPane getTopBox() {
+    private BorderPane getTopBox() {
         BorderPane mainLayout = new BorderPane();
         mainLayout.setLayoutX(20);
         mainLayout.setLayoutY(60);
@@ -209,11 +212,10 @@ public class VetarnaryView {
 
         VBox topSection = new VBox(20);
         topSection.setPadding(new Insets(20));
-        topSection.setStyle("-fx-background-color:#002240; -fx-background-radius: 20;");
         topSection.setMinWidth(1200);
         topSection.setAlignment(Pos.CENTER_LEFT);
 
-        Label titleLabel = new Label("Which Doctor to Consult for Piles - Top Piles Doctors in India");
+        Label titleLabel = new Label("Doctor to Consult for our pet -Indias Top Pet Wellness Expert");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         titleLabel.setTextFill(Color.WHITE);
         titleLabel.setWrapText(true);
@@ -286,11 +288,46 @@ public class VetarnaryView {
         ImageView doctorImageLogo = new ImageView(new Image("vetarnary/doctor.png"));
         doctorImageLogo.setFitHeight(350);
         doctorImageLogo.setFitWidth(400);
-
         topSection.getChildren().addAll(titleLabel, cityComboBox, ratingBox, statsBox, filterButtonBox);
-        HBox mainHBox = new HBox(110, topSection, doctorImageLogo);
+
+        // vertical box and imgae
+        HBox mainHBox = new HBox(80, topSection, doctorImageLogo);
+        mainHBox.setStyle("-fx-background-color:#002240; -fx-background-radius: 20;");
+        mainHBox.setMinWidth(1800);
         mainLayout.setTop(mainHBox);
 
         return mainLayout;
+    }
+
+    public HBox navBarLabels() {
+        HBox hb = new HBox();
+
+        hb.setPrefHeight(80);
+        hb.setSpacing(65);
+        hb.setAlignment(Pos.CENTER);
+        hb.setStyle("-fx-padding: 10;");
+        Label home = new Label("Home");
+        Label service = new Label("Service");
+        Label shop = new Label("Shop");
+        Label cart = new Label("Cart");
+        Label profile = new Label("Profile");
+        Label notification = new Label("Notifications");
+
+        home.setFont(new Font(20));
+        service.setFont(new Font(20));
+        shop.setFont(new Font(20));
+        cart.setFont(new Font(20));
+        profile.setFont(new Font(20));
+        notification.setFont(new Font(20));
+
+        hb.getChildren().addAll(home, service, shop, cart, profile, notification);
+        return hb;
+    }
+
+    HBox navBar() {
+        HBox navBar = new HBox(900, backButton(), navBarLabels());
+        navBar.setLayoutX(10);
+        navBar.setLayoutY(10);
+        return navBar;
     }
 }
