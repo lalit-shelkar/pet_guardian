@@ -1,9 +1,9 @@
 package com.petguardian;
 
 import java.io.IOException;
+
 import com.petguardian.controllers.Pet;
 import com.petguardian.firebase.InitilazationFirebase;
-import com.petguardian.views.LoginUser;
 
 import javafx.application.Application;
 
@@ -18,4 +18,5 @@ public class Main {
         }
         Application.launch(Pet.class, "Hello world!");
     }
+
 }
