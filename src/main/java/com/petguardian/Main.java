@@ -14,7 +14,7 @@ public class Main {
     static {
         try {
             FileInputStream serviceAccount = new FileInputStream(
-                    "petgaurdian\\src\\main\\resources\\fir-javafx-47969-firebase-adminsdk-44ci7-18f1e5b923.json");
+                    "fir-javafx-47969-firebase-adminsdk-44ci7-18f1e5b923.json");
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
