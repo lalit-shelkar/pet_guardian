@@ -1,6 +1,8 @@
 package com.petguardian.controllers;
 
 import com.petguardian.views.HomeView;
+import com.petguardian.views.DoctorView;
+
 import com.petguardian.views.LoginUser;
 import com.petguardian.views.ShopView;
 import com.petguardian.views.VetarnaryView;
@@ -24,6 +26,9 @@ public class Pet extends Application {
     // shopScreen
     private ShopView shopView;
     private Scene shopScene;
+    // doctorView
+    private DoctorView doctorView;
+    private Scene doctorScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -46,8 +51,12 @@ public class Pet extends Application {
         /// shopscreen
         shopView = new ShopView(this);
         shopScene = new Scene(shopView.getView(), 1920, 1080);
+
+        /// shopscreen
+        doctorView =new DoctorView (this);
+        doctorScene = new Scene(doctorView.getView(), 1920, 1080);
         /// initial screen
-        primaryStage.setScene(vetarScene);
+        primaryStage.setScene(doctorScene);
         primaryStage.show();
     }
 
@@ -72,6 +81,12 @@ public class Pet extends Application {
     /// navigate to shop screen(amars )
     public void navigateToShopView() {
         primaryStage.setScene(shopScene);
+        primaryStage.show();
+    }
+
+    /// navigate to doctor screen
+    public void navigateToDoctorView() {
+        primaryStage.setScene(doctorScene);
         primaryStage.show();
     }
 }
