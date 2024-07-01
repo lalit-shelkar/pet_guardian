@@ -20,16 +20,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class VetarnaryView {
+public class dummyVetarnary {
     private Pet app;
     private Pane rootpane;
     boolean islogin = true;
     List<DoctorModelClass> doctorList;
     private VBox cardsContainer; // Container for doctor cards
 
-    public VetarnaryView(Pet app) {
+    public dummyVetarnary(Pet app) {
         this.app = app;
         initialize();
     }
@@ -190,7 +189,7 @@ public class VetarnaryView {
 
         ComboBox<String> cityComboBox = new ComboBox<>();
         cityComboBox.setPromptText("Select City");
-        cityComboBox.getItems().addAll("pune", "mumbai", "shirur","jalgaon","narhe","nashik");
+        cityComboBox.getItems().addAll("pune", "mumbai ", "Narhe");
 
         HBox ratingBox = new HBox(10);
         Label ratingLabel = new Label("Rating");
@@ -231,28 +230,16 @@ public class VetarnaryView {
                 "-fx-background-color: orange; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px 20px; -fx-background-radius: 10;");
         searchButton.setOnAction(e -> {
             String selectedCity = cityComboBox.getValue();
-           
             if (selectedCity != null) {
                 List<DoctorModelClass> filteredDoctors = doctorList;
-                filteredDoctors = doctorList.stream()
-                        .filter(doctor -> doctor.getLocation().trim().equalsIgnoreCase(selectedCity.trim()))
-                        .collect(Collectors.toList());
-
+                // List<DoctorModelClass> filteredDoctors = doctorList.stream()
+                // .filter(doctor -> doctor.getLocation().equalsIgnoreCase(selectedCity))
+                // .toList();
                 displayDoctors(filteredDoctors);
             }
         });
-        Button seeAllButton = new Button("See All");
-        seeAllButton.setStyle(
-                "-fx-background-color: orange; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px 20px; -fx-background-radius: 10;");
-        seeAllButton.setOnAction(e -> {
 
-            displayDoctors(doctorList);
-
-        });
-
-        HBox filterbutton = new HBox(30, searchButton, seeAllButton);
-
-        topSection.getChildren().addAll(titleLabel, cityComboBox, ratingBox, statsBox, filterbutton);
+        topSection.getChildren().addAll(titleLabel, cityComboBox, ratingBox, statsBox, searchButton);
         mainLayout.setTop(topSection);
 
         return mainLayout;
