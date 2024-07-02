@@ -1,7 +1,7 @@
 package com.petguardian.views;
 
 import com.petguardian.controllers.Pet;
-import com.petguardian.firebase.Authentication;
+import com.petguardian.firebase.MyAuthentication;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -30,7 +30,7 @@ public class LoginUser {
     }
 
     private void initialize() {
-
+        
         rootpane = new Pane();
         rootpane.setStyle("-fx-background-color: #FCDBC1");
 
@@ -53,7 +53,6 @@ public class LoginUser {
         Label welcomeLabel = new Label("Welcome Back !!");
         welcomeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         welcomeLabel.setTextFill(Color.BLACK);
-        welcomeLabel.setAlignment(Pos.CENTER_LEFT);
 
         HBox emailFieldContainer = new HBox(10);
         emailFieldContainer.setAlignment(Pos.CENTER_LEFT);
@@ -92,16 +91,17 @@ public class LoginUser {
         passwordFieldContainer.getChildren().add(passwordField);
         /////
         // Username TextField
+
         HBox userFieldContainer = new HBox(10);
         userFieldContainer.setAlignment(Pos.CENTER_LEFT);
 
-        ImageView userIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/login/mail.png")));
-        emailIcon.setFitWidth(24); // Set the desired width for the email icon
-        emailIcon.setFitHeight(24); // Set the desired height for the email icon
-        emailFieldContainer.getChildren().add(userIcon);
+        ImageView userIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/login/user.png")));
+        userIcon.setFitWidth(24); // Set the desired width for the email icon
+        userIcon.setFitHeight(24); // Set the desired height for the email icon
+        userFieldContainer.getChildren().add(userIcon);
 
         TextField userField = new TextField();
-        userField.setPromptText("Email");
+        userField.setPromptText("@UserName");
         userField.setStyle("-fx-pref-width: 300; -fx-padding: 10;-fx-background-color: transparent; \n" + //
                 "    -fx-border-color: transparent transparent black transparent; \n" + //
                 "    -fx-border-width: 0 0 2px 0; \n" + //
@@ -109,7 +109,24 @@ public class LoginUser {
                 "");
         userFieldContainer.getChildren().add(userField);
         //
+        // phone number
+        HBox phoneFieldContainer = new HBox(10);
+        phoneFieldContainer.setAlignment(Pos.CENTER_LEFT);
 
+        ImageView phoneIcon = new ImageView(new Image(getClass().getResourceAsStream("/image/login/phone.png")));
+        phoneIcon.setFitWidth(24); // Set the desired width for the email icon
+        phoneIcon.setFitHeight(24); // Set the desired height for the email icon
+        phoneFieldContainer.getChildren().add(phoneIcon);
+        TextField phoneField = new TextField();
+        phoneField.setPromptText("Phone No");
+        phoneField.setStyle("-fx-pref-width: 300; -fx-padding: 10;-fx-background-color: transparent; \n" + //
+                "    -fx-border-color: transparent transparent black transparent; \n" + //
+                "    -fx-border-width: 0 0 2px 0; \n" + //
+                "    -fx-padding: 0 0 2px 0; \n" + //
+                "");
+        phoneFieldContainer.getChildren().add(phoneField);
+        ////
+        /// login button
         Button loginButton = new Button("Login");
         loginButton.setStyle("-fx-background-color: linear-gradient(to right, #FFAA00, #FF6600);\n" +
                 "    -fx-text-fill: white;\n" +
@@ -129,12 +146,18 @@ public class LoginUser {
                 loginButton.setText("signUp");
                 loginForm.getChildren().clear();
 
-                // loginForm.getChildren().addAll(welcomeLabel, emailFieldContainer,
-                // passwordFieldContainer, loginButton,
-                // signUpLabel);
+                loginForm.getChildren().addAll(welcomeLabel, userFieldContainer, emailFieldContainer,
+                        phoneFieldContainer,
+                        passwordFieldContainer, loginButton,
+                        signUpLabel);
+                welcomeLabel.setText("Welcome to PetGuardian");
 
             } else {
                 loginButton.setText("Login");
+                loginForm.getChildren().clear();
+                loginForm.getChildren().addAll(welcomeLabel, emailFieldContainer, passwordFieldContainer, loginButton,
+                        signUpLabel);
+                welcomeLabel.setText("Welcome Back");
             }
             islogin = !islogin;
             signUpLabel.setText((islogin) ? "Don't have an account? Sign Up" : "Already have an account");
@@ -153,7 +176,9 @@ public class LoginUser {
         loginButton.setOnAction(e -> {
             String email = emailField.getText();
             String pass = passwordField.getText();
-            submit(email, pass);
+            String userName = userField.getText();
+            String phone = phoneField.getText();
+            submit(email, pass, userName, phone);
 
         });
 
@@ -168,7 +193,7 @@ public class LoginUser {
     ////
     // methos ==>
     // submit fiorm
-    private void submit(String email, String pass) {
+    private void submit(String email, String pass, String userName, String phone) {
         // cheking email is valid or not
         if (!email.contains("@") || !email.contains(".com")) {
             showAlert("Invalid email ");
@@ -182,10 +207,11 @@ public class LoginUser {
         }
 
         String result = "";
+
         if (islogin) {
-            result = Authentication.LoginUser(email, pass);
+            result = MyAuthentication.LoginUser(email, pass);
         } else {
-            result = Authentication.RegisterUser(email, pass);
+            result = MyAuthentication.RegisterUser(email, pass, userName, phone);
         }
 
         if (result.equals("success")) {
