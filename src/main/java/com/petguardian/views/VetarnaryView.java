@@ -3,6 +3,8 @@ package com.petguardian.views;
 import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.controllers.DoctorDataFetcher;
 import com.petguardian.controllers.Pet;
+import com.petguardian.views.common.Navbar;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -283,7 +285,21 @@ public class VetarnaryView {
             displayDoctors(doctorList);
         });
 
-        HBox filterButtonBox = new HBox(30, searchButton, seeAllButton);
+        /// refresh button
+        Button refreshButton = new Button("Refresh");
+        refreshButton.setStyle(
+                "-fx-background-color: orange; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px 20px; -fx-background-radius: 10;");
+        refreshButton.setOnAction(e -> {
+            //// feating data gaiin
+            DoctorDataFetcher dataFetcher = new DoctorDataFetcher();
+            try {
+                doctorList = dataFetcher.fetchDoctorData();
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
+        });
+
+        HBox filterButtonBox = new HBox(30, searchButton, seeAllButton, refreshButton);
 
         ImageView doctorImageLogo = new ImageView(new Image("vetarnary/doctor.png"));
         doctorImageLogo.setFitHeight(350);
@@ -299,33 +315,34 @@ public class VetarnaryView {
         return mainLayout;
     }
 
-    public HBox navBarLabels() {
-        HBox hb = new HBox();
+    // public HBox navBarLabels() {
+    // HBox hb = new HBox();
 
-        hb.setPrefHeight(80);
-        hb.setSpacing(65);
-        hb.setAlignment(Pos.CENTER);
-        hb.setStyle("-fx-padding: 10;");
-        Label home = new Label("Home");
-        Label service = new Label("Service");
-        Label shop = new Label("Shop");
-        Label cart = new Label("Cart");
-        Label profile = new Label("Profile");
-        Label notification = new Label("Notifications");
+    // hb.setPrefHeight(80);
+    // hb.setSpacing(65);
+    // hb.setAlignment(Pos.CENTER);
+    // hb.setStyle("-fx-padding: 10;");
+    // Label home = new Label("Home");
+    // Label service = new Label("Service");
+    // Label shop = new Label("Shop");
+    // Label cart = new Label("Cart");
+    // Label profile = new Label("Profile");
+    // Label notification = new Label("Notifications");
 
-        home.setFont(new Font(20));
-        service.setFont(new Font(20));
-        shop.setFont(new Font(20));
-        cart.setFont(new Font(20));
-        profile.setFont(new Font(20));
-        notification.setFont(new Font(20));
+    // home.setFont(new Font(20));
+    // service.setFont(new Font(20));
+    // shop.setFont(new Font(20));
+    // cart.setFont(new Font(20));
+    // profile.setFont(new Font(20));
+    // notification.setFont(new Font(20));
 
-        hb.getChildren().addAll(home, service, shop, cart, profile, notification);
-        return hb;
-    }
+    // hb.getChildren().addAll(home, service, shop, cart, profile, notification);
+    // return hb;
+    // }
 
     HBox navBar() {
-        HBox navBar = new HBox(900, backButton(), navBarLabels());
+        Navbar obj = new Navbar(app);
+        HBox navBar = new HBox(900, backButton(), obj.navBar());
         navBar.setLayoutX(10);
         navBar.setLayoutY(10);
         return navBar;
