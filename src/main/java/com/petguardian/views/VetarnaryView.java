@@ -88,7 +88,11 @@ public class VetarnaryView {
         return scrollPane;
     }
 
+    /// is
+    boolean isAppoitment = false;
+
     private HBox createDoctorCard(DoctorModelClass doctor) {
+
         ImageView doctorImageView = new ImageView(new Image(doctor.getImg()));
         doctorImageView.setFitWidth(250);
         doctorImageView.setFitHeight(250);
@@ -182,6 +186,27 @@ public class VetarnaryView {
                 "-fx-font-size: 20px; " +
                 "-fx-background-radius: 10; " +
                 "-fx-pref-width: 300; -fx-pref-height: 35;");
+        appointmentButton.setOnAction(e -> {
+
+            if (isAppoitment) {
+                appointmentButton.setText("Appointment booked");
+                appointmentButton.setStyle("-fx-background-color: green; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 20px; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-pref-width: 300; -fx-pref-height: 35;");
+            } else {
+                appointmentButton.setText("Book Free Appointment");
+                appointmentButton.setStyle("-fx-background-color: #FFA500; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 20px; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-pref-width: 300; -fx-pref-height: 35;");
+            }
+            isAppoitment = !isAppoitment;
+        });
 
         contactVBox.getChildren().addAll(locationLabel, availabilityLabel, specialistLabel, callButton,
                 appointmentButton);
@@ -193,6 +218,10 @@ public class VetarnaryView {
         mainHBox.setAlignment(Pos.CENTER_LEFT);
         mainHBox.setEffect(new DropShadow(5, Color.GRAY));
         return mainHBox;
+    }
+
+    private void bookAppoitment() {
+            
     }
 
     private Button backButton() {
@@ -314,31 +343,6 @@ public class VetarnaryView {
 
         return mainLayout;
     }
-
-    // public HBox navBarLabels() {
-    // HBox hb = new HBox();
-
-    // hb.setPrefHeight(80);
-    // hb.setSpacing(65);
-    // hb.setAlignment(Pos.CENTER);
-    // hb.setStyle("-fx-padding: 10;");
-    // Label home = new Label("Home");
-    // Label service = new Label("Service");
-    // Label shop = new Label("Shop");
-    // Label cart = new Label("Cart");
-    // Label profile = new Label("Profile");
-    // Label notification = new Label("Notifications");
-
-    // home.setFont(new Font(20));
-    // service.setFont(new Font(20));
-    // shop.setFont(new Font(20));
-    // cart.setFont(new Font(20));
-    // profile.setFont(new Font(20));
-    // notification.setFont(new Font(20));
-
-    // hb.getChildren().addAll(home, service, shop, cart, profile, notification);
-    // return hb;
-    // }
 
     HBox navBar() {
         Navbar obj = new Navbar(app);
