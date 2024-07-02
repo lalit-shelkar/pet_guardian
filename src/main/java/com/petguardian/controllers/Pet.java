@@ -6,6 +6,8 @@ import com.petguardian.views.DoctorView;
 import com.petguardian.views.LoginUser;
 import com.petguardian.views.ShopView;
 import com.petguardian.views.VetarnaryView;
+import com.petguardian.views.common.Navbar;
+
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -27,8 +29,7 @@ public class Pet extends Application {
     private ShopView shopView;
     private Scene shopScene;
     // doctorView
-    private DoctorView doctorView;
-    private Scene doctorScene;
+    private Navbar navbarView;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,6 +39,8 @@ public class Pet extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setX(0);
         primaryStage.setY(0);
+        //navbar
+        navbarView=new Navbar(this);
         /// home Screen Scene
         homeView = new HomeView(this);
         homeScene = new Scene(homeView.getView(), 1920, 1080);
@@ -53,10 +56,10 @@ public class Pet extends Application {
         shopScene = new Scene(shopView.getView(), 1920, 1080);
 
         /// shopscreen
-        doctorView =new DoctorView (this);
-        doctorScene = new Scene(doctorView.getView(), 1920, 1080);
+        //doctorView =new DoctorView (this);
+        //doctorScene = new Scene(doctorView.getView(), 1920, 1080);
         /// initial screen
-        primaryStage.setScene(doctorScene);
+        primaryStage.setScene(homeScene);
         primaryStage.show();
     }
 
@@ -85,8 +88,8 @@ public class Pet extends Application {
     }
 
     /// navigate to doctor screen
-    public void navigateToDoctorView() {
-        primaryStage.setScene(doctorScene);
-        primaryStage.show();
-    }
+    // public void navigateToDoctorView() {
+    //     primaryStage.setScene(doctorScene);
+    //     primaryStage.show();
+    // }
 }

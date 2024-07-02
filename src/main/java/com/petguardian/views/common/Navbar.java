@@ -1,5 +1,7 @@
 package com.petguardian.views.common;
 
+import com.petguardian.controllers.Pet;
+
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
@@ -10,11 +12,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
-public class Navbar {
 
-     public static HBox navBar(){
+public class Navbar {
+    private Pet app;
+    public Navbar(Pet app){
+        this.app=app;
+        navBar();
+    }
+
+     public  HBox navBar(){
         HBox hb=new HBox();
-        hb.setPrefWidth(getScreenWidth());
+       // hb.setPrefWidth(getScreenWidth());
         hb.setPrefHeight(80);
         hb.setSpacing(65);
         hb.setAlignment(Pos.CENTER);
@@ -32,8 +40,10 @@ public class Navbar {
         cart.setFont(new Font(20));
         profile.setFont(new Font(20));
         notification.setFont(new Font(20));
+        
+        home.setOnMouseClicked(e->app.navigateToHomeView());
 
-        hb.getChildren().addAll(searchBar(),home,service,shop,cart,profile,notification);
+        hb.getChildren().addAll(home,service,shop,cart,profile,notification);
         return hb;
 
     }
