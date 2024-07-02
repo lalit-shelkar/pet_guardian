@@ -152,27 +152,28 @@ public class MyAuthentication {
 
     /// get user data from any project
     /// this method use in overall project
-    public static Map<String, Object> getUserInfo() {
-        if (getUserUid() == null) {
-            return null;
-        }
-        Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("uid", getUserUid()).get();
+    // public static Map<String, Object> getUserInfo() {
+    // if (getUserUid() == null) {
+    // return null;
+    // }
+    // Firestore db = FirestoreClient.getFirestore();
+    // ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("uid",
+    /// getUserUid()).get();
 
-        try {
-            QuerySnapshot querySnapshot = future.get();
-            if (!querySnapshot.isEmpty()) {
-                // Assuming uid is unique, return the first result
-                QueryDocumentSnapshot document = querySnapshot.getDocuments().get(0);
-                return document.getData();
-            } else {
-                System.out.println("No such user found!");
-                return null;
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
-        }
+    // try {
+    // QuerySnapshot querySnapshot = future.get();
+    // if (!querySnapshot.isEmpty()) {
+    // // Assuming uid is unique, return the first result
+    // QueryDocumentSnapshot document = querySnapshot.getDocuments().get(0);
+    // return document.getData();
+    // } else {
+    // System.out.println("No such user found!");
+    // return null;
+    // }
+    // } catch (InterruptedException | ExecutionException e) {
+    // e.printStackTrace();
+    // return null;
+    // }
 
-    }
+    // }
 }

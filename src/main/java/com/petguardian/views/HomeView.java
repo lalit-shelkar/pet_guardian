@@ -87,6 +87,7 @@ public class HomeView {
         categoryView.getChildren().addAll(b1, b2, b3, b4);
 
         b1.setOnMouseClicked(e -> {
+            
             app.navigateToVetarnaryView();
         });
         b4.setOnMouseClicked(e -> {

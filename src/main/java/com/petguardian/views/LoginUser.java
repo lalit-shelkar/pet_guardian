@@ -30,7 +30,7 @@ public class LoginUser {
     }
 
     private void initialize() {
-
+        
         rootpane = new Pane();
         rootpane.setStyle("-fx-background-color: #FCDBC1");
 
@@ -178,7 +178,7 @@ public class LoginUser {
             String pass = passwordField.getText();
             String userName = userField.getText();
             String phone = phoneField.getText();
-            submit(email, pass,userName,phone);
+            submit(email, pass, userName, phone);
 
         });
 
@@ -193,7 +193,7 @@ public class LoginUser {
     ////
     // methos ==>
     // submit fiorm
-    private void submit(String email, String pass,String userName,String phone) {
+    private void submit(String email, String pass, String userName, String phone) {
         // cheking email is valid or not
         if (!email.contains("@") || !email.contains(".com")) {
             showAlert("Invalid email ");
@@ -211,7 +211,7 @@ public class LoginUser {
         if (islogin) {
             result = MyAuthentication.LoginUser(email, pass);
         } else {
-            result = MyAuthentication.RegisterUser(email, pass,userName,phone);
+            result = MyAuthentication.RegisterUser(email, pass, userName, phone);
         }
 
         if (result.equals("success")) {
