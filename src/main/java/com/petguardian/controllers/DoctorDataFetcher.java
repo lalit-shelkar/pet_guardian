@@ -13,6 +13,7 @@ import com.petguardian.Model.DoctorModelClass;
 public class DoctorDataFetcher {
 
     public List<DoctorModelClass> fetchDoctorData() throws Exception {
+        System.out.println("In fetching data ");
         String apiUrl = "https://pet-api-two.vercel.app/doctorData";
         URL url = new URL(apiUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
