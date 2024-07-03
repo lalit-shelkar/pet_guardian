@@ -78,6 +78,7 @@ public class Pet extends Application {
 
     // navigate to home screen
     public void navigateToHomeView() {
+        System.out.println("in home ");
         primaryStage.setScene(homeScene);
         primaryStage.show();
     }

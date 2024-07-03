@@ -46,19 +46,26 @@ public class DogFoodView {
         title.setLayoutY(100);
 
         /// dog label
-        Label lb1 = new Label("Dog");
+        Label lb1 = new Label("Dog    |");
         lb1.setTextFill(Color.ORANGE);
         lb1.setStyle("-fx-font-weight: bold;");
         lb1.setFont(new Font(30));
         ////
         // //cat Label
-        Label catlabel = new Label("Cat");
+        Label catlabel = new Label("Cat     |   Rabbit  |   Birds");
         catlabel.setTextFill(Color.BLACK);
         catlabel.setStyle("-fx-font-weight: bold;");
         catlabel.setFont(new Font(30));
 
+        Label viewAll = new Label("View All ->");
+        viewAll.setTextFill(Color.BLACK);
+        // viewAll.setStyle("-fx-font-weight: bold;");
+        viewAll.setFont(new Font(25));
+
+        HBox horizmontal = new HBox(40, lb1, catlabel);
         // category box contain dog and cat category
-        HBox categoryBox = new HBox(40, lb1, catlabel);
+        HBox categoryBox = new HBox(1100, horizmontal, viewAll);
+
         categoryBox.setAlignment(Pos.TOP_CENTER);
         categoryBox.setPadding(new Insets(200, 0, 0, 100));
 
@@ -97,10 +104,11 @@ public class DogFoodView {
 
         ///
 
-        Group gr = new Group(appBar(), scrollPane, title, categoryBox, hb);
+        Group gr = new Group(scrollPane, title, categoryBox, hb, appBar());
 
         StackPane root = new StackPane(gr);
-        root.setStyle("-fx-background-color: rgba(251,247,230,1);");
+        // rootpane.setStyle("-fx-background-color: rgba(251,247,230,1);");
+        rootpane.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
 
         rootpane.getChildren().add(root);
     }
@@ -118,13 +126,19 @@ public class DogFoodView {
     }
 
     private Button backButton() {
+
         Button backButton = new Button("Back");
         backButton.setLayoutX(20);
         backButton.setLayoutY(20);
         backButton.setMinSize(130, 40);
+        System.out.println("in back button in food 2");
+
         backButton.setStyle(
                 "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: White;-fx-background-radius:20;-fx-font-weight: bold;-fx-font-size:20");
-        backButton.setOnAction(e -> app.navigateToHomeView());
+        backButton.setOnMouseClicked(e -> {
+            System.out.println("in back button in food ");
+            app.navigateToHomeView();
+        });
         return backButton;
     }
 
