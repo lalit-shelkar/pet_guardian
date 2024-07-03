@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class DogFoodView {
     private Pet app;
     private Pane rootpane;
     boolean isDog = true;
+    ProductDataFetch productobj = new ProductDataFetch();
+    List<ProductModelClass> productList = productobj.productList;
 
     public DogFoodView(Pet app) throws Exception {
         this.app = app;
@@ -46,27 +49,38 @@ public class DogFoodView {
         title.setLayoutY(100);
 
         /// dog label
-        Label lb1 = new Label("Dog    |");
-        lb1.setTextFill(Color.ORANGE);
-        lb1.setStyle("-fx-font-weight: bold;");
-        lb1.setFont(new Font(30));
+        Label dogLabel = new Label("Dog    |");
+        dogLabel.setTextFill(Color.ORANGE);
+        dogLabel.setStyle("-fx-font-weight: bold;");
+        dogLabel.setFont(new Font(30));
         ////
         // //cat Label
-        Label catlabel = new Label("Cat     |   Rabbit  |   Birds");
+        Label catlabel = new Label("Cat     |");
         catlabel.setTextFill(Color.BLACK);
         catlabel.setStyle("-fx-font-weight: bold;");
         catlabel.setFont(new Font(30));
+        ///
+        // rabit label
+        Label rabitLabel = new Label("   Rabbit  |");
+        rabitLabel.setTextFill(Color.BLACK);
+        rabitLabel.setStyle("-fx-font-weight: bold;");
+        rabitLabel.setFont(new Font(30));
+        //
+        /// Birds label
+        Label birdLabel = new Label("   Birds");
+        birdLabel.setTextFill(Color.BLACK);
+        birdLabel.setStyle("-fx-font-weight: bold;");
+        birdLabel.setFont(new Font(30));
 
+        ///
         Label viewAll = new Label("View All ->");
         viewAll.setTextFill(Color.BLACK);
         // viewAll.setStyle("-fx-font-weight: bold;");
         viewAll.setFont(new Font(25));
 
-        HBox horizmontal = new HBox(40, lb1, catlabel);
+        HBox horizmontal = new HBox(40, dogLabel, catlabel, rabitLabel, birdLabel);
         // category box contain dog and cat category
         HBox categoryBox = new HBox(1100, horizmontal, viewAll);
-
-        categoryBox.setAlignment(Pos.TOP_CENTER);
         categoryBox.setPadding(new Insets(200, 0, 0, 100));
 
         ///
@@ -77,18 +91,85 @@ public class DogFoodView {
         hb.setLayoutY(300);
         hb.setPadding(new Insets(40, 0, 50, 70));
 
-        try {
-            // Fetch products and add to HBox
-            ProductDataFetch productobj = new ProductDataFetch();
-            List<ProductModelClass> productList = productobj.productList;
-            for (ProductModelClass product : productList) {
+        // render box bythe fault
+        for (ProductModelClass product : productList) {
+            if (product.getCategory().equalsIgnoreCase("dogfood")) {
                 hb.getChildren().add(foodCard(product));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle the exception (e.g., show an error message to the user)
         }
 
+        /// when we click the Dog label
+        dogLabel.setOnMouseClicked(e -> {
+            hb.getChildren().clear();
+            for (ProductModelClass product : productList) {
+                if (product.getCategory().equalsIgnoreCase("dogfood")) {
+                    hb.getChildren().add(foodCard(product));
+                }
+            }
+            dogLabel.setTextFill(Color.ORANGE);
+            rabitLabel.setTextFill(Color.BLACK);
+            birdLabel.setTextFill(Color.BLACK);
+        });
+        /// when we click cat
+        catlabel.setOnMouseClicked(e -> {
+        });
+
+        /// when we click on rabit
+        rabitLabel.setOnMouseClicked(e -> {
+            hb.getChildren().clear();
+            for (ProductModelClass product : productList) {
+                if (product.getCategory().equalsIgnoreCase("rabitfood")) {
+                    hb.getChildren().add(foodCard(product));
+                }
+            }
+            dogLabel.setTextFill(Color.BLACK);
+            rabitLabel.setTextFill(Color.ORANGE);
+            birdLabel.setTextFill(Color.BLACK);
+            if (hb.getChildren().isEmpty()) {
+                Label empty = new Label("No product Avalable 🙁");
+                empty.setTextFill(Color.BLACK);
+
+                empty.setFont(new Font(30));
+
+                hb.getChildren().add(empty);
+            }
+        });
+
+        /// on click Bird then
+
+        birdLabel.setOnMouseClicked(e -> {
+            hb.getChildren().clear();
+            for (ProductModelClass product : productList) {
+                if (product.getCategory().equalsIgnoreCase("birdfood")) {
+                    hb.getChildren().add(foodCard(product));
+                }
+            }
+            dogLabel.setTextFill(Color.BLACK);
+            rabitLabel.setTextFill(Color.BLACK);
+            birdLabel.setTextFill(Color.ORANGE);
+            if (hb.getChildren().isEmpty()) {
+                Label empty = new Label("No product Avalable 🙁");
+                empty.setTextFill(Color.BLACK);
+
+                empty.setFont(new Font(30));
+                empty.setAlignment(Pos.CENTER);
+                hb.getChildren().add(empty);
+            }
+        });
+
+        /// when we click view all
+        viewAll.setOnMouseClicked(e -> {
+            hb.getChildren().clear();
+            for (ProductModelClass product : productList) {
+
+                hb.getChildren().add(foodCard(product));
+
+            }
+            dogLabel.setTextFill(Color.BLACK);
+            rabitLabel.setTextFill(Color.BLACK);
+            birdLabel.setTextFill(Color.BLACK);
+        });
+        ////
         ScrollPane scrollPane = new ScrollPane(hb);
         scrollPane.setLayoutX(50);
         scrollPane.setLayoutY(300);
@@ -104,7 +185,7 @@ public class DogFoodView {
 
         ///
 
-        Group gr = new Group(scrollPane, title, categoryBox, hb, appBar());
+        Group gr = new Group(title, categoryBox, appBar(), scrollPane);
 
         StackPane root = new StackPane(gr);
         // rootpane.setStyle("-fx-background-color: rgba(251,247,230,1);");
@@ -153,23 +234,57 @@ public class DogFoodView {
         VBox box3 = new VBox();
         box3.getChildren().add(imageview);
         box3.setPadding(new Insets(20, 20, 0, 20));
-        box3.setPrefHeight(380);
+        box3.setPrefHeight(300);
         box3.setPrefWidth(300);
         box3.setStyle("-fx-background-color: linear-gradient(to bottom,rgba(251,247,230,1),rgba(215,176,177,1))");
         box3.setAlignment(Pos.CENTER);
 
-        Label lbbo3 = new Label(prObj.getName());
-        lbbo3.setTextFill(Color.BLACK);
-        lbbo3.setStyle("-fx-font-weight: bold;");
-        lbbo3.setFont(new Font(20));
-        lbbo3.setPadding(new Insets(15, 0, 0, 0));
+        // product name
+        Label prName = new Label(prObj.getName());
+        prName.setTextFill(Color.BLACK);
+        prName.setStyle("-fx-font-weight: bold;");
+        prName.setFont(new Font(25));
+        prName.setPadding(new Insets(15, 0, 0, 0));
 
+        // rating box
+        HBox ratingBox = new HBox(5);
+        Label ratingLabel = new Label(String.valueOf(prObj.getRating()) + "/5");
+        ratingLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        ratingLabel.setTextFill(Color.BLACK);
+
+        for (int i = 0; i < (int) prObj.getRating(); i++) {
+            Image star = new Image("vetarnary/star.png");
+            ImageView starView = new ImageView(star);
+            starView.setFitHeight(20);
+            starView.setFitWidth(20);
+            ratingBox.getChildren().add(starView);
+        }
+        if (prObj.getRating() % 1 != 0) {
+            Image halfStar = new Image("vetarnary/halfStar.png");
+            ImageView halfStarView = new ImageView(halfStar);
+            halfStarView.setFitHeight(20);
+            halfStarView.setFitWidth(20);
+            ratingBox.getChildren().add(halfStarView);
+        }
+
+        HBox ratingContainer = new HBox();
+        ratingContainer.setAlignment(Pos.CENTER_RIGHT);
+        ratingContainer.setPrefWidth(300);
+        ratingContainer.getChildren().addAll(ratingLabel, ratingBox);
+
+        // add to cart button
         Button boxButton3 = new Button("Add to Cart");
         boxButton3.setStyle(
                 "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: black;-fx-background-radius:10;-fx-font-weight: bold;");
         boxButton3.setFont(new Font(15));
+        boxButton3.setFocusTraversable(false); // Prevents the button from gaining focus
 
-        VBox vb3 = new VBox(10, box3, lbbo3, boxButton3);
+        // CSS to prevent font size changes when button is pressed
+
+        // Ensure button text size does not change when clicked
+        // boxButton3.setOnAction(event -> boxButton3.setFont(new Font(15)));
+
+        VBox vb3 = new VBox(10, box3, prName, ratingContainer, boxButton3);
         vb3.setPadding(new Insets(20, 20, 0, 20));
         vb3.setPrefHeight(300);
         vb3.setPrefWidth(400);
@@ -199,4 +314,5 @@ public class DogFoodView {
 
         card.setEffect(new DropShadow(5, Color.GRAY));
     }
+
 }

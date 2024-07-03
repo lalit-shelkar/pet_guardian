@@ -218,6 +218,8 @@ public class ShopView {
 
                 rootpane.getChildren().add(gr);
 
+              //navigate 
+                dogBox.setOnMouseClicked(e -> app.navigateToDogFoodView());
         }
 
         private Button backButton() {
