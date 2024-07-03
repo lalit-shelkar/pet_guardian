@@ -4,6 +4,7 @@ import com.petguardian.views.HomeView;
 import com.petguardian.views.DoctorView;
 
 import com.petguardian.views.LoginUser;
+import com.petguardian.views.DogFoodView;
 import com.petguardian.views.ShopView;
 import com.petguardian.views.VetarnaryView;
 import com.petguardian.views.common.Navbar;
@@ -28,6 +29,9 @@ public class Pet extends Application {
     // shopScreen
     private ShopView shopView;
     private Scene shopScene;
+    // Notification scene
+    private DogFoodView dogFoodView;
+    private Scene dogFoodScene;
     // doctorView
     private Navbar navbarView;
 
@@ -39,15 +43,18 @@ public class Pet extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setX(0);
         primaryStage.setY(0);
-        //navbar
-        navbarView=new Navbar(this);
+        // navbar
+        navbarView = new Navbar(this);
+
         /// home Screen Scene
         homeView = new HomeView(this);
         homeScene = new Scene(homeView.getView(), 1920, 1080);
+
         /// Login Screen views
         loginView = new LoginUser(this);
         loginScene = new Scene(loginView.getView(), 1920, 1080);
-        //
+
+        // vetarnary
         vetarnaryView = new VetarnaryView(this);
         vetarScene = new Scene(vetarnaryView.getView(), 1920, 1080);
 
@@ -56,11 +63,17 @@ public class Pet extends Application {
         shopScene = new Scene(shopView.getView(), 1920, 1080);
 
         /// shopscreen
-        //doctorView =new DoctorView (this);
-        //doctorScene = new Scene(doctorView.getView(), 1920, 1080);
+        // doctorView =new DoctorView (this);
+        // doctorScene = new Scene(doctorView.getView(), 1920, 1080);
+
+        // DogFood View
+        dogFoodView = new DogFoodView(this);
+        dogFoodScene = new Scene(dogFoodView.getView(), 1920, 1080);
+
         /// initial screen
-        primaryStage.setScene(homeScene);
+        primaryStage.setScene(dogFoodScene);
         primaryStage.show();
+
     }
 
     // navigate to home screen
@@ -89,7 +102,14 @@ public class Pet extends Application {
 
     /// navigate to doctor screen
     // public void navigateToDoctorView() {
-    //     primaryStage.setScene(doctorScene);
-    //     primaryStage.show();
+    // primaryStage.setScene(doctorScene);
+    // primaryStage.show();
     // }
+
+    // navigate to dogFodd Screen
+    public void navigateToDogFoodView() {
+
+        primaryStage.setScene(dogFoodScene);
+        primaryStage.show();
+    }
 }

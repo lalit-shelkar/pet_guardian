@@ -16,7 +16,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Application.launch(Pet.class, "Hello world!");
+        Application.launch(Pet.class, args);
     }
 
 }

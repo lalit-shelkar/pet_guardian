@@ -40,10 +40,10 @@ public class Navbar {
         cart.setFont(new Font(20));
         profile.setFont(new Font(20));
         notification.setFont(new Font(20));
-        
-        home.setOnMouseClicked(e->app.navigateToHomeView());
-        shop.setOnMouseClicked(e->app.navigateToShopView());
-        
+
+        home.setOnMouseClicked(e -> app.navigateToHomeView());
+        shop.setOnMouseClicked(e -> app.navigateToShopView());
+        // notification.setOnMouseClicked(e -> app.navigateToNotificationView());
 
         hb.getChildren().addAll(home, service, shop, cart, profile, notification);
         return hb;
