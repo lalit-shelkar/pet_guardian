@@ -29,19 +29,19 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 
 public class HomeView {
     // Object x = MyAuthentication.getUserInfo().get("userName");
     private Pet app;
     private Pane rootpane;
+    Label userName = new Label("welcome user");
 
     public HomeView(Pet app) {
 
@@ -50,16 +50,22 @@ public class HomeView {
     }
 
     private void initialize() {
+        userName.setFont(new Font(30));
+        userName.setTextFill(Color.ORANGE);
+        userName.setStyle("-fx-font-weight: bold;-fx-font-family: 'Times New Roman';");
+
         rootpane = new Pane();
         rootpane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 50% 50%, #F5D7C3, #ffffff);");
 
         ImageView iv = new ImageView(new Image("dog.png"));
         iv.setLayoutX(1116);
         iv.setLayoutY(100);
-        Navbar nav =new Navbar(app);
+        Navbar nav = new Navbar(app);
 
+        // navbar
+        HBox navBox = new HBox(800, userName, nav.navBar());
         rootpane.getChildren().add(iv);
-        rootpane.getChildren().add(nav.navBar());
+        rootpane.getChildren().add(navBox);
         rootpane.getChildren().add(categoryView());
         rootpane.getChildren().add(categoryLabel());
         rootpane.getChildren().add(heading());
@@ -67,6 +73,7 @@ public class HomeView {
     }
 
     public Pane getView() {
+       
         return rootpane;
     }
 
@@ -91,8 +98,11 @@ public class HomeView {
         categoryView.getChildren().addAll(b1, b2, b3, b4);
 
         b1.setOnMouseClicked(e -> {
-            
+
             app.navigateToVetarnaryView();
+        });
+        b3.setOnMouseClicked(e -> {
+            app.navigateToTraning();
         });
         b4.setOnMouseClicked(e -> {
             app.navigateToShopView();
@@ -153,26 +163,28 @@ public class HomeView {
         });
         return borderPane;
     }
-    private VBox heading(){
+
+    private VBox heading() {
         Text heading = new Text("Get Good Health , Food & Accessories \nFor Your Pet");
         heading.setFont(Font.font("Arial", FontWeight.BOLD, 54));
-        
+
         // Create the description text
-        Text description = new Text("Petsy is India's favorite online pets shop offering Food,\nAccessories,Toys, Treats,Grooming products,Beds &\nMuch More for Dogs, Cats & Small animals .");
+        Text description = new Text(
+                "Petsy is India's favorite online pets shop offering Food,\nAccessories,Toys, Treats,Grooming products,Beds &\nMuch More for Dogs, Cats & Small animals .");
         description.setFont(Font.font("Arial", FontWeight.NORMAL, 22));
         description.setLineSpacing(10);
-        
+
         // Create the button
         Button shopNowButton = new Button("Shop Now");
         shopNowButton.setStyle("-fx-background-radius: 15;-fx-background-color:Orange ; -fx-padding: 10 20 10 20;");
-        
+
         // Create a VBox to hold the elements
         VBox vbox = new VBox(10); // Spacing between elements is 10
         vbox.setPadding(new Insets(20)); // Padding around the VBox
         vbox.getChildren().addAll(heading, description);
         vbox.setSpacing(50);
         vbox.setLayoutX(100);
-        vbox.setLayoutY(200);        
+        vbox.setLayoutY(200);
         return vbox;
-} 
+    }
 }

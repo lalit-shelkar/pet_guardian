@@ -3,30 +3,40 @@ package com.petguardian.Model;
 import java.util.Set;
 
 public class DoctorModelClass {
+    private String firestoreId;
     private String name;
-    private String qulification;
+    private String qualification;
     private String experience;
     private double rating;
     private String img;
     private Set<String> tags;
     private String about;
     private String location;
-    private boolean available;
     private String specializes;
     private String contact;
+    private double price;
+    private boolean available;
+    private Set<String> availableDays;
+    private Set<PatientModelClass> patients;
 
-    public DoctorModelClass(String name,
-            String qulification,
-            String experience,
-            double rating,
-            String img,
-            Set<String> tags,
-            String about,
-            String location,
-            boolean available,
-            String specializes, String contact) {
+    public DoctorModelClass(String firestoreId,
+                            String name,
+                            String qualification,
+                            String experience,
+                            double rating,
+                            String img,
+                            Set<String> tags,
+                            String about,
+                            String location,
+                            boolean available,
+                            double price,
+                            String specializes,
+                            String contact,
+                            Set<String> availableDays,
+                            Set<PatientModelClass> patients) {
+        this.firestoreId = firestoreId;
         this.name = name;
-        this.qulification = qulification;
+        this.qualification = qualification;
         this.experience = experience;
         this.rating = rating;
         this.img = img;
@@ -36,15 +46,22 @@ public class DoctorModelClass {
         this.available = available;
         this.specializes = specializes;
         this.contact = contact;
+        this.price = price;
+        this.availableDays = availableDays;
+        this.patients = patients;
     }
 
     // Getters
+    public String getFirestoreId() {
+        return firestoreId;
+    }
+
     public String getName() {
         return name;
     }
 
-    public String getQulification() {
-        return qulification;
+    public String getQualification() {
+        return qualification;
     }
 
     public String getExperience() {
@@ -71,15 +88,27 @@ public class DoctorModelClass {
         return location;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
-
     public String getSpecializes() {
         return specializes;
     }
 
     public String getContact() {
         return contact;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public Set<String> getAvailableDays() {
+        return availableDays;
+    }
+
+    public Set<PatientModelClass> getPatients() {
+        return patients;
     }
 }

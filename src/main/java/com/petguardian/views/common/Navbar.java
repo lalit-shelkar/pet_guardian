@@ -1,6 +1,9 @@
 package com.petguardian.views.common;
 
+import java.util.Map;
+
 import com.petguardian.controllers.Pet;
+import com.petguardian.firebase.MyAuthentication;
 
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -43,6 +46,8 @@ public class Navbar {
 
         home.setOnMouseClicked(e -> app.navigateToHomeView());
         shop.setOnMouseClicked(e -> app.navigateToShopView());
+        cart.setOnMouseClicked(e -> {
+        });
 
         hb.getChildren().addAll(home, service, shop, cart, profile, notification);
         return hb;

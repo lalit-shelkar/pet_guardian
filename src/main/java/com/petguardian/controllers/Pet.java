@@ -5,7 +5,9 @@ import com.petguardian.views.DoctorView;
 
 import com.petguardian.views.LoginUser;
 import com.petguardian.views.DogFoodView;
+import com.petguardian.views.GroomingView;
 import com.petguardian.views.ShopView;
+import com.petguardian.views.TraningView;
 import com.petguardian.views.VetarnaryView;
 import com.petguardian.views.common.Navbar;
 
@@ -29,17 +31,24 @@ public class Pet extends Application {
     // shopScreen
     private ShopView shopView;
     private Scene shopScene;
-    // Notification scene
+    // dogfood scene
     private DogFoodView dogFoodView;
     private Scene dogFoodScene;
-    // doctorView
+    //
+    // for training purpose
+    private TraningView traningView;
+    private Scene traningScene;
+    //
+    // for gromming
+    private GroomingView groomingView;
+    private Scene groomingScene;
+    //
+
     private Navbar navbarView;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double screenWidth = screenBounds.getWidth();
-        double screenHeight = screenBounds.getHeight();
+
         this.primaryStage = primaryStage;
         primaryStage.setX(0);
         primaryStage.setY(0);
@@ -70,8 +79,14 @@ public class Pet extends Application {
         dogFoodView = new DogFoodView(this);
         dogFoodScene = new Scene(dogFoodView.getView(), 1920, 1080);
 
+        // traning view
+        traningView = new TraningView(this);
+        traningScene = new Scene(traningView.getView(), 1920, 1080);
+        // grooming screen
+        groomingView = new GroomingView(this);
+        groomingScene = new Scene(groomingView.getView(), 1920, 1080);
         /// initial screen
-        primaryStage.setScene(dogFoodScene);
+        primaryStage.setScene(loginScene);
         primaryStage.show();
 
     }
@@ -113,4 +128,19 @@ public class Pet extends Application {
         primaryStage.setScene(dogFoodScene);
         primaryStage.show();
     }
+
+    public void navigateToTraning() {
+
+        primaryStage.setScene(traningScene);
+        primaryStage.show();
+    }
+
+    // navigate to groooming package
+
+    public void navigateToGrooming() {
+
+        primaryStage.setScene(groomingScene);
+        primaryStage.show();
+    }
+
 }
