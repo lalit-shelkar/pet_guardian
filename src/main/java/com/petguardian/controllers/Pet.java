@@ -10,6 +10,7 @@ import com.petguardian.views.ShopView;
 import com.petguardian.views.TraningView;
 import com.petguardian.views.VetarnaryView;
 import com.petguardian.views.common.Navbar;
+import com.petguardian.views.doctor.DoctorGetStarted;
 
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -19,6 +20,9 @@ import javafx.stage.Stage;
 
 public class Pet extends Application {
     private Stage primaryStage;
+    //
+    private DoctorGetStarted doctorGetStartedView;
+    private Scene doctorGetStartedScene;
     // home screen
     private HomeView homeView;
     private Scene homeScene;
@@ -54,6 +58,10 @@ public class Pet extends Application {
         primaryStage.setY(0);
         // navbar
         navbarView = new Navbar(this);
+        ///// shopscreen
+        doctorGetStartedView =new DoctorGetStarted(this);
+        doctorGetStartedScene = new Scene(doctorGetStartedView.getView(), 1920, 1080);
+
 
         /// home Screen Scene
         homeView = new HomeView(this);
@@ -86,7 +94,7 @@ public class Pet extends Application {
         groomingView = new GroomingView(this);
         groomingScene = new Scene(groomingView.getView(), 1920, 1080);
         /// initial screen
-        primaryStage.setScene(loginScene);
+        primaryStage.setScene(doctorGetStartedScene);
         primaryStage.show();
 
     }
