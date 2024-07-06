@@ -128,7 +128,7 @@ public class DoctorGetStarted {
         // Available
         Label availableLabel = new Label("Available:");
         GridPane.setConstraints(availableLabel, 0, 12);
-        ComboBox<String> availableInput = new ComboBox<>(FXCollections.observableArrayList("Yes", "No"));
+        ComboBox<Boolean> availableInput = new ComboBox<>(FXCollections.observableArrayList(true, false));
         GridPane.setConstraints(availableInput, 1, 12);
 
         // Available Days
@@ -187,7 +187,7 @@ public class DoctorGetStarted {
             String specializes = specializesInput.getText();
             String contact = contactInput.getText();
             String price = priceInput.getText();
-            boolean available = availableInput.getValue().equals("Yes");
+            boolean available = availableInput.getValue().booleanValue();
           //  LocalDate availableDays = availableDaysInput.getValue();
 
             // Print values to the console for debugging

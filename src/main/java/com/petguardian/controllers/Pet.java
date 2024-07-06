@@ -19,6 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Pet extends Application {
+    static boolean isDoctorExist=false;
     private Stage primaryStage;
     //
     private DoctorGetStarted doctorGetStartedView;
