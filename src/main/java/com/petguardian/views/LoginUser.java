@@ -193,6 +193,9 @@ public class LoginUser {
             return;
         }
 
+        // /// navigate to SplashScreen
+        // app.navigateToSplashView();
+        // //
         String result;
 
         if (islogin) {
@@ -202,12 +205,13 @@ public class LoginUser {
             result = MyAuthentication.RegisterUser(email, pass, userName, phone, role);
         }
 
-        if (result.equals("user")) {
+        if (result.equalsIgnoreCase("user")) {
             app.navigateToHomeView();
         } else if (result.equalsIgnoreCase("doctor")) {
-            showAlert("Hellow doctor");
+            app.navigateToGetStartedDoctor();
         } else {
             showAlert(result);
+
         }
     }
 
