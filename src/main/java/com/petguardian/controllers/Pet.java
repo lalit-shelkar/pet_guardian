@@ -1,22 +1,25 @@
 package com.petguardian.controllers;
 
 import com.petguardian.views.HomeView;
+import com.petguardian.Model.DoctorModelClass;
+import com.petguardian.views.BookDoctorView;
 import com.petguardian.views.DoctorView;
 
 import com.petguardian.views.LoginUser;
+import com.petguardian.views.ShopCardView;
 import com.petguardian.views.DogFoodView;
 import com.petguardian.views.GroomingView;
 import com.petguardian.views.ShopView;
+import com.petguardian.views.SplashScreen;
 import com.petguardian.views.TraningView;
 import com.petguardian.views.VetarnaryView;
 import com.petguardian.views.common.Navbar;
 import com.petguardian.views.doctor.DoctorForm;
-import com.petguardian.views.doctor.DoctorGetStarted;
+
 
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
+
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Pet extends Application {
@@ -50,9 +53,13 @@ public class Pet extends Application {
     private Scene groomingScene;
     //
 
-    //Doctor form 
-    
-    
+    // splash screen
+    private SplashScreen splashView;
+    private Scene splashScene;
+
+    // shopcartView
+    private ShopCardView shopCardView;
+    private Scene shopcardScene;
 
     private Navbar navbarView;
 
@@ -65,9 +72,6 @@ public class Pet extends Application {
         // navbar
         navbarView = new Navbar(this);
         ///// shopscreen
-        // doctorGetStartedView =new DoctorGetStarted(this);
-        // doctorGetStartedScene = new Scene(doctorGetStartedView.getView(), 1920, 1080);
-
 
         /// home Screen Scene
         homeView = new HomeView(this);
@@ -99,15 +103,29 @@ public class Pet extends Application {
         // grooming screen
         groomingView = new GroomingView(this);
         groomingScene = new Scene(groomingView.getView(), 1920, 1080);
+
+        /// Splash screen
+        splashView = new SplashScreen(this);
+        splashScene = new Scene(splashView.getView(), 1920, 1080);
+
+        /// Shopcart view
+        shopCardView = new ShopCardView(this);
+        shopcardScene = new Scene(shopCardView.getView(), 1920, 1080);
+
+        ///
+        /// doctor started
+        // doctorGetStartedView = new DoctorGetStarted(this);
+
+        ///
         /// initial screen
-        primaryStage.setScene(doctorGetStartedScene);
+        primaryStage.setScene(splashScene);
         primaryStage.show();
 
     }
 
     // navigate to home screen
     public void navigateToHomeView() {
-        System.out.println("in home ");
+
         primaryStage.setScene(homeScene);
         primaryStage.show();
     }
@@ -157,6 +175,35 @@ public class Pet extends Application {
         primaryStage.show();
     }
 
+    // navigate to splash screen
+    public void navigateToSplashView() {
+
+        primaryStage.setScene(splashScene);
+        primaryStage.show();
+    }
+
+    // navigate if it is doctor
+    public void navigateToGetStartedDoctor() {
+        doctorGetStartedView = new DoctorGetStarted(this);
+
+    }
+
+    // navigate to SHop cart page
+
+    public void navigateToShopCardView() {
+
+        primaryStage.setScene(shopcardScene);
+        primaryStage.show();
+    }
+
+
+
+    public void navigateToBookDoctorView(DoctorModelClass drObj) {
+
+        BookDoctorView bookDoctorView = new BookDoctorView(this, drObj);
+        Scene bookDoctorScene = new Scene(bookDoctorView.getView(), 1980, 1080);
+        primaryStage.setScene(bookDoctorScene);
+    }
     // navigation to create from
     public void navigationToDoctorForm(){
        DoctorForm doctorForm = new DoctorForm(this);

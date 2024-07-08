@@ -229,7 +229,7 @@ public class VetarnaryView {
         // Add hover effect
         mainHBox.setOnMouseEntered(event -> elevateCard(mainHBox));
         mainHBox.setOnMouseExited(event -> resetCardElevation(mainHBox));
-
+        mainHBox.setOnMouseClicked(e -> app.navigateToBookDoctorView(doctor));
         return mainHBox;
     }
 
@@ -286,7 +286,7 @@ public class VetarnaryView {
         ComboBox<String> cityComboBox = new ComboBox<>();
         cityComboBox.setPromptText("Select City");
         cityComboBox.getItems().addAll(
-                "Kolkata", "Delhi", "Chennai", "Bangalore", "Hyderabad", "Pune", "Mumbai", "Jaipur", "Lucknow");
+                "Bangalore", "Pune", "Mumbai", "Narhe", "Shirur");
         cityComboBox.setStyle("-fx-font-size: 20px; -fx-background-radius: 10;");
 
         HBox ratingBox = new HBox(10);

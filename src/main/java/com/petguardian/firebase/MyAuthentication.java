@@ -59,6 +59,8 @@ public class MyAuthentication {
                     }
 
                     JSONObject jsonResponse = new JSONObject(response.toString());
+                    ///
+                 
                     setUserUid(jsonResponse.getString("localId"));
 
                     // Check account type in Firestore
@@ -71,10 +73,9 @@ public class MyAuthentication {
                         String accountType = document.getString("accountType");
                         if ("user".equalsIgnoreCase(accountType)) {
                             result = "user";
-                        } else if("doctor".equalsIgnoreCase(accountType)){
+                        } else if ("doctor".equalsIgnoreCase(accountType)) {
                             result = "doctor";
-                        }
-                        else {
+                        } else {
                             result = "Access denied: not a user";
                         }
                     } else {
@@ -147,8 +148,7 @@ public class MyAuthentication {
             // Store user details in Firestore
             DocumentReference docRef = db.collection("users").document(uid);
             docRef.set(user).get();
-
-            result = "success";
+            result = role;
         } catch (FirebaseAuthException e) {
             System.err.println("Error in Firebase Authentication");
             e.printStackTrace();
@@ -163,16 +163,21 @@ public class MyAuthentication {
 
     /// getter setter
     public static void setUserUid(String useruid) {
-        uid = useruid;
+
+        MyAuthentication.uid = useruid;
+       
+
     }
 
     public static String getUserUid() {
-        return uid;
+
+        return MyAuthentication.uid;
     }
 
     /// get user data from any project
     /// this method use in overall project
     public static Map<String, Object> getUserInfo() {
+
         if (getUserUid() == null) {
             return null;
         }

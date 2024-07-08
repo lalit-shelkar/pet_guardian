@@ -267,10 +267,15 @@ public class DogFoodView {
             ratingBox.getChildren().add(halfStarView);
         }
 
-        HBox ratingContainer = new HBox();
-        ratingContainer.setAlignment(Pos.CENTER_RIGHT);
+        Label price = new Label("Price : " + prObj.getPrice() + "          ");
+        price.setTextFill(Color.BLACK);
+        // price.setStyle("-fx-font-weight: bold;");
+        price.setFont(new Font(20));
+
+        HBox ratingContainer = new HBox(10);
+        ratingContainer.setAlignment(Pos.CENTER);
         ratingContainer.setPrefWidth(300);
-        ratingContainer.getChildren().addAll(ratingLabel, ratingBox);
+        ratingContainer.getChildren().addAll(price, ratingLabel, ratingBox);
 
         // add to cart button
         Button boxButton3 = new Button("Add to Cart");

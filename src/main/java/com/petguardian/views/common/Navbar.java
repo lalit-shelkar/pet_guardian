@@ -46,8 +46,8 @@ public class Navbar {
 
         home.setOnMouseClicked(e -> app.navigateToHomeView());
         shop.setOnMouseClicked(e -> app.navigateToShopView());
-        cart.setOnMouseClicked(e -> {
-        });
+        cart.setOnMouseClicked(e -> app.navigateToShopCardView());
+        service.setOnMouseClicked(e -> app.navigateToVetarnaryView());
 
         hb.getChildren().addAll(home, service, shop, cart, profile, notification);
         return hb;
