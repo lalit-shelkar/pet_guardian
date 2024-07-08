@@ -10,6 +10,7 @@ import com.petguardian.views.ShopView;
 import com.petguardian.views.TraningView;
 import com.petguardian.views.VetarnaryView;
 import com.petguardian.views.common.Navbar;
+import com.petguardian.views.doctor.DoctorForm;
 import com.petguardian.views.doctor.DoctorGetStarted;
 
 import javafx.application.Application;
@@ -49,6 +50,10 @@ public class Pet extends Application {
     private Scene groomingScene;
     //
 
+    //Doctor form 
+    
+    
+
     private Navbar navbarView;
 
     @Override
@@ -60,8 +65,8 @@ public class Pet extends Application {
         // navbar
         navbarView = new Navbar(this);
         ///// shopscreen
-        doctorGetStartedView =new DoctorGetStarted(this);
-        doctorGetStartedScene = new Scene(doctorGetStartedView.getView(), 1920, 1080);
+        // doctorGetStartedView =new DoctorGetStarted(this);
+        // doctorGetStartedScene = new Scene(doctorGetStartedView.getView(), 1920, 1080);
 
 
         /// home Screen Scene
@@ -150,6 +155,13 @@ public class Pet extends Application {
 
         primaryStage.setScene(groomingScene);
         primaryStage.show();
+    }
+
+    // navigation to create from
+    public void navigationToDoctorForm(){
+       DoctorForm doctorForm = new DoctorForm(this);
+       primaryStage.setScene(new Scene(doctorForm.getView(),1920, 1080));
+
     }
 
 }

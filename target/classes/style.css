@@ -1,0 +1,48 @@
+/* styles.css */
+
+.root {
+    -fx-font-family: "Arial";
+}
+
+.header {
+    -fx-background-color: #282c34;
+    -fx-padding: 20px;
+    -fx-alignment: center;
+}
+
+.header-label {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.grid-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 10px;
+    -fx-padding: 20px;
+    -fx-hgap: 20px;
+    -fx-vgap: 15px;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.text-field {
+    -fx-pref-width: 400px;
+}
+
+.submit-button {
+    -fx-background-color: #4682b4;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.result-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}

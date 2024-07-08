@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.petguardian.controllers.Pet;
 import com.petguardian.firebase.InitilazationFirebase;
+import com.petguardian.util.CloudinaryConnection;
 
 import javafx.application.Application;
 
@@ -13,10 +14,11 @@ public class Main {
 
         try {
             InitilazationFirebase.initialize();
-        } catch (IOException e) {
+            CloudinaryConnection.initializeCloudinary();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Application.launch(Pet.class, args);
+       // Application.launch(Pet.class, args);
     }
 
 }
