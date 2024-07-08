@@ -12,7 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.petguardian.Model.DoctorModelClass;
 
 public class DoctorDataFetcher {
-
+    
     public List<DoctorModelClass> fetchDoctorData() throws Exception {
         System.out.println("In fetching doctor data ...");
         String apiUrl = "https://pet-api-two.vercel.app/getDoctor";

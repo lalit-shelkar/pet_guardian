@@ -1,9 +1,12 @@
 package com.petguardian.controllers;
 
 import com.petguardian.views.HomeView;
+import com.petguardian.Model.DoctorModelClass;
+import com.petguardian.views.BookDoctorView;
 import com.petguardian.views.DoctorView;
 
 import com.petguardian.views.LoginUser;
+import com.petguardian.views.ShopCardView;
 import com.petguardian.views.DogFoodView;
 import com.petguardian.views.GroomingView;
 import com.petguardian.views.ShopView;
@@ -51,6 +54,10 @@ public class Pet extends Application {
     private SplashScreen splashView;
     private Scene splashScene;
 
+    // shopcartView
+    private ShopCardView shopCardView;
+    private Scene shopcardScene;
+
     private Navbar navbarView;
 
     @Override
@@ -97,6 +104,10 @@ public class Pet extends Application {
         /// Splash screen
         splashView = new SplashScreen(this);
         splashScene = new Scene(splashView.getView(), 1920, 1080);
+
+        /// Shopcart view
+        shopCardView = new ShopCardView(this);
+        shopcardScene = new Scene(shopCardView.getView(), 1920, 1080);
 
         ///
         /// doctor started
@@ -174,4 +185,20 @@ public class Pet extends Application {
 
     }
 
+    // navigate to SHop cart page
+
+    public void navigateToShopCardView() {
+
+        primaryStage.setScene(shopcardScene);
+        primaryStage.show();
+    }
+
+
+
+    public void navigateToBookDoctorView(DoctorModelClass drObj) {
+
+        BookDoctorView bookDoctorView = new BookDoctorView(this, drObj);
+        Scene bookDoctorScene = new Scene(bookDoctorView.getView(), 1980, 1080);
+        primaryStage.setScene(bookDoctorScene);
+    }
 }

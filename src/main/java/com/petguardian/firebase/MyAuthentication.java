@@ -60,7 +60,7 @@ public class MyAuthentication {
 
                     JSONObject jsonResponse = new JSONObject(response.toString());
                     ///
-                    System.out.println("json" + jsonResponse);
+                 
                     setUserUid(jsonResponse.getString("localId"));
 
                     // Check account type in Firestore
@@ -165,7 +165,7 @@ public class MyAuthentication {
     public static void setUserUid(String useruid) {
 
         MyAuthentication.uid = useruid;
-        System.out.println("updateduid:" + uid);
+       
 
     }
 
