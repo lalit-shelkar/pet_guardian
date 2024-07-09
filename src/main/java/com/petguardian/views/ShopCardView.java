@@ -3,7 +3,6 @@ package com.petguardian.views;
 import com.petguardian.Model.ProductModelClass;
 import com.petguardian.controllers.Pet;
 import com.petguardian.views.common.Navbar;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,7 +16,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,33 +28,29 @@ public class ShopCardView {
     private final Map<ProductModelClass, Integer> productQuantities = new HashMap<>();
     private Label subtotalLabel;
     private Label totalLabel;
-    private VBox productsList; // Added as an instance variable
+    private VBox productsList = new VBox(40); // Added as an instance variable
 
     public ShopCardView(Pet app) {
         this.app = app;
         initialize();
     }
 
+    public void addProductFromExternal(ProductModelClass obj) {
+        productList.add(obj);
+        productQuantities.put(obj, 1);
+
+        productsList.getChildren().add(createProductBox(obj));
+        updateSubtotalAndTotal();
+    }
+
     private void initialize() {
         // Sample product data initialization
-        productList.add(new ProductModelClass("1234", "DogFood", 4, "dog.png", "300", "catFood"));
-        // productList.add(new ProductModelClass("1235", "CatFood", 5, "cat.png", "500",
-        // "catFood"));
-        // productList.add(new ProductModelClass("1234", "DogFood", 4, "dog.png", "300",
-        // "catFood"));
-        // productList.add(new ProductModelClass("1235", "CatFood", 5, "cat.png", "500",
-        // "catFood"));
-        // productList.add(new ProductModelClass("1234", "DogFood", 4, "dog.png", "300",
-        // "catFood"));
-        // productList.add(new ProductModelClass("1235", "CatFood", 5, "cat.png", "500",
-        // "catFood"));
-
         // Initialize quantities for each product
         for (ProductModelClass product : productList) {
             productQuantities.put(product, 1);
         }
 
-        rootPane.setStyle("-fx-background-color: #f5f5f5;");
+        rootPane.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
 
         // Main VBox for the entire view
         VBox root = new VBox(20);
@@ -67,11 +61,11 @@ public class ShopCardView {
         title.setFont(Font.font("Arial", FontWeight.BOLD, 34));
         title.setTextFill(Color.ORANGE);
 
-        // navbar
+        // Navbar
         HBox navbar = new HBox(900, title, new Navbar(app).navBar());
 
         // Products List VBox
-        productsList = new VBox(40); // Initialize the productsList VBox
+        // Initialize the productsList VBox
         productList.forEach(product -> productsList.getChildren().add(createProductBox(product)));
 
         // Promo Code Section
@@ -88,11 +82,14 @@ public class ShopCardView {
         cartSummary.setPadding(new Insets(20));
         cartSummary.setStyle("-fx-border-color: grey; -fx-border-width: 1; -fx-background-radius: 10;");
         subtotalLabel = new Label("Subtotal: ₹" + calculateSubtotal());
+        subtotalLabel.setTextFill(Color.BLACK);
         Label shippingLabel = new Label("Shipping: ₹9.99");
+        shippingLabel.setTextFill(Color.BLACK);
         Label promoLabel = new Label("Free Shipping Promo: -₹9.99");
         promoLabel.setTextFill(Color.GREEN);
         totalLabel = new Label("Total Cost: ₹" + calculateTotal());
         totalLabel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        totalLabel.setTextFill(Color.BLACK);
         cartSummary.getChildren().addAll(subtotalLabel, shippingLabel, promoLabel, totalLabel);
 
         // Checkout Buttons HBox
@@ -125,19 +122,20 @@ public class ShopCardView {
         scrollPane.setPrefHeight(900);
         scrollPane.setPrefWidth(1980);
 
+        // Set the scroll pane's background to transparent
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
         // Set preferred size for scroll pane (optional)
         scrollPane.setPrefViewportWidth(800); // Adjust as needed
         scrollPane.setPrefViewportHeight(600); // Adjust as needed
 
         root.getChildren().addAll(navbar, scrollPane);
-
         rootPane.getChildren().add(root);
     }
 
     private HBox createProductBox(ProductModelClass product) {
         // Product HBox setup
         HBox productBox = new HBox(30);
-       // productBox.setPadding(new Insets(20));
         productBox.setStyle(
                 "-fx-border-color: transparent; -fx-background-radius: 10; -fx-background-color: linear-gradient(to bottom right, #FFF1E0, #FFE5D9); -fx-border-width: 2;");
         productBox.setEffect(new DropShadow(10, Color.GRAY));
@@ -152,12 +150,16 @@ public class ShopCardView {
         VBox productDetails = new VBox(20);
         Label nameLabel = new Label(product.getName());
         nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        nameLabel.setTextFill(Color.BLACK);
         Label sizeLabel = new Label("Rating: " + product.getRating());
         sizeLabel.setFont(Font.font("Arial", 18));
+        sizeLabel.setTextFill(Color.BLACK);
         Label colorLabel = new Label("Category: " + product.getCategory());
         colorLabel.setFont(Font.font("Arial", 18));
+        colorLabel.setTextFill(Color.BLACK);
         Label priceLabel = new Label("₹" + product.getPrice());
         priceLabel.setFont(Font.font("Arial", 20));
+        priceLabel.setTextFill(Color.BLACK);
         productDetails.getChildren().addAll(nameLabel, sizeLabel, colorLabel, priceLabel);
 
         // Quantity and Buttons VBox
@@ -171,6 +173,7 @@ public class ShopCardView {
         quantityControls.setAlignment(Pos.CENTER);
         Label totalLabel = new Label("Total: ₹" + product.getPrice());
         totalLabel.setFont(Font.font("Arial", 20));
+        totalLabel.setTextFill(Color.BLACK);
         quantityBox.getChildren().addAll(quantityControls, totalLabel);
         quantityBox.setAlignment(Pos.CENTER);
 

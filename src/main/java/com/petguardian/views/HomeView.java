@@ -73,7 +73,7 @@ public class HomeView {
     }
 
     public Pane getView() {
-       
+
         return rootpane;
     }
 
@@ -101,6 +101,7 @@ public class HomeView {
 
             app.navigateToVetarnaryView();
         });
+        b2.setOnMouseClicked(e -> app.navigateToGrooming());
         b3.setOnMouseClicked(e -> {
             app.navigateToTraning();
         });
