@@ -25,7 +25,7 @@ public class DoctorGetStarted {
         }
         if (!flag) {
             // doctor doen not fill form
-            app.navigateToHomeView();
+            app.navigationToDoctorForm();;
 
         } else {
             /// doctor already fill form

@@ -19,6 +19,8 @@ import javafx.util.Duration;
 import org.json.JSONObject;
 
 import com.petguardian.controllers.Pet;
+import com.petguardian.firebase.MyAuthentication;
+import com.petguardian.util.CloudinaryConnection;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -220,11 +222,12 @@ public class DoctorForm {
         // Handling the submission of doctor availability here
         // Example implementation using JSON and HTTP POST
         // Replace with your actual implementation
-        String firestoreId = "your_firestore_id"; // Example: MyAuthentication.getUserUid();
+        CloudinaryConnection obj = new CloudinaryConnection();
+        String firestoreId = MyAuthentication.getUserUid(); // Example: MyAuthentication.getUserUid();
         String name = nameField.getText();
         String experience = experienceField.getText();
         String rating = ratingField.getText();
-        String doctorImage = "your_cloudinary_url"; // Example: CloudinaryConnection.uploadToCloudinary(selectedImageFile);
+        String doctorImage = obj.uploadToCloudinary(selectedImageFile); // Example: CloudinaryConnection.uploadToCloudinary(selectedImageFile);
         String tags = tagsField.getText();
         String about = aboutField.getText();
         String location = locationField.getText();
