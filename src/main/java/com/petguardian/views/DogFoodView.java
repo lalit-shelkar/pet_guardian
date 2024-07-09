@@ -5,10 +5,13 @@ import com.petguardian.controllers.Pet;
 import com.petguardian.controllers.ProductDataFetch;
 import com.petguardian.views.common.Navbar;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -27,6 +30,7 @@ import javafx.util.Duration;
 import java.util.List;
 
 public class DogFoodView {
+    Label notificationLabel;
     private Pet app;
     private Pane rootpane;
     boolean isDog = true;
@@ -212,14 +216,10 @@ public class DogFoodView {
         backButton.setLayoutX(20);
         backButton.setLayoutY(20);
         backButton.setMinSize(130, 40);
-        System.out.println("in back button in food 2");
 
         backButton.setStyle(
                 "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: White;-fx-background-radius:20;-fx-font-weight: bold;-fx-font-size:20");
-        backButton.setOnMouseClicked(e -> {
-            System.out.println("in back button in food ");
-            app.navigateToHomeView();
-        });
+        backButton.setOnMouseClicked(e -> app.navigateToHomeView());
         return backButton;
     }
 
@@ -282,12 +282,14 @@ public class DogFoodView {
         boxButton3.setStyle(
                 "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: black;-fx-background-radius:10;-fx-font-weight: bold;");
         boxButton3.setFont(new Font(15));
-        boxButton3.setFocusTraversable(false); // Prevents the button from gaining focus
+        boxButton3.setFocusTraversable(false);
+        ////////
+        boxButton3.setOnMouseClicked(e -> {
 
-        // CSS to prevent font size changes when button is pressed
+            app.addItemToCart(prObj);
+            showNotification("product Added Sucssesfully");
 
-        // Ensure button text size does not change when clicked
-        // boxButton3.setOnAction(event -> boxButton3.setFont(new Font(15)));
+        });
 
         VBox vb3 = new VBox(10, box3, prName, ratingContainer, boxButton3);
         vb3.setPadding(new Insets(20, 20, 0, 20));
@@ -299,6 +301,7 @@ public class DogFoodView {
         // Adding hover effect for elevation
         vb3.setOnMouseEntered(event -> elevateCard(vb3));
         vb3.setOnMouseExited(event -> resetCardElevation(vb3));
+
         return vb3;
     }
 
@@ -318,6 +321,23 @@ public class DogFoodView {
         st.play();
 
         card.setEffect(new DropShadow(5, Color.GRAY));
+    }
+
+    /// notification
+
+    private void showNotification(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Notification");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+
+        // Show the alert
+        alert.show();
+
+        // Create a timeline to hide the alert after 2 seconds
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> alert.close()));
+        timeline.setCycleCount(1);
+        timeline.play();
     }
 
 }

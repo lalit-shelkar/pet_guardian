@@ -2,6 +2,7 @@ package com.petguardian.controllers;
 
 import com.petguardian.views.HomeView;
 import com.petguardian.Model.DoctorModelClass;
+import com.petguardian.Model.ProductModelClass;
 import com.petguardian.views.BookDoctorView;
 import com.petguardian.views.DoctorView;
 
@@ -211,4 +212,10 @@ public class Pet extends Application {
 
     }
 
+
+
+    ///ignore this method
+     public void addItemToCart(ProductModelClass obj){
+         shopCardView.addProductFromExternal(obj);
+     }
 }

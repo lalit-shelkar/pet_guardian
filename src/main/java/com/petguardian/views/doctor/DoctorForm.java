@@ -48,17 +48,17 @@ public class DoctorForm {
     private TextField qualificationField;
     private TextField availableField;
     private TextField timeField;
-//
- Pet app;
- BorderPane root;
-    public DoctorForm(Pet app){
-              this.app= app;  
-              initilizet();   
+    //
+    Pet app;
+    BorderPane root;
+
+    public DoctorForm(Pet app) {
+        this.app = app;
+        initilizet();
     }
 
-  
     private void initilizet() {
-       
+
         root = new BorderPane();
         root.setPadding(new Insets(20));
 
@@ -106,7 +106,8 @@ public class DoctorForm {
         grid.setPadding(new Insets(20));
         grid.setHgap(20);
         grid.setVgap(20);
-        grid.setStyle("-fx-background-color: #ffffff; -fx-border-color: #d3d3d3; -fx-border-radius: 10; -fx-padding: 20;");
+        grid.setStyle(
+                "-fx-background-color: #ffffff; -fx-border-color: #d3d3d3; -fx-border-radius: 10; -fx-padding: 20;");
 
         int row = 0;
 
@@ -121,8 +122,7 @@ public class DoctorForm {
         imagePickerButton.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
-            );
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
             selectedImageFile = fileChooser.showOpenDialog(null);
             if (selectedImageFile != null) {
                 try (FileInputStream input = new FileInputStream(selectedImageFile)) {
@@ -223,11 +223,13 @@ public class DoctorForm {
         // Example implementation using JSON and HTTP POST
         // Replace with your actual implementation
         CloudinaryConnection obj = new CloudinaryConnection();
+        //
         String firestoreId = MyAuthentication.getUserUid(); // Example: MyAuthentication.getUserUid();
         String name = nameField.getText();
         String experience = experienceField.getText();
         String rating = ratingField.getText();
-        String doctorImage = obj.uploadToCloudinary(selectedImageFile); // Example: CloudinaryConnection.uploadToCloudinary(selectedImageFile);
+        String doctorImage = obj.uploadToCloudinary(selectedImageFile); // Example:
+        // CloudinaryConnection.uploadToCloudinary(selectedImageFile);
         String tags = tagsField.getText();
         String about = aboutField.getText();
         String location = locationField.getText();
@@ -247,15 +249,19 @@ public class DoctorForm {
 
         // Example: Send data to server using HTTP POST
         try {
-            postDoctorDataToServer(firestoreId, name, experience, rating, doctorImage, tags, about, location, specializes, contact, price, qualification, available, selectedDates, time);
+            postDoctorDataToServer(firestoreId, name, experience, rating, doctorImage, tags, about, location,
+                    specializes, contact, price, qualification, available, selectedDates, time);
             resultLabel.setText("Data submitted successfully!");
         } catch (Exception ex) {
             resultLabel.setText("Error: " + ex.getMessage());
         }
     }
 
-    private void postDoctorDataToServer(String firestoreId, String name, String experience, String rating, String doctorImage, String tags, String about, String location, String specializes, String contact, String price, String qualification, String available, List<String> selectedDates, String time) throws Exception {
-        URL url = new URL("http://localhost:3000/createDoctor"); // Example URL
+    private void postDoctorDataToServer(String firestoreId, String name, String experience, String rating,
+            String doctorImage, String tags, String about, String location, String specializes, String contact,
+            String price, String qualification, String available, List<String> selectedDates, String time)
+            throws Exception {
+        URL url = new URL("https://pet-api-two.vercel.app/createDoctor"); // Example URL
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
@@ -288,10 +294,8 @@ public class DoctorForm {
         }
     }
 
-    public BorderPane getView(){
+    public BorderPane getView() {
         return root;
     }
 
 }
-
-

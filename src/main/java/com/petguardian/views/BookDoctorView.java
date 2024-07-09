@@ -1,5 +1,11 @@
 package com.petguardian.views;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.controllers.Pet;
 
@@ -32,7 +38,10 @@ public class BookDoctorView {
 
     private void initialize() {
         rootPane = new Pane();
-        rootPane.getChildren().addAll(doctorCard());
+        rootPane.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
+        Button bt = backButton();
+        bt.setLayoutX(1500);
+        rootPane.getChildren().addAll(doctorCard(), bt);
     }
 
     public Pane getView() {
@@ -42,13 +51,13 @@ public class BookDoctorView {
     private HBox doctorCard() {
         // Doctor's Image
         ImageView doctorImageView = new ImageView(new Image(doctor.getImg()));
-        doctorImageView.setFitWidth(150);
-        doctorImageView.setFitHeight(150);
+        doctorImageView.setFitWidth(350);
+        doctorImageView.setFitHeight(350);
         doctorImageView.setPreserveRatio(true);
         StackPane imageContainer = new StackPane(doctorImageView);
-        imageContainer.setPrefSize(150, 150);
-        imageContainer.setMaxSize(150, 150);
-        imageContainer.setMinSize(150, 150);
+        imageContainer.setPrefSize(350, 350);
+        imageContainer.setMaxSize(350, 350);
+        imageContainer.setMinSize(350, 350);
 
         // Doctor's Information
         Label doctorNameLabel = new Label(doctor.getName());
@@ -101,7 +110,7 @@ public class BookDoctorView {
         descriptionLabel.setMaxWidth(300);
         descriptionLabel.setTextFill(Color.BLACK);
 
-        VBox leftVBox = new VBox(10, doctorNameLabel, qualificationLabel, experienceLabel, ratingBox, tagsBox,
+        VBox leftVBox = new VBox(10, imageContainer, qualificationLabel, experienceLabel, ratingBox, tagsBox,
                 descriptionLabel);
         leftVBox.setAlignment(Pos.TOP_LEFT);
 
@@ -133,6 +142,36 @@ public class BookDoctorView {
         Label availableDaysLabel = new Label("Available Days: " + String.join(", ", doctor.getAvailableDays()));
         availableDaysLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         availableDaysLabel.setTextFill(Color.BLACK);
+
+        // Parse the availableDays from the doctor object
+        List<LocalDate> availableDays = doctor.getAvailableDays().stream()
+                .map(day -> LocalDate.parse(day.substring(0, 10)))
+                .collect(Collectors.toList());
+
+        System.out.println(availableDays);
+
+        List<Button> dayCheckBoxes = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM-dd");
+
+        HBox daysBox = new HBox(10);
+        daysBox.setAlignment(Pos.CENTER);
+        for (int i = 0; i < 5; i++) {
+
+            LocalDate date = today.plusDays(i);
+            Button bt = new Button(date.format(formatter));
+            // Set the button color to green if the date is in the availableDays list, else
+            // grey
+            if (availableDays.contains(date)) {
+                bt.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+            } else {
+                bt.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+            }
+            System.out.println(
+                    "current " + date);
+            dayCheckBoxes.add(bt);
+            daysBox.getChildren().add(bt);
+        }
 
         Button callButton = new Button("Call Us: " + doctor.getContact());
         callButton.setStyle("-fx-background-color: white; " +
@@ -174,9 +213,9 @@ public class BookDoctorView {
         });
 
         contactVBox.getChildren().addAll(locationLabel, availabilityLabel, specialistLabel, priceLabel,
-                availableDaysLabel, callButton, appointmentButton);
+                daysBox, callButton, appointmentButton);
 
-        HBox mainHBox = new HBox(30, imageContainer, leftVBox, contactVBox);
+        HBox mainHBox = new HBox(30, leftVBox, contactVBox);
         mainHBox.setPadding(new Insets(20));
         mainHBox.setStyle(
                 "-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e0e0e0; -fx-border-radius: 10;");
@@ -184,5 +223,16 @@ public class BookDoctorView {
         mainHBox.setEffect(new DropShadow(5, Color.GRAY));
 
         return mainHBox;
+    }
+
+    private Button backButton() {
+        Button backButton = new Button("Back");
+        backButton.setLayoutX(20);
+        backButton.setLayoutY(20);
+        backButton.setMinSize(130, 40);
+        backButton.setStyle(
+                "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: White;-fx-background-radius:20;-fx-font-weight: bold;-fx-font-size:20");
+        backButton.setOnAction(e -> app.navigateToVetarnaryView());
+        return backButton;
     }
 }

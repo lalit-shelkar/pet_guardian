@@ -133,7 +133,7 @@ public class MyAuthentication {
                     .setDisabled(false);
 
             UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            System.out.println("user records" + userRecord);
+            
             setUserUid(userRecord.getUid());
 
             // Create user data map
