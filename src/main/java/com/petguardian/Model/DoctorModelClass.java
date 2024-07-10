@@ -1,5 +1,6 @@
 package com.petguardian.Model;
 
+import java.util.List;
 import java.util.Set;
 
 public class DoctorModelClass {
@@ -16,7 +17,7 @@ public class DoctorModelClass {
     private String contact;
     private double price;
     private boolean available;
-    private Set<String> availableDays;
+    private Set<AvailableDay> availableDays;
     private Set<PatientModelClass> patients;
 
     public DoctorModelClass(String firestoreId,
@@ -32,7 +33,7 @@ public class DoctorModelClass {
                             double price,
                             String specializes,
                             String contact,
-                            Set<String> availableDays,
+                            Set<AvailableDay> availableDays,
                             Set<PatientModelClass> patients) {
         this.firestoreId = firestoreId;
         this.name = name;
@@ -104,11 +105,30 @@ public class DoctorModelClass {
         return available;
     }
 
-    public Set<String> getAvailableDays() {
+    public Set<AvailableDay> getAvailableDays() {
         return availableDays;
     }
 
     public Set<PatientModelClass> getPatients() {
         return patients;
+    }
+
+    // Inner class for AvailableDay
+    public static class AvailableDay {
+        private String date;
+        private List<String> times;
+
+        public AvailableDay(String date, List<String> times) {
+            this.date = date;
+            this.times = times;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public List<String> getTimes() {
+            return times;
+        }
     }
 }
