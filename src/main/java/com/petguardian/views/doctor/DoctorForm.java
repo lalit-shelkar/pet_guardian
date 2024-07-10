@@ -281,7 +281,7 @@ public class DoctorForm {
         json.put("price", price);
         json.put("qualification", qualification);
         json.put("available", available);
-        json.put("days", String.join(" ", selectedDates));
+        json.put("availableDays", String.join(" ", selectedDates));
         json.put("time", time);
 
         String input = json.toString();
