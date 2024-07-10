@@ -195,6 +195,7 @@ public class VetarnaryView {
                 "-fx-font-size: 20px; " +
                 "-fx-background-radius: 10; " +
                 "-fx-pref-width: 300; -fx-pref-height: 35;");
+        appointmentButton.setOnMouseClicked(e -> app.navigateToBookDoctorView(doctor));
         appointmentButton.setOnAction(e -> {
             if (isAppoitment) {
                 appointmentButton.setText("Appointment booked");
@@ -249,10 +250,6 @@ public class VetarnaryView {
         st.play();
 
         card.setEffect(new DropShadow(5, Color.GRAY));
-    }
-
-    private void bookAppoitment() {
-
     }
 
     private Button backButton() {

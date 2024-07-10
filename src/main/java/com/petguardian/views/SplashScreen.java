@@ -15,11 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 public class SplashScreen {
@@ -66,6 +61,7 @@ public class SplashScreen {
                 event -> {
 
                     app.navigateToVetarnaryView();
+
                 }));
         timeline.play();
 
