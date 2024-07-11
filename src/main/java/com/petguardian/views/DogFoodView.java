@@ -116,6 +116,7 @@ public class DogFoodView {
         });
         /// when we click cat
         catlabel.setOnMouseClicked(e -> {
+            app.navigateToCatFood();
         });
 
         /// when we click on rabit
