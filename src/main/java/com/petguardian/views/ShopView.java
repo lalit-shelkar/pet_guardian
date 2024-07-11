@@ -117,7 +117,9 @@ public class ShopView {
                                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                                 new BackgroundSize(520, 500, false, false, false, false));
                 dogBox2.setBackground(new Background(backgroundImage2));
-
+                dogBox2.setOnMouseClicked(e -> {
+                        app.navigateToCatFood();
+                });
                 /// -------------------------------------------------------------------------------------------------------------------------------------////
                 // Create UI elements
                 Label discountLabel3 = new Label("SALE");
@@ -145,6 +147,8 @@ public class ShopView {
                                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                                 new BackgroundSize(525, 500, false, false, false, false));
                 dogBox3.setBackground(new Background(backgroundImage3));
+
+                ///
                 // -------------------------------------------------------------------------------------
                 Label discountLabel4 = new Label("10% OFF");
                 discountLabel4.setTextFill(Color.ORANGE);
@@ -218,7 +222,7 @@ public class ShopView {
 
                 rootpane.getChildren().add(gr);
 
-              //navigate 
+                // navigate
                 dogBox.setOnMouseClicked(e -> app.navigateToDogFoodView());
         }
 

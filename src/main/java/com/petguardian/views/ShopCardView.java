@@ -109,7 +109,7 @@ public class ShopCardView {
         sideBar.setPadding(new Insets(20));
         sideBar.setStyle(
                 "-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-border-color: lightgrey; -fx-border-width: 1;");
-
+        
         // Main content HBox
         HBox mainContent = new HBox(50, productsList, sideBar);
         mainContent.setAlignment(Pos.CENTER);

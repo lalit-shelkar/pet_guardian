@@ -4,8 +4,7 @@ import com.petguardian.views.HomeView;
 import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.Model.ProductModelClass;
 import com.petguardian.views.BookDoctorView;
-import com.petguardian.views.DoctorView;
-
+import com.petguardian.views.CatFoodView;
 import com.petguardian.views.LoginUser;
 import com.petguardian.views.ShopCardView;
 import com.petguardian.views.DogFoodView;
@@ -18,14 +17,13 @@ import com.petguardian.views.common.Navbar;
 import com.petguardian.views.doctor.DoctorDashboard;
 import com.petguardian.views.doctor.DoctorForm;
 
-
 import javafx.application.Application;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Pet extends Application {
-    static boolean isDoctorExist=false;
+    static boolean isDoctorExist = false;
     private Stage primaryStage;
     //
     private DoctorGetStarted doctorGetStartedView;
@@ -62,6 +60,10 @@ public class Pet extends Application {
     // shopcartView
     private ShopCardView shopCardView;
     private Scene shopcardScene;
+
+    // cat food
+    private CatFoodView catFoodView;
+    private Scene catScene;
 
     private Navbar navbarView;
 
@@ -115,6 +117,10 @@ public class Pet extends Application {
         shopcardScene = new Scene(shopCardView.getView(), 1920, 1080);
 
         ///
+        catFoodView = new CatFoodView(this);
+        catScene = new Scene(catFoodView.getView(), 1920, 1080);
+
+        ///
         /// doctor started
         // doctorGetStartedView = new DoctorGetStarted(this);
 
@@ -163,6 +169,15 @@ public class Pet extends Application {
         primaryStage.show();
     }
 
+    ///
+    public void navigateToCatFood() {
+
+        primaryStage.setScene(catScene);
+        primaryStage.show();
+    }
+
+    ///
+
     public void navigateToTraning() {
 
         primaryStage.setScene(traningScene);
@@ -204,21 +219,24 @@ public class Pet extends Application {
         Scene bookDoctorScene = new Scene(bookDoctorView.getView(), 1980, 1080);
         primaryStage.setScene(bookDoctorScene);
     }
+
     // navigation to create from
-    public void navigationToDoctorForm(){
-       DoctorForm doctorForm = new DoctorForm(this);
-       primaryStage.setScene(new Scene(doctorForm.getView(),1920, 1080));
+    public void navigationToDoctorForm() {
+        DoctorForm doctorForm = new DoctorForm(this);
+        primaryStage.setScene(new Scene(doctorForm.getView(), 1920, 1080));
 
     }
-    //doctor dashboard
-    public void navigateToDoctorDashboard(){
+
+    // doctor dashboard
+    public void navigateToDoctorDashboard() {
         DoctorDashboard doctorDashboardView = new DoctorDashboard(this);
-        Scene docterScene = new Scene(doctorDashboardView.getView(),1920,1080);
+        Scene docterScene = new Scene(doctorDashboardView.getView(), 1920, 1080);
         primaryStage.setScene(docterScene);
-        
+
     }
-    ///ignore this method
-     public void addItemToCart(ProductModelClass obj){
-         shopCardView.addProductFromExternal(obj);
-     }
+
+    /// ignore this method
+    public void addItemToCart(ProductModelClass obj) {
+        shopCardView.addProductFromExternal(obj);
+    }
 }

@@ -12,8 +12,13 @@ import com.petguardian.Model.ProductModelClass;
 public class ProductDataFetch {
     public List<ProductModelClass> productList;
 
-    public ProductDataFetch() throws Exception {
-        productList = fetchProductData();
+    public ProductDataFetch() {
+        try {
+            productList = fetchProductData();
+        } catch (Exception e) {
+            System.err.println("exception in fetching product data");
+            e.printStackTrace();
+        }
     }
 
     private List<ProductModelClass> fetchProductData() throws Exception {

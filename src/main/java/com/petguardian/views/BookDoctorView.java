@@ -1,17 +1,23 @@
 package com.petguardian.views;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
+import com.google.gson.JsonObject;
+import com.petguardian.Exceptions.DayNotAvalable;
 import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.Model.DoctorModelClass.AvailableDay;
-import com.petguardian.Model.PatientModelClass;
-import com.petguardian.Model.PatientModelClass;
 import com.petguardian.controllers.Pet;
-import com.petguardian.views.common.Navbar;
-
+import com.petguardian.firebase.MyAuthentication;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -61,7 +67,7 @@ public class BookDoctorView {
     }
 
     private VBox leftVBox() {
-        VBox leftVBox = new VBox();
+        VBox leftVBox = new VBox(40);
         leftVBox.setMinSize(320, 930);
         leftVBox.setLayoutY(105);
         leftVBox.setStyle(
@@ -72,6 +78,24 @@ public class BookDoctorView {
                         "-fx-border-radius: 20px;" + // Set the border radius
                         "-fx-background-radius: 20px;" // Set the background radius to match border radius
         );
+        ///
+        ImageView doctorImageView = new ImageView(new Image(
+                "dashboard/logo.png"));
+        doctorImageView.setFitWidth(300);
+        doctorImageView.setFitHeight(300);
+        doctorImageView.setPreserveRatio(true);
+        ///
+
+        Label title = new Label("Your Pet Deserves  the Best Care");
+        title.setAlignment(Pos.CENTER);
+        title.setStyle(" -fx-font-size: 30px; -fx-font-style: italic;");
+        title.setWrapText(true);
+        title.setMaxWidth(250);
+        Label title2 = new Label(" Book Now!");
+        title2.setStyle("-fx-text-fill: green; -fx-font-size: 25px; -fx-font-style: italic;");
+
+        leftVBox.getChildren().addAll(doctorImageView, title, title2);
+        leftVBox.setAlignment(Pos.CENTER);
         return leftVBox;
     }
 
@@ -238,7 +262,7 @@ public class BookDoctorView {
                 createDaysBox(),
                 timeSlotsGrid, // Add time slots grid to the contact VBox
                 createCallButton() // Add patient form here
-                ); // Add patient form here
+        ); // Add patient form here
 
         return contactVBox;
     }
@@ -329,12 +353,24 @@ public class BookDoctorView {
                             "-fx-background-radius: 5px; " +
                             "-fx-border-color: green; " +
                             "-fx-border-width: 1px;");
-            dayButton.setOnAction(e -> handleButtonClick(dayButton, true)); // Add event handler for green buttons
+            dayButton.setOnAction(e -> {
+                try {
+                    handleButtonClick(dayButton, true);
+                } catch (DayNotAvalable e1) {
+                    showAlertBox(e1.getMessage());
+                }
+            }); // Add event handler for green buttons
         } else {
             dayButton.setStyle(
                     "-fx-background-color: lightgrey; -fx-text-fill: black; -fx-font-size: 16px; -fx-background-radius: 5px; -fx-opacity: 0.5;-fx-border-color: grey");
 
-            dayButton.setOnAction(e -> handleButtonClick(dayButton, false)); // Add event handler for grey buttons
+            dayButton.setOnAction(e -> {
+                try {
+                    handleButtonClick(dayButton, false);
+                } catch (DayNotAvalable e1) {
+                    showAlertBox(e1.getMessage());
+                }
+            }); // Add event handler for grey buttons
         }
         return dayButton;
     }
@@ -384,7 +420,7 @@ public class BookDoctorView {
 
     //// handel button
     /// date selecte here
-    private void handleButtonClick(Button button, boolean isAvailable) {
+    private void handleButtonClick(Button button, boolean isAvailable) throws DayNotAvalable {
         List<String> AvailableTime = new ArrayList<>();
 
         if (isAvailable) {
@@ -411,7 +447,10 @@ public class BookDoctorView {
             // Show time slots below the selected date
             showTimeSlots(selectedDayButton.getText(), AvailableTime);
         } else {
-            showAlertBox("Only available dates can be selected.");
+            /////
+            //
+            /// my exception
+            throw new DayNotAvalable("Only available dates can be selected");
         }
     }
 
@@ -449,7 +488,11 @@ public class BookDoctorView {
                         "-fx-background-color: lightgrey; -fx-text-fill: black; -fx-font-size: 16px; -fx-background-radius: 5px; -fx-opacity: 0.5;-fx-border-color: grey;");
                 // on click time button
                 timeSlotButton.setOnAction(e -> {
-                    showAlertBox("Only available Time can be selected.");
+                    try {
+                        throw new DayNotAvalable("Only available Time can be selected");
+                    } catch (DayNotAvalable e1) {
+                        showAlertBox(e1.toString());
+                    }
                 });
             }
             timeSlotsGrid.add(timeSlotButton, (i + 1) % 3, (i + 1) / 3); // Add buttons in a grid with 2 columns
@@ -596,14 +639,20 @@ public class BookDoctorView {
             return;
         }
 
-        // Print the selected day and time for now
-        System.out.println("Selected Day: " + selectedDayButton.getText());
-        System.out.println("Selected Time: " + selectedTimeButton.getText());
-
         // Create a new PatientModelClass instance and submit the details
-        // PatientModelClass patient = new PatientModelClass(petName, petType, petAge,
+        try {
+            boolean result = bookAppotment(petName, petType, petAge, symptoms);
+            if (result == false) {
+                showAlertBox("server kadun problem.");
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlertBox("Please try again." + e.getMessage());
+
+            return;
+        }
         // symptoms);
-        // Submit the patient details to the appropriate controller or service
 
         // Show success message
 
@@ -641,4 +690,60 @@ public class BookDoctorView {
         alert.setContentText(msg);
         alert.showAndWait();
     }
+
+    private boolean bookAppotment(String petName, String petType, String petAge, String symptoms) throws IOException {
+        String apiUrl = "https://pet-api-two.vercel.app/createPatient";
+        URL url = new URL(apiUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Accept", "application/json");
+
+        JsonObject requestBody = new JsonObject();
+
+        Map<String, Object> userinfo = MyAuthentication.getUserInfo();
+
+        requestBody.addProperty("patientId", userinfo.get("uid").toString());
+        requestBody.addProperty("doctorId", doctor.getFirestoreId());
+        requestBody.addProperty("name", userinfo.get("userName").toString());
+        requestBody.addProperty("contact", userinfo.get("phone").toString());
+        requestBody.addProperty("petName", petName);
+        requestBody.addProperty("petAge", Integer.parseInt(petAge));
+        requestBody.addProperty("petType", petType);
+        requestBody.addProperty("symptoms", symptoms);
+        requestBody.addProperty("appointmentDay", selectedDayButton.getText());
+        requestBody.addProperty("appointmentTime", selectedTimeButton.getText());
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(requestBody.toString().getBytes());
+            os.flush();
+        }
+
+        int responseCode = conn.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) { // HTTP 200
+            return true;
+        } else {
+            // Print error details
+            InputStream errorStream = conn.getErrorStream();
+            if (errorStream != null) {
+                String errorResponse = convertStreamToString(errorStream);
+                System.err.println("Error Response: " + errorResponse);
+            }
+            return false;
+        }
+    }
+
+    private String convertStreamToString(InputStream is) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
+        return sb.toString();
+    }
+
 }
