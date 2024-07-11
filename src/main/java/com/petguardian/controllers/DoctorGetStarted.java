@@ -3,6 +3,9 @@ package com.petguardian.controllers;
 import java.util.Map;
 
 import com.petguardian.firebase.MyAuthentication;
+import com.petguardian.views.doctor.DoctorDashboard;
+
+import javafx.scene.Scene;
 
 public class DoctorGetStarted {
     private Pet app;
@@ -30,8 +33,7 @@ public class DoctorGetStarted {
         } else {
             /// doctor already fill form
             /// navigate to the doctor DashBord
-            System.out.println("Doctor dash bord");
+            app.navigateToDoctorDashboard();
         }
     }
-
 }

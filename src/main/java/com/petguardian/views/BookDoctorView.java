@@ -8,6 +8,7 @@ import java.util.List;
 import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.Model.DoctorModelClass.AvailableDay;
 import com.petguardian.Model.PatientModelClass;
+import com.petguardian.Model.PatientModelClass;
 import com.petguardian.controllers.Pet;
 import com.petguardian.views.common.Navbar;
 
@@ -236,7 +237,8 @@ public class BookDoctorView {
                 createSelectDate(),
                 createDaysBox(),
                 timeSlotsGrid, // Add time slots grid to the contact VBox
-                createCallButton()); // Add patient form here
+                createCallButton() // Add patient form here
+                ); // Add patient form here
 
         return contactVBox;
     }
@@ -617,6 +619,12 @@ public class BookDoctorView {
     ////
     private Button createBackButton() {
         Button backButton = new Button("Back");
+        backButton.setLayoutX(20);
+        backButton.setLayoutY(20);
+        backButton.setMinSize(130, 40);
+        backButton.setStyle(
+                "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: White;-fx-background-radius:20;-fx-font-weight: bold;-fx-font-size:20");
+        backButton.setOnAction(e -> app.navigateToVetarnaryView());
         backButton.setLayoutX(20);
         backButton.setLayoutY(20);
         backButton.setMinSize(130, 40);

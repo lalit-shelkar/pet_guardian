@@ -15,6 +15,7 @@ import com.petguardian.views.SplashScreen;
 import com.petguardian.views.TraningView;
 import com.petguardian.views.VetarnaryView;
 import com.petguardian.views.common.Navbar;
+import com.petguardian.views.doctor.DoctorDashboard;
 import com.petguardian.views.doctor.DoctorForm;
 
 
@@ -197,8 +198,6 @@ public class Pet extends Application {
         primaryStage.show();
     }
 
-
-
     public void navigateToBookDoctorView(DoctorModelClass drObj) {
 
         BookDoctorView bookDoctorView = new BookDoctorView(this, drObj);
@@ -211,9 +210,13 @@ public class Pet extends Application {
        primaryStage.setScene(new Scene(doctorForm.getView(),1920, 1080));
 
     }
-
-
-
+    //doctor dashboard
+    public void navigateToDoctorDashboard(){
+        DoctorDashboard doctorDashboardView = new DoctorDashboard(this);
+        Scene docterScene = new Scene(doctorDashboardView.getView(),1920,1080);
+        primaryStage.setScene(docterScene);
+        
+    }
     ///ignore this method
      public void addItemToCart(ProductModelClass obj){
          shopCardView.addProductFromExternal(obj);
