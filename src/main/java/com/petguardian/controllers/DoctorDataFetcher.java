@@ -84,15 +84,6 @@ public class DoctorDataFetcher {
             doctorList.add(doctor);
         }
 
-        // Access and print available days and times for each doctor
-        for (DoctorModelClass doctor : doctorList) {
-            System.out.println("Doctor Name: " + doctor.getName());
-            for (AvailableDay availableDay : doctor.getAvailableDays()) {
-                System.out.println("Date: " + availableDay.getDate());
-                System.out.println("Times: " + availableDay.getTimes());
-            }
-        }
-
         return doctorList;
     }
 
