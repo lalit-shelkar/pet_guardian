@@ -21,7 +21,7 @@ import com.petguardian.Model.DoctorModelClass.AvailableDay;
 public class PatientDataFetcher {
         public List<PatientModelClass> fetchPatientData() throws Exception {
         System.out.println("In fetching patient  data ...");
-        String apiUrl = "http://localhost:3000/getPatient";
+        String apiUrl = "https://pet-api-two.vercel.app/getPatient";
         URL url = new URL(apiUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -55,14 +55,17 @@ public class PatientDataFetcher {
             String patientId = patientObject.get("patientId").getAsString();
             String name = patientObject.get("name").getAsString();
             String contact = patientObject.get("contact").getAsString();
+            String petName = patientObject.get("petName").getAsString();
             String petType = patientObject.get("petType").getAsString();
+            int petAge = patientObject.get("petAge").getAsInt();
+            String symptoms = patientObject.get("symptoms").getAsString();
             String appointmentDay = patientObject.get("appointmentDay").getAsString();
             String appointmentTime = patientObject.get("appointmentTime").getAsString();
             String status = patientObject.get("status").getAsString();
         
             System.out.println(status);
             PatientModelClass patient = new PatientModelClass(
-                    patientId, name, contact, petType, appointmentDay, appointmentTime, status
+                    patientId, name, contact,petName, petType,petAge,symptoms, appointmentDay, appointmentTime, status
             );
             
             patientList.add(patient);
