@@ -199,6 +199,8 @@ public class DoctorForm {
         submitButton.setOnAction(e -> {
             try {
                 postDoctorAvailability(resultLabel, dayCheckBoxes);
+                app.navigateToDoctorDashboard();
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

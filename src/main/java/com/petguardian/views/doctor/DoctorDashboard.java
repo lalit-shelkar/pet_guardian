@@ -1,5 +1,6 @@
 package com.petguardian.views.doctor;
 
+import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.Model.PatientModelClass;
 import com.petguardian.controllers.DoctorDataFetcher;
 import com.petguardian.controllers.PatientDataFetcher;
@@ -16,13 +17,25 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DoctorDashboard {
     private Pet app;
     private BorderPane root;
     private List<PatientModelClass> patientsList;
+    private List<PatientModelClass> upcomingPatientsList;
+    private List<PatientModelClass> historyPatientsList;
+    private List<DoctorModelClass> doctorList;
 
     public DoctorDashboard(Pet app) {
         this.app = app;
@@ -32,16 +45,27 @@ public class DoctorDashboard {
 
     private void initialize() {
         // Initialize patients data
-        PatientDataFetcher dataFetcher = new PatientDataFetcher();
+        PatientDataFetcher patientDataFetcher = new PatientDataFetcher();
+        DoctorDataFetcher doctorDataFetcher = new DoctorDataFetcher();
         try {
-            patientsList = dataFetcher.fetchPatientData();
+            doctorList = doctorDataFetcher.fetchDoctorData();
+            patientsList = patientDataFetcher.fetchPatientData();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        //calling categorize method
+        categorizePatients();
         // Main layout
         root = new BorderPane();
 
+        // Set the left navigation panel in the BorderPane
+        root.setLeft(navigationPanel());
+
+        // Initially show the list of upcoming patients
+        showUpcomingPatients();
+    }
+
+    private VBox navigationPanel() {
         VBox navigationPanel = new VBox();
         navigationPanel.setPrefWidth(200);
         navigationPanel.setSpacing(10); // Spacing between buttons
@@ -58,6 +82,8 @@ public class DoctorDashboard {
         Button dashboardButton = new Button("Dashboard");
         Button patientsButton = new Button("Patients");
         Button settingsButton = new Button("Settings");
+        Button upcomingPatientsButton = new Button("Upcoming Patients");
+        Button historyPatientsButton = new Button("History Patients");
 
         // Style the buttons
         String buttonStyle = "-fx-background-color: transparent; "
@@ -71,21 +97,87 @@ public class DoctorDashboard {
         dashboardButton.setStyle(buttonStyle);
         patientsButton.setStyle(buttonStyle);
         settingsButton.setStyle(buttonStyle);
+        upcomingPatientsButton.setStyle(buttonStyle);
+        historyPatientsButton.setStyle(buttonStyle);
 
         // Add buttons to the navigation panel
-        navigationPanel.getChildren().addAll(logo, dashboardButton, patientsButton, settingsButton);
+        navigationPanel.getChildren().addAll(logo, dashboardButton, patientsButton, settingsButton,
+                upcomingPatientsButton, historyPatientsButton);
 
-        // Set the left navigation panel in the BorderPane
-        root.setLeft(navigationPanel);
+        // Event handler for the Dashboard button
+        patientsButton.setOnAction(event -> showDashboard());
 
-        // Event handler for the Patients button
-        patientsButton.setOnAction(event -> showPatients());
+        // Event handler for the Upcoming Patients button
+        upcomingPatientsButton.setOnAction(event -> showUpcomingPatients());
 
-        // Placeholder for the main content area
-        root.setCenter(new Label("Select an option from the navigation panel."));
+        // Event handler for the History Patients button
+        historyPatientsButton.setOnAction(event -> showHistoryPatients());
+
+        return navigationPanel;
     }
 
-    private void showPatients() {
+    private void showDashboard() {
+        // Implement your dashboard view logic here
+    }
+
+    private void categorizePatients() {
+    
+
+    // Initialize lists
+    upcomingPatientsList = new ArrayList<>();
+    historyPatientsList = new ArrayList<>();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    // Current date and time for comparison
+    LocalDate currentDate = LocalDate.now();
+    LocalTime currentTime = LocalTime.now();
+
+    for (PatientModelClass patient : patientsList) {
+        // Parse appointment date
+
+        System.out.println("datet="+patient.getCreatedAt());
+        String trimDate=patient.getCreatedAt().substring(0, 10);
+      
+        LocalDate appointmentDate = LocalDate.parse(trimDate, formatter);
+        System.out.println("for="+appointmentDate);
+
+       // Compare dates and times
+        if (appointmentDate.isAfter(currentDate) ||
+                (appointmentDate.isEqual(currentDate) && LocalTime.parse(patient.getCreatedAt()).isAfter(currentTime))) {
+            upcomingPatientsList.add(patient);
+        } else {
+            historyPatientsList.add(patient);
+        }
+    }
+
+    // Sort historyPatientsList in descending order
+    // historyPatientsList.sort((p1, p2) -> {
+    //     LocalDate date1 = LocalDate.parse(p1.getAppointmentDay().substring(0, 10), formatter);
+    //     LocalDate date2 = LocalDate.parse(p2.getAppointmentDay().substring(0, 10), formatter);
+    //     return date2.compareTo(date1); // Reverse order for date
+    // });
+
+    // // Sort upcomingPatientsList in ascending order
+    // historyPatientsList.sort((p1, p2) -> {
+    //     LocalDate date1 = LocalDate.parse(p1.getAppointmentDay(), formatter);
+    //     LocalDate date2 = LocalDate.parse(p2.getAppointmentDay(), formatter);
+    //     return date1.compareTo(date2); // Ascending order for date
+    // });
+
+   // upcomingPatientsList.get(0).getName();
+    //upcomingPatientsList.get(0).getName();
+}
+
+
+    private void showUpcomingPatients() {
+        root.setCenter(createPatientsGrid(upcomingPatientsList, "Upcoming Patients"));
+    }
+
+    private void showHistoryPatients() {
+        root.setCenter(createPatientsGrid(historyPatientsList, "History Patients"));
+    }
+
+    private GridPane createPatientsGrid(List<PatientModelClass> patients, String title) {
         GridPane patientsGrid = new GridPane();
         patientsGrid.setPadding(new Insets(15));
         patientsGrid.setHgap(15); // Horizontal gap between columns
@@ -111,8 +203,8 @@ public class DoctorDashboard {
         addHeader(patientsGrid, "Status", 9);
 
         // Add patients dynamically
-        for (int i = 0; i < patientsList.size(); i++) {
-            PatientModelClass patient = patientsList.get(i);
+        for (int i = 0; i < patients.size(); i++) {
+            PatientModelClass patient = patients.get(i);
 
             // S. No. column
             Label serialNumber = new Label(String.valueOf(i + 1));
@@ -129,31 +221,31 @@ public class DoctorDashboard {
             contactLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
             patientsGrid.add(contactLabel, 2, i + 1);
 
-             // Pet Name column
-             Label petNameLabel = new Label(patient.getPetName());
-             petNameLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
-             patientsGrid.add(petNameLabel, 3, i + 1);
+            // Pet Name column
+            Label petNameLabel = new Label(patient.getPetName());
+            petNameLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(petNameLabel, 3, i + 1);
 
             // Pet Type column
             Label petTypeLabel = new Label(patient.getPetType());
             petTypeLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
             patientsGrid.add(petTypeLabel, 4, i + 1);
 
-             // Pet Age column
-             Label petAgeLabel = new Label(Integer.toString(patient.getPetAge()));
-             petAgeLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
-             patientsGrid.add(petAgeLabel, 5, i + 1);
+            // Pet Age column
+            Label petAgeLabel = new Label(Integer.toString(patient.getPetAge()));
+            petAgeLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(petAgeLabel, 5, i + 1);
 
-              // Pet Symptomps column
-              Label symptomsLabel = new Label(patient.getsymptoms());
-              symptomsLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
-              patientsGrid.add(symptomsLabel, 6, i + 1);
+            // Symptoms column
+            Label symptomsLabel = new Label(patient.getsymptoms());
+            symptomsLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(symptomsLabel, 6, i + 1);
 
-            // Appointment Day & Time column
+            // Appointment Day & Time columns
             Label appointmentDay = new Label(patient.getAppointmentDay());
             appointmentDay.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
             patientsGrid.add(appointmentDay, 7, i + 1);
-            //
+
             Label appointmentTime = new Label(patient.getAppointmentTime());
             appointmentTime.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
             patientsGrid.add(appointmentTime, 8, i + 1);
@@ -161,25 +253,25 @@ public class DoctorDashboard {
             // Status column with toggle button
             Button statusButton = new Button(patient.getStatus());
             statusButton.setStyle("-fx-padding: 5px; -fx-background-color: " +
-                    (patient.getStatus().equals("Pending") ? "#e67e22;" : "#2ecc71;") + // Orange for Pending, Green for Confirmed
+                    (patient.getStatus().equals("ending") ? "#e67e22;" : "#2ecc71;") + // Orange for Pending, Green for Confirmed
                     "-fx-font-weight: bold; -fx-text-fill: white;");
             int finalI = i; // To use inside lambda expression
             statusButton.setOnAction(event -> {
                 // Ask for confirmation
                 if (confirmStatusChange(patient.getName())) {
                     // Toggle status
-                    patientsList.get(finalI).setStatus(patientsList.get(finalI).getStatus().equals("Pending") ? "Confirmed" : "Pending");
+                    patients.get(finalI).setStatus(patients.get(finalI).getStatus().equals("pending") ? "confirmed" : "pending");
                     // Update button text and background color
-                    statusButton.setText(patientsList.get(finalI).getStatus());
+                    statusButton.setText(patients.get(finalI).getStatus());
                     statusButton.setStyle("-fx-padding: 5px; -fx-background-color: " +
-                            (patientsList.get(finalI).getStatus().equals("Pending") ? "#e67e22;" : "#2ecc71;") +
+                            (patients.get(finalI).getStatus().equals("Pending") ? "#e67e22;" : "#2ecc71;") +
                             "-fx-font-weight: bold; -fx-text-fill: white;");
                 }
             });
             patientsGrid.add(statusButton, 9, i + 1);
         }
 
-        root.setCenter(patientsGrid);
+        return patientsGrid;
     }
 
     private void addHeader(GridPane grid, String text, int columnIndex) {

@@ -17,15 +17,18 @@ import com.google.gson.reflect.TypeToken;
 import com.petguardian.Model.PatientModelClass;
 import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.Model.DoctorModelClass.AvailableDay;
+import com.petguardian.firebase.MyAuthentication;
 
 public class PatientDataFetcher {
         public List<PatientModelClass> fetchPatientData() throws Exception {
         System.out.println("In fetching patient  data ...");
-        String apiUrl = "https://pet-api-two.vercel.app/getPatient";
+        String apiUrl = "http://localhost:3000/getPatient?doctorId=" + MyAuthentication.getUserUid();
         URL url = new URL(apiUrl);
+        System.out.println("url");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
+        System.out.println("conn");
 
         if (conn.getResponseCode() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -62,10 +65,12 @@ public class PatientDataFetcher {
             String appointmentDay = patientObject.get("appointmentDay").getAsString();
             String appointmentTime = patientObject.get("appointmentTime").getAsString();
             String status = patientObject.get("status").getAsString();
-        
+            System.out.println(status);
+
+            String createdAt = patientObject.get("createdAt").getAsString();
             System.out.println(status);
             PatientModelClass patient = new PatientModelClass(
-                    patientId, name, contact,petName, petType,petAge,symptoms, appointmentDay, appointmentTime, status
+                    patientId, name, contact,petName, petType,petAge,symptoms, appointmentDay, appointmentTime, status,createdAt
             );
             
             patientList.add(patient);

@@ -13,11 +13,12 @@ public class PatientModelClass {
     private String appointmentDay;
     private String appointmentTime;
     private String status;
+    private String createdAt;
 
 
 
 
-    public PatientModelClass(String patientId, String name,String contact,String petName,String petType ,int petAge,String symptoms ,String appointmentDay,  String appointmentTime,String status) {
+    public PatientModelClass(String patientId, String name,String contact,String petName,String petType ,int petAge,String symptoms ,String appointmentDay,  String appointmentTime,String status,String createdAt) {
         this.patientId = patientId;
         this.name = name;
         this.contact = contact;
@@ -28,6 +29,7 @@ public class PatientModelClass {
         this.appointmentDay = appointmentDay;
         this.appointmentTime = appointmentTime;
         this.status = status;
+        this.createdAt=createdAt;
     }
 
 
@@ -80,7 +82,9 @@ public class PatientModelClass {
     public void setStatus(String status) {
         this.status=status;
     }
-
+    public String getCreatedAt() {
+        return createdAt;
+    }
 
 
     public void setStatus(Object object) {
