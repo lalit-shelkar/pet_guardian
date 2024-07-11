@@ -4,13 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.petguardian.Model.DoctorModelClass;
-import com.petguardian.Model.PatientModelClass;
 import com.petguardian.Model.DoctorModelClass.AvailableDay;
+import com.petguardian.Model.PatientModelClass;
 import com.petguardian.controllers.Pet;
+import com.petguardian.views.common.Navbar;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -29,6 +29,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 public class BookDoctorView {
@@ -36,9 +37,10 @@ public class BookDoctorView {
     private DoctorModelClass doctor;
     private Pane rootPane;
     private boolean isAppointment = false;
-    private Button selectedButton = null; // Track the selected button
+    private Button selectedDayButton = null;// Track the selected button
+    private Button selectedTimeButton = null;
+
     private GridPane timeSlotsGrid = new GridPane(); // GridPane for time slots
-    private String selectedDate; // Store the selected date
 
     public BookDoctorView(Pet app, DoctorModelClass doctor) {
         this.app = app;
@@ -48,30 +50,89 @@ public class BookDoctorView {
 
     private void initialize() {
         rootPane = new Pane();
-        rootPane.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
-        VBox createPatient = createPatientForm();
-        createPatient.setLayoutX(1000);
-        createPatient.setLayoutY(200);
-        rootPane.getChildren().addAll(createDoctorCard(), createBackButton(), createPatient);
+        rootPane.setStyle("-fx-background-color: white;");
+
+        rootPane.getChildren().addAll(leftVBox(), createDoctorCard(), appBar());
     }
 
     public Pane getView() {
         return rootPane;
     }
 
+    private VBox leftVBox() {
+        VBox leftVBox = new VBox();
+        leftVBox.setMinSize(320, 930);
+        leftVBox.setLayoutY(105);
+        leftVBox.setStyle(
+                "-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);" +
+                        "-fx-border-color: black;" + // Set the border color
+                        // Set the border width
+                        "-fx-border-style: solid;" + // Set the border style (solid, dashed, dotted, etc.)
+                        "-fx-border-radius: 20px;" + // Set the border radius
+                        "-fx-background-radius: 20px;" // Set the background radius to match border radius
+        );
+        return leftVBox;
+    }
+
     private HBox createDoctorCard() {
         VBox leftVBox = createLeftVBox();
         VBox contactVBox = createContactVBox();
 
-        HBox mainHBox = new HBox(30, leftVBox, contactVBox);
+        HBox mainHBox = new HBox(50, leftVBox, contactVBox, createPatientForm());
         mainHBox.setPadding(new Insets(20));
-        mainHBox.setStyle(
-                "-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e0e0e0; -fx-border-radius: 10;");
+        // mainHBox.setStyle(
+        // "-fx-background-color: white; -fx-background-radius: 10; -fx-border-color:
+        // #e0e0e0; -fx-border-radius: 10;");
         mainHBox.setAlignment(Pos.CENTER_LEFT);
         mainHBox.setEffect(new DropShadow(5, Color.GRAY));
-        mainHBox.setLayoutX(50);
+        mainHBox.setLayoutX(400);
         mainHBox.setLayoutY(200);
+
         return mainHBox;
+    }
+
+    private HBox appBar() {
+        HBox appBox = new HBox(900);
+        appBox.setPadding(new Insets(30, 30, 30, 30));
+        appBox.setStyle("-fx-background-color:#002240;");
+        appBox.setMinWidth(1950);
+        HBox hb = new HBox();
+
+        hb.setSpacing(65);
+        // hb.setAlignment(Pos.CENTER);
+
+        Label home = new Label("Home");
+        home.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+
+        Label service = new Label("Service");
+        service.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+
+        Label shop = new Label("Shop");
+        shop.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+        Label cart = new Label("Cart");
+        cart.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+        Label profile = new Label("Profile");
+        profile.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+        Label notification = new Label("Notifications");
+        notification.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+
+        home.setFont(new Font(20));
+        service.setFont(new Font(20));
+        shop.setFont(new Font(20));
+        cart.setFont(new Font(20));
+        profile.setFont(new Font(20));
+        notification.setFont(new Font(20));
+
+        home.setOnMouseClicked(e -> app.navigateToHomeView());
+        shop.setOnMouseClicked(e -> app.navigateToShopView());
+        cart.setOnMouseClicked(e -> app.navigateToShopCardView());
+        service.setOnMouseClicked(e -> app.navigateToVetarnaryView());
+
+        hb.getChildren().addAll(home, service, shop, cart, profile, notification);
+
+        appBox.getChildren().addAll(createBackButton(), hb);
+
+        return appBox;
     }
 
     private VBox createLeftVBox() {
@@ -92,19 +153,21 @@ public class BookDoctorView {
         imageContainer.setPrefSize(350, 350);
         imageContainer.setMaxSize(350, 350);
         imageContainer.setMinSize(350, 350);
+        imageContainer.setStyle("-fx-border-color: black; -fx-border-width: 0.5;");
+
         return imageContainer;
     }
 
     private Label createNameLabel() {
-        Label qualificationLabel = new Label(doctor.getName());
-        qualificationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 26));
-        qualificationLabel.setTextFill(Color.BLACK);
-        return qualificationLabel;
+        Label nameLabel = new Label(doctor.getName());
+        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 30)); // Make font bold and italic
+        nameLabel.setTextFill(Color.BLACK);
+        return nameLabel;
     }
 
     private Label createQualificationLabel() {
         Label qualificationLabel = new Label(doctor.getQualification());
-        qualificationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 23));
+        qualificationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
         qualificationLabel.setTextFill(Color.BLACK);
         return qualificationLabel;
     }
@@ -119,7 +182,7 @@ public class BookDoctorView {
     private HBox createRatingBox() {
         HBox ratingBox = new HBox(5);
         Label ratingLabel = new Label(String.valueOf(doctor.getRating()) + "/5");
-        ratingLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        ratingLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
         ratingLabel.setTextFill(Color.BLACK);
         ratingBox.getChildren().add(ratingLabel);
 
@@ -162,7 +225,7 @@ public class BookDoctorView {
 
     private VBox createContactVBox() {
         VBox contactVBox = new VBox(20);
-        contactVBox.setAlignment(Pos.CENTER);
+        contactVBox.setAlignment(Pos.CENTER_LEFT);
         contactVBox.setPadding(new Insets(10));
 
         contactVBox.getChildren().addAll(
@@ -170,17 +233,17 @@ public class BookDoctorView {
                 createAvailabilityLabel(),
                 createSpecialistLabel(),
                 createPriceLabel(),
+                createSelectDate(),
                 createDaysBox(),
                 timeSlotsGrid, // Add time slots grid to the contact VBox
-                createCallButton(),
-                createAppointmentButton()); // Add patient form here
+                createCallButton()); // Add patient form here
 
         return contactVBox;
     }
 
     private Label createLocationLabel() {
         Label locationLabel = new Label("Location: " + doctor.getLocation());
-        locationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
+        locationLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 19));
         locationLabel.setTextFill(Color.BLACK);
         return locationLabel;
     }
@@ -189,7 +252,7 @@ public class BookDoctorView {
         Label availabilityLabel = new Label(doctor.isAvailable() ? "Available" : "Not Available");
         availabilityLabel.setTextFill(doctor.isAvailable() ? Color.GREEN : Color.RED);
         availabilityLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
-        availabilityLabel.setStyle("-fx-border-color: " + (doctor.isAvailable() ? "green" : "red") + "; " +
+        availabilityLabel.setStyle("-fx-border-color: " + (doctor.isAvailable() ? "#4CAF50" : "red") + "; " +
                 "-fx-border-width: 2px; " +
                 "-fx-border-radius: 5px; " +
                 "-fx-padding: 5px;");
@@ -197,15 +260,31 @@ public class BookDoctorView {
     }
 
     private Label createSpecialistLabel() {
-        Label specialistLabel = new Label(doctor.getSpecializes());
+        Label specialistLabel = new Label("Specializes : " + doctor.getSpecializes());
         specialistLabel.setTextFill(Color.GREEN);
-        specialistLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
+        specialistLabel.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 23)); // Make font bold and
+                                                                                              // italic
+
         return specialistLabel;
     }
 
     private Label createPriceLabel() {
-        Label priceLabel = new Label("Price: $" + doctor.getPrice());
+        Label priceLabel = new Label("Price : ₹" + doctor.getPrice());
         priceLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
+        priceLabel.setTextFill(Color.BLACK);
+        return priceLabel;
+    }
+
+    private Label createSelectDate() {
+        Label priceLabel = new Label("Pick a one Date :");
+        priceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        priceLabel.setTextFill(Color.BLACK);
+        return priceLabel;
+    }
+
+    private Label createTime() {
+        Label priceLabel = new Label("Select Time :");
+        priceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         priceLabel.setTextFill(Color.BLACK);
         return priceLabel;
     }
@@ -229,144 +308,329 @@ public class BookDoctorView {
     }
 
     private Button createDayButton(String formattedDate) {
-        Button dayButton = new Button(formattedDate);
-        if (doctor.getAvailability().stream().anyMatch(d -> d.getDay().equals(formattedDate))) {
-            dayButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
-        } else {
-            dayButton.setDisable(true);
+        boolean isAvailable = false;
+
+        for (AvailableDay availableDay : doctor.getAvailableDays()) {
+            if (availableDay.getDate().equals(formattedDate)) {
+                isAvailable = true;
+                break;
+            }
         }
-        dayButton.setOnAction(event -> handleButtonClick(dayButton));
+
+        Button dayButton = new Button(formattedDate);
+
+        if (isAvailable) {
+            dayButton.setStyle(
+                    "-fx-background-color: white; " +
+                            "-fx-text-fill: green; " +
+                            "-fx-font-size: 16px; " +
+                            "-fx-background-radius: 5px; " +
+                            "-fx-border-color: green; " +
+                            "-fx-border-width: 1px;");
+            dayButton.setOnAction(e -> handleButtonClick(dayButton, true)); // Add event handler for green buttons
+        } else {
+            dayButton.setStyle(
+                    "-fx-background-color: lightgrey; -fx-text-fill: black; -fx-font-size: 16px; -fx-background-radius: 5px; -fx-opacity: 0.5;-fx-border-color: grey");
+
+            dayButton.setOnAction(e -> handleButtonClick(dayButton, false)); // Add event handler for grey buttons
+        }
         return dayButton;
     }
 
-    private void handleButtonClick(Button dayButton) {
-        if (selectedButton != null) {
-            selectedButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
-        }
-        dayButton.setStyle("-fx-background-color: blue; -fx-text-fill: white;");
-        selectedButton = dayButton;
-        selectedDate = dayButton.getText(); // Update the selected date
-        showTimeSlots();
+    private VBox createCallButton() {
+        Button callButton = new Button("Call: " + doctor.getContact());
+        callButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        callButton.setStyle(
+                "-fx-background-color: #4CAF50; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 20px; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-pref-width: 300; " +
+                        "-fx-pref-height: 35; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2);");
+
+        callButton.setOnMouseEntered(e -> callButton.setStyle(
+                "-fx-background-color: #45a049; " + // Darker green on hover
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 20px; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-pref-width: 300; " +
+                        "-fx-pref-height: 35; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2);"));
+
+        callButton.setOnMouseExited(e -> callButton.setStyle(
+                "-fx-background-color: #4CAF50; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-size: 20px; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-pref-width: 300; " +
+                        "-fx-pref-height: 35; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2);"));
+
+        VBox callButtonContainer = new VBox(callButton);
+
+        VBox.setMargin(callButton, new Insets(50, 0, 0, 0));
+        callButton.setOnAction(e -> {
+            // Placeholder for call functionality
+            showAlertBox("Calling the doctor.....");
+        });
+        return callButtonContainer;
     }
 
-    private void showTimeSlots() {
-        timeSlotsGrid.getChildren().clear(); // Clear previous time slots
-        if (selectedDate != null) {
-            AvailableDay availableDay = doctor.getAvailability().stream()
-                    .filter(d -> d.getDay().equals(selectedDate))
-                    .findFirst()
-                    .orElse(null);
+    //// handel button
+    /// date selecte here
+    private void handleButtonClick(Button button, boolean isAvailable) {
+        List<String> AvailableTime = new ArrayList<>();
 
-            if (availableDay != null) {
-                Set<String> availableTimes = availableDay.getAvailableTimes();
-                int row = 0;
-                int col = 0;
-
-                for (String time : availableTimes) {
-                    Button timeSlotButton = new Button(time);
-                    timeSlotButton.setOnAction(event -> handleTimeSlotSelection(timeSlotButton));
-                    timeSlotsGrid.add(timeSlotButton, col, row);
-                    col++;
-                    if (col > 2) {
-                        col = 0;
-                        row++;
-                    }
+        if (isAvailable) {
+            if (selectedDayButton != null) {
+                selectedDayButton.setStyle(
+                        "-fx-background-color: white; " +
+                                "-fx-text-fill: green; " +
+                                "-fx-font-size: 16px; " +
+                                "-fx-background-radius: 5px; " +
+                                "-fx-border-color: green; " +
+                                "-fx-border-width: 1px;");
+            }
+            button.setStyle(
+                    "-fx-background-color: orange; -fx-text-fill: white;-fx-font-size: 16px; -fx-background-radius: 5px;");
+            selectedDayButton = button;
+            ///
+            /// time slot for that selected daays
+            for (AvailableDay availableDay : doctor.getAvailableDays()) {
+                if (availableDay.getDate().equals(selectedDayButton.getText())) {
+                    AvailableTime = availableDay.getTimes();
                 }
             }
+
+            // Show time slots below the selected date
+            showTimeSlots(selectedDayButton.getText(), AvailableTime);
+        } else {
+            showAlertBox("Only available dates can be selected.");
         }
     }
 
-    private void handleTimeSlotSelection(Button timeSlotButton) {
-        if (selectedButton != null) {
-            selectedButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+    private void showTimeSlots(String date, List<String> AvailableTime) {
+
+        // Clear previous time slots
+        timeSlotsGrid.getChildren().clear();
+        timeSlotsGrid.add(createTime(), 0 % 3, 0 / 3);
+        timeSlotsGrid.setVgap(10); // Set vertical gap between cells
+        timeSlotsGrid.setHgap(10); // Set horizontal gap between cells
+
+        // Generate time slots
+        String[] timeSlots = { "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM" };
+        for (int i = 0; i < timeSlots.length; i++) {
+
+            Button timeSlotButton = new Button(timeSlots[i]);
+
+            /// give the color to time where time is present is green
+
+            if (AvailableTime.contains(timeSlots[i])) {
+                timeSlotButton.setStyle(
+                        "-fx-background-color: white; " +
+                                "-fx-text-fill: green; " +
+                                "-fx-font-size: 16px; " +
+                                "-fx-background-radius: 5px; " +
+                                "-fx-border-color: green; " +
+
+                                "-fx-border-width: 1px;");
+                /// on click time button
+                timeSlotButton.setOnAction(e -> {
+                    handleTimeButton(timeSlotButton, true);
+                });
+            } else {
+                timeSlotButton.setStyle(
+                        "-fx-background-color: lightgrey; -fx-text-fill: black; -fx-font-size: 16px; -fx-background-radius: 5px; -fx-opacity: 0.5;-fx-border-color: grey;");
+                // on click time button
+                timeSlotButton.setOnAction(e -> {
+                    showAlertBox("Only available Time can be selected.");
+                });
+            }
+            timeSlotsGrid.add(timeSlotButton, (i + 1) % 3, (i + 1) / 3); // Add buttons in a grid with 2 columns
+
         }
-        timeSlotButton.setStyle("-fx-background-color: blue; -fx-text-fill: white;");
-        selectedButton = timeSlotButton;
-        String selectedTime = timeSlotButton.getText(); // You can use selectedTime for further logic
     }
 
-    private Button createCallButton() {
-        Button callButton = new Button("Call");
-        callButton.setStyle("-fx-background-color: orange; -fx-text-fill: white; -fx-font-weight: bold;");
-        callButton.setOnAction(event -> {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Call");
-            alert.setHeaderText(null);
-            alert.setContentText("Calling " + doctor.getName() + "...");
-            alert.showAndWait();
-        });
-        return callButton;
+    /// handel time
+    private void handleTimeButton(Button button, boolean isAvailable) {
+
+        if (selectedTimeButton != null) {
+            selectedTimeButton.setStyle(
+                    "-fx-background-color: white; " +
+                            "-fx-text-fill: green; " +
+                            "-fx-font-size: 16px; " +
+                            "-fx-background-radius: 5px; " +
+                            "-fx-border-color: green; " +
+                            "-fx-border-width: 1px;");
+        }
+        button.setStyle(
+                "-fx-background-color: orange; -fx-text-fill: white;-fx-font-size: 16px; -fx-background-radius: 5px;");
+        selectedTimeButton = button;
     }
 
-    private Button createAppointmentButton() {
-        Button appointmentButton = new Button("Create Patient Form");
-        appointmentButton.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-weight: bold;");
+    /// paitint form crate kela ethe
+    ////
+    private VBox createPatientForm() {
+        VBox patientFormVBox = new VBox(20);
+        patientFormVBox.setAlignment(Pos.CENTER_LEFT);
+        patientFormVBox.setPadding(new Insets(20));
+        patientFormVBox.setStyle(
+                "-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff); " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-color: #e0e0e0; " +
+                        "-fx-border-radius: 10; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2);");
+
+        // Create labels and text fields for pet name, type, and age
+        Label petNameLabel = new Label("Pet Name:");
+        petNameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        TextField petNameField = new TextField();
+        petNameField.setPromptText("Enter pet name");
+        petNameField.setMinHeight(45);
+
+        Label petTypeLabel = new Label("Pet Type:");
+        petTypeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        TextField petTypeField = new TextField();
+        petTypeField.setPromptText("Enter pet type");
+        petTypeField.setMinHeight(45);
+
+        Label petAgeLabel = new Label("Pet Age:");
+        petAgeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        TextField petAgeField = new TextField();
+        petAgeField.setPromptText("Enter pet age");
+        petAgeField.setMinHeight(45);
+
+        Label symptoms = new Label("What are your symptoms:");
+        symptoms.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        TextArea symptomsField = new TextArea();
+        symptomsField.setPromptText("Enter symptoms");
+        symptomsField.setPrefRowCount(3);
+        symptomsField.setWrapText(true);
+        symptomsField.setStyle("-fx-font-size: 16px;");
+        symptomsField.setPrefWidth(300);
+
+        patientFormVBox.getChildren().addAll(
+                petNameLabel, petNameField,
+                petTypeLabel, petTypeField,
+                petAgeLabel, petAgeField,
+                symptoms, symptomsField,
+                createAppointmentButton(petNameField, petTypeField, petAgeField, symptomsField));
+
+        patientFormVBox.setMinHeight(600);
+        patientFormVBox.setMinWidth(300);
+        return patientFormVBox;
+    }
+
+    //// book apportment button
+    private Button createAppointmentButton(TextField petNameField, TextField petTypeField, TextField petAgeField,
+            TextArea symptomsField) {
+        Button appointmentButton = new Button("Book Appointment");
+        appointmentButton.setStyle(
+                "-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px; -fx-background-radius: 10; -fx-pref-width: 300; -fx-pref-height: 35;");
+
+        // Pass all required fields to handleSubmit method
         appointmentButton.setOnAction(event -> {
-            isAppointment = !isAppointment;
-            rootPane.getChildren().clear();
-            rootPane.getChildren().addAll(createDoctorCard(), createBackButton(), createPatientForm());
+            handleSubmit(petNameField, petTypeField, petAgeField, symptomsField, appointmentButton);
+
         });
         return appointmentButton;
     }
 
+    //// button click kelyvr
+    private void toggleAppointment(Button appointmentButton) {
+
+        //// submit kelyavar request janya sathi
+        // handleSubmit(null, null, null);
+
+        if (isAppointment) {
+            appointmentButton.setText("Book Appointment");
+            appointmentButton.setStyle(
+                    "-fx-background-color: #FFA500; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-size: 20px; " +
+                            "-fx-background-radius: 10; " +
+                            "-fx-pref-width: 300; -fx-pref-height: 35;");
+        } else {
+            appointmentButton.setText("Cancel Appointment");
+            appointmentButton.setStyle(
+                    "-fx-background-color: red; " +
+                            "-fx-text-fill: white; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-size: 20px; " +
+                            "-fx-background-radius: 10; " +
+                            "-fx-pref-width: 300; -fx-pref-height: 35;");
+        }
+        isAppointment = !isAppointment;
+    }
+
+    //// post request for submiting booking apportment
+    ///
+    private void handleSubmit(TextField petNameField, TextField petTypeField, TextField petAgeField,
+            TextArea symptomsField, Button appointmentButton) {
+        // Get the text from the text fields
+        String petName = petNameField.getText();
+        String petType = petTypeField.getText();
+        String petAge = petAgeField.getText();
+        String symptoms = symptomsField.getText();
+
+        // Validate the form fields
+        if (petName.isEmpty() || petType.isEmpty() || petAge.isEmpty() || symptoms.isEmpty()) {
+            showAlertBox("All fields must be filled out.");
+            return;
+        }
+
+        // Validate selected day and time
+        if (selectedDayButton == null) {
+            showAlertBox("Please select a date.");
+            return;
+        }
+        if (selectedTimeButton == null) {
+            showAlertBox("Please select a time.");
+            return;
+        }
+
+        // Print the selected day and time for now
+        System.out.println("Selected Day: " + selectedDayButton.getText());
+        System.out.println("Selected Time: " + selectedTimeButton.getText());
+
+        // Create a new PatientModelClass instance and submit the details
+        // PatientModelClass patient = new PatientModelClass(petName, petType, petAge,
+        // symptoms);
+        // Submit the patient details to the appropriate controller or service
+
+        // Show success message
+
+        toggleAppointment(appointmentButton);
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Appointment Booked");
+        alert.setHeaderText(null);
+        alert.setContentText("Your appointment has been booked successfully!");
+        alert.show();
+    }
+
+    ////
+    ////
     private Button createBackButton() {
         Button backButton = new Button("Back");
-        backButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
-        backButton.setOnAction(event -> {
-            isAppointment = false;
-            rootPane.getChildren().clear();
-            rootPane.getChildren().addAll(createDoctorCard(), createBackButton());
-        });
+        backButton.setLayoutX(20);
+        backButton.setLayoutY(20);
+        backButton.setMinSize(130, 40);
+        backButton.setStyle(
+                "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: White;-fx-background-radius:20;-fx-font-weight: bold;-fx-font-size:20");
+        backButton.setOnAction(e -> app.navigateToVetarnaryView());
         return backButton;
     }
 
-    private VBox createPatientForm() {
-        Label titleLabel = new Label("Patient Form");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        titleLabel.setTextFill(Color.BLACK);
-
-        Label nameLabel = new Label("Name:");
-        TextField nameField = new TextField();
-
-        Label ageLabel = new Label("Age:");
-        TextField ageField = new TextField();
-
-        Label breedLabel = new Label("Breed:");
-        TextField breedField = new TextField();
-
-        Button submitButton = new Button("Submit");
-        submitButton.setStyle("-fx-background-color: blue; -fx-text-fill: white; -fx-font-weight: bold;");
-        submitButton.setOnAction(event -> {
-            String name = nameField.getText();
-            String age = ageField.getText();
-            String breed = breedField.getText();
-
-            if (name.isEmpty() || age.isEmpty() || breed.isEmpty()) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Please fill in all fields.");
-                alert.showAndWait();
-            } else {
-                // PatientModelClass patient = new PatientModelClass(name, Integer.parseInt(age), breed);
-                // doctor.addPatient(patient);
-
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Patient information submitted successfully.");
-                alert.showAndWait();
-
-                rootPane.getChildren().clear();
-                rootPane.getChildren().addAll(createDoctorCard(), createBackButton());
-            }
-        });
-
-        VBox patientForm = new VBox(10, titleLabel, nameLabel, nameField, ageLabel, ageField, breedLabel, breedField,
-                submitButton);
-        patientForm.setPadding(new Insets(20));
-        patientForm.setStyle(
-                "-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #e0e0e0; -fx-border-radius: 10;");
-        return patientForm;
+    void showAlertBox(String msg) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Selection Error");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }
