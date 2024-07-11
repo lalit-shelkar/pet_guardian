@@ -1,5 +1,8 @@
 package com.petguardian.views.doctor;
 
+import com.petguardian.Model.PatientModelClass;
+import com.petguardian.controllers.DoctorDataFetcher;
+import com.petguardian.controllers.PatientDataFetcher;
 import com.petguardian.controllers.Pet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -19,7 +22,7 @@ import java.util.List;
 public class DoctorDashboard {
     private Pet app;
     private BorderPane root;
-    private List<String[]> patientsList; // Using a List of String arrays for patient data
+    private List<PatientModelClass> patientsList;
 
     public DoctorDashboard(Pet app) {
         this.app = app;
@@ -29,7 +32,12 @@ public class DoctorDashboard {
 
     private void initialize() {
         // Initialize patients data
-        initializePatients();
+        PatientDataFetcher dataFetcher = new PatientDataFetcher();
+        try {
+            patientsList = dataFetcher.fetchPatientData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Main layout
         root = new BorderPane();
@@ -77,23 +85,16 @@ public class DoctorDashboard {
         root.setCenter(new Label("Select an option from the navigation panel."));
     }
 
-    private void initializePatients() {
-        // Add some sample patients
-        patientsList.add(new String[]{"John Doe", "123-456-7890", "Dog", "5", "Monday 10:00 AM", "Pending"});
-        patientsList.add(new String[]{"Jane Smith", "234-567-8901", "Cat", "3", "Tuesday 2:00 PM", "Pending"});
-        patientsList.add(new String[]{"Mary Johnson", "345-678-9012", "Bird", "2", "Wednesday 11:00 AM", "Pending"});
-    }
-
     private void showPatients() {
         GridPane patientsGrid = new GridPane();
         patientsGrid.setPadding(new Insets(15));
-        patientsGrid.setHgap(10); // Horizontal gap between columns
+        patientsGrid.setHgap(15); // Horizontal gap between columns
         patientsGrid.setVgap(20); // Vertical gap between rows
 
         // Column constraints for equal width
         for (int i = 0; i < 7; i++) { // Adjusted to 7 columns including S. No.
             ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setPercentWidth(100.0 / 7);
+            columnConstraints.setPercentWidth(100.0 / 9);
             patientsGrid.getColumnConstraints().add(columnConstraints);
         }
 
@@ -101,46 +102,81 @@ public class DoctorDashboard {
         addHeader(patientsGrid, "S. No.", 0);
         addHeader(patientsGrid, "Name", 1);
         addHeader(patientsGrid, "Contact", 2);
-        addHeader(patientsGrid, "Pet Type", 3);
-        addHeader(patientsGrid, "Age", 4);
-        addHeader(patientsGrid, "Appointment Day & Time", 5);
-        addHeader(patientsGrid, "Status", 6);
+        addHeader(patientsGrid, "Pet Name", 3);
+        addHeader(patientsGrid, "Pet Type", 4);
+        addHeader(patientsGrid, "Pet Age", 5);
+        addHeader(patientsGrid, "Symptoms", 6);
+        addHeader(patientsGrid, "Appointment Day", 7);
+        addHeader(patientsGrid, "Time", 8);
+        addHeader(patientsGrid, "Status", 9);
 
         // Add patients dynamically
         for (int i = 0; i < patientsList.size(); i++) {
-            String[] patient = patientsList.get(i);
+            PatientModelClass patient = patientsList.get(i);
 
             // S. No. column
             Label serialNumber = new Label(String.valueOf(i + 1));
             serialNumber.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
             patientsGrid.add(serialNumber, 0, i + 1);
 
-            // Name, Contact, Pet Type, Age, Appointment, Status columns
-            for (int j = 0; j < patient.length; j++) {
-                Label label = new Label(patient[j]);
-                label.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
-                patientsGrid.add(label, j + 1, i + 1);
-            }
+            // Name column
+            Label nameLabel = new Label(patient.getName());
+            nameLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(nameLabel, 1, i + 1);
+
+            // Contact column
+            Label contactLabel = new Label(patient.getContact());
+            contactLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(contactLabel, 2, i + 1);
+
+             // Pet Name column
+             Label petNameLabel = new Label(patient.getPetName());
+             petNameLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+             patientsGrid.add(petNameLabel, 3, i + 1);
+
+            // Pet Type column
+            Label petTypeLabel = new Label(patient.getPetType());
+            petTypeLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(petTypeLabel, 4, i + 1);
+
+             // Pet Age column
+             Label petAgeLabel = new Label(Integer.toString(patient.getPetAge()));
+             petAgeLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+             patientsGrid.add(petAgeLabel, 5, i + 1);
+
+              // Pet Symptomps column
+              Label symptomsLabel = new Label(patient.getsymptoms());
+              symptomsLabel.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+              patientsGrid.add(symptomsLabel, 6, i + 1);
+
+            // Appointment Day & Time column
+            Label appointmentDay = new Label(patient.getAppointmentDay());
+            appointmentDay.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(appointmentDay, 7, i + 1);
+            //
+            Label appointmentTime = new Label(patient.getAppointmentTime());
+            appointmentTime.setStyle("-fx-padding: 5px; -fx-background-color: #ecf0f1; -fx-font-weight: bold;");
+            patientsGrid.add(appointmentTime, 8, i + 1);
 
             // Status column with toggle button
-            Button statusButton = new Button(patient[5]); // Assuming status is at index 5
+            Button statusButton = new Button(patient.getStatus());
             statusButton.setStyle("-fx-padding: 5px; -fx-background-color: " +
-                    (patient[5].equals("Pending") ? "#e67e22;" : "#2ecc71;") + // Orange for Pending, Green for Confirmed
+                    (patient.getStatus().equals("Pending") ? "#e67e22;" : "#2ecc71;") + // Orange for Pending, Green for Confirmed
                     "-fx-font-weight: bold; -fx-text-fill: white;");
             int finalI = i; // To use inside lambda expression
             statusButton.setOnAction(event -> {
                 // Ask for confirmation
-                if (confirmStatusChange(patient[0])) { // Assuming patient name is at index 0
+                if (confirmStatusChange(patient.getName())) {
                     // Toggle status
-                    patientsList.get(finalI)[5] = patientsList.get(finalI)[5].equals("Pending") ? "Confirmed" : "Pending";
+                    patientsList.get(finalI).setStatus(patientsList.get(finalI).getStatus().equals("Pending") ? "Confirmed" : "Pending");
                     // Update button text and background color
-                    statusButton.setText(patientsList.get(finalI)[5]);
+                    statusButton.setText(patientsList.get(finalI).getStatus());
                     statusButton.setStyle("-fx-padding: 5px; -fx-background-color: " +
-                            (patientsList.get(finalI)[5].equals("Pending") ? "#e67e22;" : "#2ecc71;") +
+                            (patientsList.get(finalI).getStatus().equals("Pending") ? "#e67e22;" : "#2ecc71;") +
                             "-fx-font-weight: bold; -fx-text-fill: white;");
                 }
             });
-            patientsGrid.add(statusButton, 6, i + 1);
+            patientsGrid.add(statusButton, 9, i + 1);
         }
 
         root.setCenter(patientsGrid);
