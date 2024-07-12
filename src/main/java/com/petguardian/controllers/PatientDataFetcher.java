@@ -20,7 +20,7 @@ import com.petguardian.Model.DoctorModelClass.AvailableDay;
 import com.petguardian.firebase.MyAuthentication;
 
 public class PatientDataFetcher {
-        public List<PatientModelClass> fetchPatientData() throws Exception {
+    public List<PatientModelClass> fetchPatientData() throws Exception {
         System.out.println("In fetching patient  data ...");
         String apiUrl = "https://pet-api-two.vercel.app/getPatient?doctorId="+ MyAuthentication.getUserUid();
         URL url = new URL(apiUrl);
@@ -78,20 +78,11 @@ public class PatientDataFetcher {
 
         // Access and print available days and times for each doctor
         for (PatientModelClass patient : patientList) {
-            System.out.println("Patient Name: " + patient.getName()+patient.getAppointmentDay());
-            
+            System.out.println("Patient Name: " + patient.getName() + patient.getAppointmentDay());
+
         }
 
         return patientList;
     }
 
-    // public static void main(String[] args) {
-    //     PatientDataFetcher obj=new PatientDataFetcher();
-    //     try {
-    //         List<PatientModelClass>x=obj.fetchPatientData();
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         System.out.println(e.getMessage());
-    //     }
-    // }
 }

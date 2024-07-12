@@ -1,7 +1,6 @@
 package com.petguardian.views;
 
 import java.util.List;
-
 import com.petguardian.Model.ProductModelClass;
 import com.petguardian.controllers.Pet;
 import com.petguardian.controllers.ProductDataFetch;
@@ -30,7 +29,9 @@ public class CatFoodView {
     private Pane rootPane;
     boolean isCat = true;
     ImageView mainImageview;
+    String Mainpricenum;
     Label MainLabel;
+    Label Mainprice;
     ProductDataFetch productobj = new ProductDataFetch();
     List<ProductModelClass> productList = productobj.productList;
 
@@ -47,7 +48,7 @@ public class CatFoodView {
         title.setStyle("-fx-font-weight: bold;");
         title.setFont(new Font(35));
         title.setLayoutX(800);
-        title.setLayoutY(50);
+        title.setLayoutY(100);
         title.setAlignment(Pos.TOP_CENTER);
 
         Image image = new Image("dog.png");
@@ -69,29 +70,48 @@ public class CatFoodView {
         MainLabel.setFont(new Font(20));
         MainLabel.setPadding(new Insets(15, 0, 00, 0));
 
+        Mainprice = new Label("price " + Mainpricenum);
+        Mainprice.setTextFill(Color.BLACK);
+        // price.setStyle("-fx-font-weight: bold;");
+        Mainprice.setFont(new Font(20));
+
         Button Icon = new Button("Add to Cart");
         Icon.setStyle(
                 "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: black;-fx-background-radius:10;-fx-font-weight: bold;");
 
         Icon.setFont(new Font(15));
+        Icon.setFocusTraversable(false);
+        ////////
+        /*
+         * Icon.setOnMouseClicked(e -> {
+         * 
+         * app.addItemToCart(prObj);
+         * showNotification("product Added Sucssesfully");
+         * 
+         * });
+         */
+
         // ---------------------------------all box passes in main vbox
-        VBox vb2 = new VBox(10, vb1, MainLabel, Icon);
-        vb2.setPrefHeight(700);
+        VBox vb2 = new VBox(10, vb1, MainLabel, Mainprice, Icon);
+        vb2.setMaxHeight(700);
         vb2.setMaxWidth(400);
-        vb2.setStyle("-fx-background-color:white;");
+        vb2.setStyle(
+                "-fx-background-color:white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 5, 0, 0, 0);");
+
         vb2.setLayoutX(100);
         vb2.setLayoutY(200);
         vb2.setPadding(new Insets(20, 20, 0, 20));
 
         // complete------------------------------------------
 
-        HBox hBoxScroll = new HBox(30);
+        HBox hBoxScroll = new HBox(60);
         hBoxScroll.setPrefHeight(1000);
-        hBoxScroll.setPrefWidth(1030);
-        hBoxScroll.setStyle("-fx-background-color:white; ");
+        hBoxScroll.setPrefWidth(1100);
+        // hBoxScroll.setStyle("-fx-background-color:transparent; ");
         hBoxScroll.setLayoutX(900);
         hBoxScroll.setLayoutY(150);
-        hBoxScroll.setPadding(new Insets(20, 20, 0, 20));
+        hBoxScroll.setPadding(new Insets(20, 50, 0, 50));
+        hBoxScroll.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
 
         VBox vBox1 = new VBox(20);
         VBox vBox2 = new VBox(20);
@@ -111,19 +131,22 @@ public class CatFoodView {
 
         hBoxScroll.getChildren().addAll(vBox1, vBox2);
         ScrollPane sc = new ScrollPane(hBoxScroll);
-        sc.setMaxSize(900, 1000);
+        sc.setMaxSize(1000, 1000);
         sc.setLayoutX(900);
         sc.setLayoutY(180);
+        sc.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sc.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sc.setStyle("-fx-background-color: transparent;");
 
-        HBox hb = new HBox(50, vb2);
+        HBox hb = new HBox(120, vb2);
         // hb.setStyle("-fx-background-color: pink;");
         hb.setPrefHeight(900);
         hb.setPrefWidth(1900);
         hb.setPadding(new Insets(0, 0, 50, 70));
-        hb.setStyle("-fx-background-color: red");
+        // hb.setStyle("-fx-background-color: red");
         hb.setLayoutY(100);
 
-        Group gr = new Group(title, vb2, sc);
+        Group gr = new Group(title, vb2, appBar(), sc);
         StackPane root = new StackPane(gr);
         rootPane.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
         rootPane.getChildren().add(root);
@@ -147,8 +170,6 @@ public class CatFoodView {
         backButton.setLayoutX(20);
         backButton.setLayoutY(20);
         backButton.setMinSize(130, 40);
-        System.out.println("in back button in food 2");
-
         backButton.setStyle(
                 "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: White;-fx-background-radius:20;-fx-font-weight: bold;-fx-font-size:20");
         backButton.setOnMouseClicked(e -> {
@@ -177,7 +198,7 @@ public class CatFoodView {
         Label lb2 = new Label(prObj.getName());
         lb2.setTextFill(Color.BLACK);
         lb2.setStyle("-fx-font-weight: bold;");
-        lb2.setFont(new Font(20));
+        lb2.setFont(new Font(30));
 
         // rating box
         HBox ratingBox = new HBox(5);
@@ -201,6 +222,7 @@ public class CatFoodView {
         }
 
         Label price = new Label("Price : " + prObj.getPrice() + "          ");
+        Mainpricenum = prObj.getPrice();
         price.setTextFill(Color.BLACK);
         // price.setStyle("-fx-font-weight: bold;");
         price.setFont(new Font(20));
@@ -219,20 +241,28 @@ public class CatFoodView {
 
         // vb5.setPadding(new Insets(20, 0, 0, 20));
 
-        VBox vb4 = new VBox(10, vb5, lb2, ratingContainer, Icon1);
-        vb4.setPrefHeight(400);
-        vb4.setMaxWidth(450);
+        VBox vb4 = new VBox(5, vb5, lb2, price, ratingContainer, Icon1);
+        vb4.setMaxHeight(500);
+        vb4.setMaxWidth(550);
         vb4.setStyle("-fx-background-color:pink;");
+        vb4.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-border-color: black;" + // Set the border color
+                        "-fx-border-style: solid;" + // Set the border style (solid, dashed, dotted, etc.)
+                        "-fx-border-radius: 20px;" + // Set the border radius
+                        "-fx-background-radius: 20px;");
         // vb4.setLayoutX(900);
         // vb4.setLayoutY(150);
-        vb4.setPadding(new Insets(20, 20, 0, 20));
+        vb4.setPadding(new Insets(20, 50, 20, 50));
         vb4.setOnMouseEntered(event -> elevateCard(vb4));
         vb4.setOnMouseExited(event -> resetCardElevation(vb4));
 
         vb4.setOnMouseClicked(e -> {
-            System.out.println("in press");
+
+            Mainpricenum = prObj.getPrice();
             mainImageview.setImage(new Image(prObj.getImg()));
             MainLabel.setText(prObj.getName());
+            Mainprice.setText("Price : " + prObj.getPrice() + "          ");
 
         });
         return vb4;

@@ -93,13 +93,12 @@ public class Pet extends Application {
         shopView = new ShopView(this);
         shopScene = new Scene(shopView.getView(), 1920, 1080);
 
-        /// shopscreen
-        // doctorView =new DoctorView (this);
-        // doctorScene = new Scene(doctorView.getView(), 1920, 1080);
-
         // DogFood View
         dogFoodView = new DogFoodView(this);
         dogFoodScene = new Scene(dogFoodView.getView(), 1920, 1080);
+
+        catFoodView = new CatFoodView(this);
+        catScene = new Scene(catFoodView.getView(), 1920, 1080);
 
         // traning view
         traningView = new TraningView(this);
@@ -117,12 +116,6 @@ public class Pet extends Application {
         shopcardScene = new Scene(shopCardView.getView(), 1920, 1080);
 
         ///
-        catFoodView = new CatFoodView(this);
-        catScene = new Scene(catFoodView.getView(), 1920, 1080);
-
-        ///
-        /// doctor started
-        // doctorGetStartedView = new DoctorGetStarted(this);
 
         ///
         /// initial screen
@@ -155,12 +148,6 @@ public class Pet extends Application {
         primaryStage.setScene(shopScene);
         primaryStage.show();
     }
-
-    /// navigate to doctor screen
-    // public void navigateToDoctorView() {
-    // primaryStage.setScene(doctorScene);
-    // primaryStage.show();
-    // }
 
     // navigate to dogFodd Screen
     public void navigateToDogFoodView() {
