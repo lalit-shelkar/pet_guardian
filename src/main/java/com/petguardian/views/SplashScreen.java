@@ -41,7 +41,7 @@ public class SplashScreen {
         title.setFont(Font.font("Arial", FontWeight.BOLD, 34));
 
         // Create the subtitle
-        Text subtitle = new Text("“Your Pets' Lifelong Protector”");
+        Text subtitle = new Text("Your Pets' Lifelong Protector");
         subtitle.setFill(Color.WHITE);
         subtitle.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
 
@@ -60,7 +60,7 @@ public class SplashScreen {
                 Duration.seconds(2), // Duration of the splash screen
                 event -> {
 
-                    app.navigateToHomeView();
+                    app.navigateToLoginView();
 
                 }));
         timeline.play();

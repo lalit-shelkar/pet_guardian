@@ -16,6 +16,8 @@ import com.petguardian.firebase.MyAuthentication;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
@@ -66,6 +68,8 @@ public class DoctorDashboard {
     private List<PatientModelClass> historyPatientsList;
     List<DoctorModelClass> doctorList;
     private Button selectedDayButton = null;
+    private Button navSelectedButton = null;
+
    // private List<DoctorModelClass> doctorList;
 
     public DoctorDashboard(Pet app) {
@@ -98,78 +102,131 @@ public class DoctorDashboard {
         //showUpcomingPatients();
     }
 
-    private VBox navigationPanel() {
-        VBox navigationPanel = new VBox();
-        navigationPanel.setPrefWidth(250);
-        navigationPanel.setSpacing(10); // Spacing between buttons
-        navigationPanel.setPadding(new Insets(15));
-        navigationPanel.setStyle("-fx-background-color: #002240;-fx-background-radius:20"); // Dark background color
+  private VBox navigationPanel() {
+    VBox navigationPanel = new VBox();
+    navigationPanel.setPrefWidth(300);
+    navigationPanel.setSpacing(10); // Spacing between buttons
+    navigationPanel.setPadding(new Insets(15));
+    navigationPanel.setStyle("-fx-background-color: #002240;-fx-background-radius:20"); // Dark background color
 
-        // Add some buttons to the navigation panel
-        ImageView logo = new ImageView(new Image("dashboard/logo.png"));
-        logo.setFitHeight(200);
-        logo.setFitWidth(200);
-        logo.setStyle("-fx-background-color: #2c3e50;");
-        logo.setPreserveRatio(true);
+    // Add some buttons to the navigation panel
+    ImageView logo = new ImageView(new Image("dashboard/logo.png"));
+    logo.setFitHeight(200);
+    logo.setFitWidth(200);
+    logo.setStyle("-fx-background-color: #2c3e50;");
+    logo.setPreserveRatio(true);
 
-        VBox vb=new VBox();
-        vb.setPrefHeight(480);
-        Button dashboardButton = new Button("Dashboard");
-        Button patientsButton = new Button("Patients");
-       // Button settingsButton = new Button("Settings");
-        Button upcomingPatientsButton = new Button("Upcoming Patients");
-        Button historyPatientsButton = new Button("History Patients");
-        Button logOutButton = new Button("Log Out =>");
+    VBox vb = new VBox();
+    vb.setPrefHeight(480);
+    Button dashboardButton = new Button("Dashboard");
+    dashboardButton.setMinWidth(300);
+    Button patientsButton = new Button("Patients");
+    patientsButton.setMinWidth(300);
+
+    Button upcomingPatientsButton = new Button("Upcoming Patients");
+    upcomingPatientsButton.setMinWidth(300);
+
+    Button historyPatientsButton = new Button("History Patients");
+    historyPatientsButton.setMinWidth(300);
+
+    Button logOutButton = new Button("Log Out =>");
+    logOutButton.setMinWidth(300);
 
 
-        // Style the buttons
-        String buttonStyle = "-fx-background-color: transparent; "
-                + "-fx-text-fill: white; "
-                + "-fx-font-size: 18px; "
-                + "-fx-padding: 10px 20px; "
-                + "-fx-border-width: 0 0 1 0; "
-                + "-fx-border-color: #34495e; "
-                + "-fx-border-style: solid;";
+    // Style the buttons
+    String buttonStyle = "-fx-background-color: transparent; "
+            + "-fx-text-fill: white; "
+            + "-fx-font-size: 18px; "
+            + "-fx-padding: 10px 20px; "
+            + "-fx-border-width: 0 0 1 0; "
+            + "-fx-border-color: #34495e; "
+            + "-fx-border-style: solid;";
 
+    dashboardButton.setStyle(buttonStyle);
+    patientsButton.setStyle(buttonStyle);
+    logOutButton.setStyle(buttonStyle + "-fx-text-fill: red;-fx-font-size: 24px");
+    upcomingPatientsButton.setStyle(buttonStyle);
+    historyPatientsButton.setStyle(buttonStyle);
+
+    // Add buttons to the navigation panel
+    navigationPanel.getChildren().addAll(logo, dashboardButton, patientsButton,
+            upcomingPatientsButton, historyPatientsButton, vb, logOutButton);
+
+    navSelectedButton = dashboardButton;
+    navSelectedButton.setStyle("-fx-background-color:#f89095");
+
+    // Method to reset button styles
+    EventHandler<ActionEvent> resetButtonStyles = event -> {
         dashboardButton.setStyle(buttonStyle);
         patientsButton.setStyle(buttonStyle);
-        logOutButton.setStyle(buttonStyle+"-fx-text-fill: red;-fx-font-size: 24px");
-        logOutButton.setLayoutX(15);
-        logOutButton.setLayoutY(800);
-        logOutButton.setAlignment(Pos.BASELINE_CENTER);
         upcomingPatientsButton.setStyle(buttonStyle);
         historyPatientsButton.setStyle(buttonStyle);
+        logOutButton.setStyle(buttonStyle + "-fx-text-fill: red;-fx-font-size: 24px");
+    };
 
-        // Add buttons to the navigation panel
-        navigationPanel.getChildren().addAll(logo, dashboardButton, patientsButton,
-                upcomingPatientsButton, historyPatientsButton,vb,logOutButton);
-        
-        // Event handler for the Dashboard button
-        dashboardButton.setOnAction(event -> showDashboard());
+    // Event handler for the Dashboard button
+    dashboardButton.setOnAction(event -> {
+        resetButtonStyles.handle(event);
+        navSelectedButton = dashboardButton;
+        navSelectedButton.setStyle("-fx-background-color:#f89095");
+        showDashboard();
+    });
 
-        // Event handler for the Dashboard button
-        patientsButton.setOnAction(event -> showPatients());
+    // Event handler for the Patients button
+    patientsButton.setOnAction(event -> {
+        resetButtonStyles.handle(event);
+        navSelectedButton = patientsButton;
+        navSelectedButton.setStyle("-fx-background-color:#f89095");
+        showPatients();
+    });
 
-        // Event handler for the Upcoming Patients button
-        upcomingPatientsButton.setOnAction(event -> showUpcomingPatients());
+    // Event handler for the Upcoming Patients button
+    upcomingPatientsButton.setOnAction(event -> {
+        resetButtonStyles.handle(event);
+        navSelectedButton = upcomingPatientsButton;
+        navSelectedButton.setStyle("-fx-background-color:#f89095");
+        showUpcomingPatients();
+    });
 
-        // Event handler for the History Patients button
-        historyPatientsButton.setOnAction(event -> showHistoryPatients());
+    // Event handler for the History Patients button
+    historyPatientsButton.setOnAction(event -> {
+        resetButtonStyles.handle(event);
+        navSelectedButton = historyPatientsButton;
+        navSelectedButton.setStyle("-fx-background-color:#f89095");
+        showHistoryPatients();
+    });
 
-        // Event handler for the log out button
-        logOutButton.setOnAction(event -> app.navigateToLoginView());
+    // Event handler for the Log Out button
+    logOutButton.setOnAction(event -> {
+        resetButtonStyles.handle(event);
+        navSelectedButton = logOutButton;
+        navSelectedButton.setStyle("-fx-background-color:#f89095");
+        app.navigateToLoginView();; // Assuming logOut() method exists
+    });
 
-        return navigationPanel;
-    }
+    return navigationPanel;
+}
+
 
    private void showDashboard() {
+    // Initialize patients data
+    PatientDataFetcher patientDataFetcher = new PatientDataFetcher();
+    //DoctorDataFetcher doctorDataFetcher = new DoctorDataFetcher();
+    try {
+       // doctorList = doctorDataFetcher.fetchDoctorData();
+       getDoctor();
+        patientsList = patientDataFetcher.fetchPatientData();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    //calling categorize method
+    categorizePatients();
     VBox dashboardView = new VBox();
     dashboardView.setPadding(new Insets(20));
     dashboardView.setSpacing(90);
     dashboardView.setStyle("-fx-background-color: #ecf0f1;");
     //
-    HBox hbtop=new HBox();
-    hbtop.setSpacing(1100);
+   
 
     //Image Profile
     ImageView profile = new ImageView(new Image(doctorList.get(0).getImg()));
@@ -188,9 +245,15 @@ public class DoctorDashboard {
         );
 
     // Header
+    HBox hbtop=new HBox();
+    hbtop.setSpacing(20);
+    HBox hbspace=new HBox();
+    hbspace.setMinWidth(900);
     Label header = new Label("Welcome!\n"+doctorList.get(0).getName());
     header.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;  -fx-text-fill: orange;");
-    hbtop.getChildren().addAll(header,profile);
+    Label dash = new Label("Dashboard");
+    dash.setStyle("-fx-font-size: 45px; -fx-font-weight: bold;  -fx-text-fill: orange;");
+    hbtop.getChildren().addAll(dash,hbspace,profile,header);
     dashboardView.getChildren().add(hbtop);
 
     // Example statistics
@@ -199,38 +262,45 @@ public class DoctorDashboard {
     // statsBox.setAlignment(Pos.CENTER);
 
     // Number of upcoming patients
-    VBox upcomingPatientsBox = createStatBox("Appointments", String.valueOf(upcomingPatientsList.size()), "#3498db","dashboard/scroll.png");
+    VBox upcomingPatientsBox = createStatBox("Appointments", String.valueOf(upcomingPatientsList.size()), "#daedff","dashboard/scroll.png");
     //statsBox.getChildren().add(upcomingPatientsBox);
 
     // Number of history patients
-    VBox historyPatientsBox = createStatBox("History Patients", String.valueOf(historyPatientsList.size()), "#e74c3c","dashboard/history.png");
+    VBox historyPatientsBox = createStatBox("History Patients", String.valueOf(historyPatientsList.size()), "#dbffe5","dashboard/history.png");
     //statsBox.getChildren().add(historyPatientsBox);
 
     // Number of total patients
-    VBox totalPatientsBox = createStatBox("Total Patients", String.valueOf(patientsList.size()), "#2ecc71","dashboard/salary.png");
+    VBox totalPatientsBox = createStatBox("Total Patients", String.valueOf(patientsList.size()), "#fffacf","dashboard/salary.png");
     //statsBox.getChildren().add(totalPatientsBox);
 
     double totalEarnings = calculateTotalEarnings();
-    VBox totalEarningsBox = createStatBox("Total Earnings", String.format(Locale.US, "$%.2f", totalEarnings), "#f39c12","dashboard/scroll.png");
+    VBox totalEarningsBox = createStatBox("Total Earnings", String.format(Locale.US, "$%.2f", totalEarnings), "#ead9ff","dashboard/scroll.png");
     //statsBox.getChildren().add(totalEarningsBox);
 
 
     HBox chartsBox = new HBox();
-    chartsBox.setSpacing(600);
-    //chartsBox.setAlignment(Pos.CENTER);
+    chartsBox.setSpacing(400);
+    chartsBox.setAlignment(Pos.CENTER);
     // Add PieChart
     PieChart patientDistributionChart = createPetTypeChart();
+    patientDistributionChart.setStyle("-fx-background-color: white; -fx-background-radius: 20px; -fx-border-radius: 20px; ");
    // chartsBox.getChildren().add(patientDistributionChart);
 
     
     //statgridpane
+    Label analytics=new Label("Analytics Overview");
+    analytics.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;  -fx-text-fill: black;");
     GridPane gridPane = new GridPane();
+    gridPane.add(analytics, 2, 1);
     gridPane.add(upcomingPatientsBox, 2, 2);
     gridPane.add(historyPatientsBox, 3, 2);
     gridPane.add(totalPatientsBox, 2, 3);
     gridPane.add(totalEarningsBox, 3, 3);
     gridPane.setHgap(25);
     gridPane.setVgap(25);
+    gridPane.setStyle("-fx-background-color: white; -fx-background-radius: 20px; -fx-border-radius: 20px; ");
+   // gridPane.setAlignment(Pos.CENTER);
+   gridPane.setPadding(new Insets(0,30,30,0));
     
     
     chartsBox.getChildren().addAll(gridPane,patientDistributionChart);
@@ -483,14 +553,14 @@ private VBox createStatBox(String title, String value, String color,String url) 
     statBox.setPadding(new Insets(15));
     statBox.setSpacing(15);
     statBox.setAlignment(Pos.CENTER);
-    statBox.setStyle("-fx-background-color: white; -fx-background-radius: 10px; -fx-border-radius: 10px; "
-            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 5);");
+    statBox.setStyle(" -fx-background-radius: 10px; -fx-border-radius: 10px; "
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 5);"+"-fx-background-color:"+color);
 
     Label titleLabel = new Label(title);
-    titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: " + color + ";");
+    titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: " + "black" + ";");
 
     Label valueLabel = new Label(value);
-    valueLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: " + color + ";");
+    valueLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: " + "black"+ ";");
 
     statBox.getChildren().addAll(iv,titleLabel, valueLabel);
     statBox.setPrefSize(200, 200);
