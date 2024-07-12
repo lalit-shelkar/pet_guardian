@@ -471,33 +471,6 @@ private Button createDayButton(String formattedDate) {
         return alert.getResult() == javafx.scene.control.ButtonType.OK;
     }
 
-
-
-//
-//  private PieChart createPetTypeChart() {
-//         Map<String, Integer> petTypeCount = new HashMap<>();
-//         System.out.println("outer");
-//         for (DoctorModelClass doctor : doctorList) {
-//             System.out.println("inner");
-//             for (PatientModelClass patient : patientsList) {
-//                 System.out.println("type"+patient.getPetType().toLowerCase());
-//                 petTypeCount.put(patient.getPetType().toLowerCase(), petTypeCount.getOrDefault(patient.getPetType(), 0) + 1);
-//             }
-//         }
-
-//         PieChart petTypeChart = new PieChart();
-//         petTypeChart.setTitle("Pet Type vs. Patients");
-
-//         for (Map.Entry<String, Integer> entry : petTypeCount.entrySet()) {
-//             PieChart.Data slice = new PieChart.Data(entry.getKey(), entry.getValue());
-//             petTypeChart.getData().add(slice);
-//         }
-//        // PieChart pieChart = new PieChart(pieChartData);
-//        petTypeChart.setTitle("Patient Distribution");
-//        petTypeChart.setLabelsVisible(true);
-//        petTypeChart.setLegendVisible(false);
-//        return petTypeChart;
-//     }
 private PieChart createPetTypeChart() {
     Map<String, Integer> petTypeCount = new HashMap<>();
 

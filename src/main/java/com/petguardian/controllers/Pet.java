@@ -12,7 +12,7 @@ import com.petguardian.views.DogFoodView;
 import com.petguardian.views.GroomingView;
 import com.petguardian.views.ShopView;
 import com.petguardian.views.SplashScreen;
-import com.petguardian.views.TraningView;
+import com.petguardian.views.TrainingView;
 import com.petguardian.views.VetarnaryView;
 import com.petguardian.views.common.Navbar;
 import com.petguardian.views.doctor.DoctorDashboard;
@@ -46,7 +46,7 @@ public class Pet extends Application {
     private Scene dogFoodScene;
     //
     // for training purpose
-    private TraningView traningView;
+    private TrainingView traningView;
     private Scene traningScene;
     //
     // for gromming
@@ -70,7 +70,6 @@ public class Pet extends Application {
     /// about us
     private AboutUs AboutUs;
     private Scene AboutScene;
-   
 
     private Navbar navbarView;
 
@@ -99,9 +98,9 @@ public class Pet extends Application {
         /// shopscreen
         shopView = new ShopView(this);
         shopScene = new Scene(shopView.getView(), 1920, 1080);
-        
+
         ///
-                       /// about us
+        /// about us
         AboutUs = new AboutUs(this);
         AboutScene = new Scene(AboutUs.getView(), 1920, 1080);
         // DogFood View
@@ -112,7 +111,7 @@ public class Pet extends Application {
         catScene = new Scene(catFoodView.getView(), 1920, 1080);
 
         // traning view
-        traningView = new TraningView(this);
+        traningView = new TrainingView(this);
         traningScene = new Scene(traningView.getView(), 1920, 1080);
         // grooming screen
         groomingView = new GroomingView(this);
@@ -231,6 +230,7 @@ public class Pet extends Application {
         primaryStage.setScene(docterScene);
 
     }
+
     ///
     public void navigationToAboutus() {
         primaryStage.setScene(AboutScene);
