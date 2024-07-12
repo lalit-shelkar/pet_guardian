@@ -6,6 +6,7 @@ import com.petguardian.controllers.DoctorDataFetcher;
 import com.petguardian.controllers.PatientDataFetcher;
 import com.petguardian.controllers.Pet;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,6 +21,11 @@ import javafx.scene.layout.VBox;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,7 +68,7 @@ public class DoctorDashboard {
         root.setLeft(navigationPanel());
 
         // Initially show the list of upcoming patients
-        showUpcomingPatients();
+        //showUpcomingPatients();
     }
 
     private VBox navigationPanel() {
@@ -79,11 +85,15 @@ public class DoctorDashboard {
         logo.setStyle("-fx-background-color: #2c3e50;");
         logo.setPreserveRatio(true);
 
+        VBox vb=new VBox();
+        vb.setPrefHeight(480);
         Button dashboardButton = new Button("Dashboard");
         Button patientsButton = new Button("Patients");
-        Button settingsButton = new Button("Settings");
+       // Button settingsButton = new Button("Settings");
         Button upcomingPatientsButton = new Button("Upcoming Patients");
         Button historyPatientsButton = new Button("History Patients");
+        Button logOutButton = new Button("Log Out =>");
+
 
         // Style the buttons
         String buttonStyle = "-fx-background-color: transparent; "
@@ -96,22 +106,28 @@ public class DoctorDashboard {
 
         dashboardButton.setStyle(buttonStyle);
         patientsButton.setStyle(buttonStyle);
-        settingsButton.setStyle(buttonStyle);
+        logOutButton.setStyle(buttonStyle+"-fx-text-fill: red;-fx-font-size: 24px");
+        logOutButton.setLayoutX(15);
+        logOutButton.setLayoutY(800);
+        logOutButton.setAlignment(Pos.BASELINE_CENTER);
         upcomingPatientsButton.setStyle(buttonStyle);
         historyPatientsButton.setStyle(buttonStyle);
 
         // Add buttons to the navigation panel
-        navigationPanel.getChildren().addAll(logo, dashboardButton, patientsButton, settingsButton,
-                upcomingPatientsButton, historyPatientsButton);
+        navigationPanel.getChildren().addAll(logo, dashboardButton, patientsButton,
+                upcomingPatientsButton, historyPatientsButton,vb,logOutButton);
 
         // Event handler for the Dashboard button
-        patientsButton.setOnAction(event -> showDashboard());
+        patientsButton.setOnAction(event -> showPatients());
 
         // Event handler for the Upcoming Patients button
         upcomingPatientsButton.setOnAction(event -> showUpcomingPatients());
 
         // Event handler for the History Patients button
         historyPatientsButton.setOnAction(event -> showHistoryPatients());
+
+        // Event handler for the log out button
+        logOutButton.setOnAction(event -> app.navigateToLoginView());
 
         return navigationPanel;
     }
@@ -131,47 +147,53 @@ public class DoctorDashboard {
     // Current date and time for comparison
     LocalDate currentDate = LocalDate.now();
     LocalTime currentTime = LocalTime.now();
+    System.out.println(currentTime);
 
     for (PatientModelClass patient : patientsList) {
         // Parse appointment date
-       // String aptDay= patient.getAppointmentDay();
-        //String arr[]= aptDay.split(" ");
-       // int month=monthfinder(arr[0]);
-        System.out.println("datet="+patient.getCreatedAt());
-        String trimDate=patient.getCreatedAt().substring(0, 10);
+        String aptDay= patient.getAppointmentDay();
+        String arr[]= aptDay.split("-");
+        String month=monthfinder(arr[0]);
+        System.out.println(month);
+        int currentYear = LocalDate.now().getYear();
+        String currentYearString = String.valueOf(currentYear); 
+       // System.out.println("");
+        System.out.println("datet="+currentYearString+"-"+month+"-"+arr[1]);
+
+        String trimDate=currentYearString+"-"+month+"-"+arr[1];
       
         LocalDate appointmentDate = LocalDate.parse(trimDate, formatter);
         System.out.println("for="+appointmentDate);
+        String status=patient.getStatus();
 
-    //    // Compare dates and times
-    //     if (appointmentDate.isAfter(currentDate) ||
-    //             (appointmentDate.isEqual(currentDate) && LocalTime.parse(patient.getCreatedAt()).isAfter(currentTime))) {
-    //         upcomingPatientsList.add(patient);
-    //     } else {
-    //         historyPatientsList.add(patient);
-    //     }
+       // Compare dates and times&& LocalTime.parse(patient.getCreatedAt()).isAfter(currentTime)
+        if ( status.equals("pending") && (appointmentDate.isAfter(currentDate) ||
+                (appointmentDate.isEqual(currentDate) ))) {
+            upcomingPatientsList.add(patient);
+        } else {
+            historyPatientsList.add(patient);
+        }
     }
 
-    // Sort historyPatientsList in descending order
-    // historyPatientsList.sort((p1, p2) -> {
-    //     LocalDate date1 = LocalDate.parse(p1.getAppointmentDay().substring(0, 10), formatter);
-    //     LocalDate date2 = LocalDate.parse(p2.getAppointmentDay().substring(0, 10), formatter);
-    //     return date2.compareTo(date1); // Reverse order for date
-    // });
-
-    // // Sort upcomingPatientsList in ascending order
-    // historyPatientsList.sort((p1, p2) -> {
-    //     LocalDate date1 = LocalDate.parse(p1.getAppointmentDay(), formatter);
-    //     LocalDate date2 = LocalDate.parse(p2.getAppointmentDay(), formatter);
-    //     return date1.compareTo(date2); // Ascending order for date
-    // });
-
-   // upcomingPatientsList.get(0).getName();
-    //upcomingPatientsList.get(0).getName();
 }
 
+    private String monthfinder(String month){
+        String num="00";
+        switch (month) {
+            case "July":
+                num="07";
+                break;
+        
+            default:
+                break;
+        }
+        return num;
+    }
+
     
-    
+    private void showPatients(){
+        root.setCenter((createPatientsGrid(patientsList, "Patients")));
+    }
     private void showUpcomingPatients() {
         root.setCenter(createPatientsGrid(upcomingPatientsList, "Upcoming Patients"));
     }
@@ -256,7 +278,7 @@ public class DoctorDashboard {
             // Status column with toggle button
             Button statusButton = new Button(patient.getStatus());
             statusButton.setStyle("-fx-padding: 5px; -fx-background-color: " +
-                    (patient.getStatus().equals("ending") ? "#e67e22;" : "#2ecc71;") + // Orange for Pending, Green for Confirmed
+                    (patient.getStatus().equals("pending") ? "#e67e22;" : "#2ecc71;") + // Orange for Pending, Green for Confirmed
                     "-fx-font-weight: bold; -fx-text-fill: white;");
             int finalI = i; // To use inside lambda expression
             statusButton.setOnAction(event -> {
@@ -269,6 +291,16 @@ public class DoctorDashboard {
                     statusButton.setStyle("-fx-padding: 5px; -fx-background-color: " +
                             (patients.get(finalI).getStatus().equals("Pending") ? "#e67e22;" : "#2ecc71;") +
                             "-fx-font-weight: bold; -fx-text-fill: white;");
+                    addToHistory(patient);
+                    showUpcomingPatients();
+
+                    try {
+                        toggleStatus(patient.get_Id());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
+                    
                 }
             });
             patientsGrid.add(statusButton, 9, i + 1);
@@ -302,6 +334,33 @@ public class DoctorDashboard {
         return alert.getResult() == javafx.scene.control.ButtonType.OK;
     }
 
+    private void addToHistory(PatientModelClass patient){
+        upcomingPatientsList.remove(upcomingPatientsList.indexOf(patient));
+        historyPatientsList.add(0, patient);
+    }
+
+    private void toggleStatus(String id) throws Exception{
+        String apiUrl = "https://pet-api-two.vercel.app/changeStatus?_id="+id; //+ MyAuthentication.getUserUid();
+        URL url = new URL(apiUrl);
+        System.out.println("url");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+        System.out.println("conn");
+
+        if (conn.getResponseCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+        }
+
+        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+        StringBuilder sb = new StringBuilder();
+        String output;
+        while ((output = br.readLine()) != null) {
+            sb.append(output);
+        }
+
+        conn.disconnect();
+    }
     public BorderPane getView() {
         return root;
     }

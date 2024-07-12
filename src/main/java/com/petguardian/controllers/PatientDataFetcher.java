@@ -22,7 +22,7 @@ import com.petguardian.firebase.MyAuthentication;
 public class PatientDataFetcher {
         public List<PatientModelClass> fetchPatientData() throws Exception {
         System.out.println("In fetching patient  data ...");
-        String apiUrl = "https://pet-api-two.vercel.app/getPatient?doctorId=" + MyAuthentication.getUserUid();
+        String apiUrl = "https://pet-api-two.vercel.app/getPatient?doctorId="+ MyAuthentication.getUserUid();
         URL url = new URL(apiUrl);
         System.out.println("url");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -54,7 +54,7 @@ public class PatientDataFetcher {
         // Parse availableDays for each doctor
         for (JsonElement patientElement : patientArray) {
             JsonObject patientObject = patientElement.getAsJsonObject();
-
+            String _id=patientObject.get("_id").getAsString();
             String patientId = patientObject.get("patientId").getAsString();
             String name = patientObject.get("name").getAsString();
             String contact = patientObject.get("contact").getAsString();
@@ -70,7 +70,7 @@ public class PatientDataFetcher {
             String createdAt = patientObject.get("createdAt").getAsString();
             System.out.println(status);
             PatientModelClass patient = new PatientModelClass(
-                    patientId, name, contact,petName, petType,petAge,symptoms, appointmentDay, appointmentTime, status,createdAt
+                   _id, patientId, name, contact,petName, petType,petAge,symptoms, appointmentDay, appointmentTime, status,createdAt
             );
             
             patientList.add(patient);

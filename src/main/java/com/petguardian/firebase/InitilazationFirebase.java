@@ -11,7 +11,7 @@ public class InitilazationFirebase {
 
         public static void initialize() throws IOException {
                 FileInputStream serviceAccount = new FileInputStream(
-                                "C:\\Users\\Dell\\Desktop\\JAVA-PRAC\\JavaFX\\petgaurdian\\src\\main\\resources\\fir-javafx-47969-firebase-adminsdk-44ci7-c0ac16fd95.json");
+                                "src/main/resources/fir-javafx-47969-firebase-adminsdk-44ci7-c0ac16fd95.json");
 
                 FirebaseOptions options = new FirebaseOptions.Builder()
                                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))

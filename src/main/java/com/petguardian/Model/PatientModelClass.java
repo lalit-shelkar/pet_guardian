@@ -3,6 +3,7 @@ package com.petguardian.Model;
 import java.util.Date;
 
 public class PatientModelClass {
+    private String _id;
     private String patientId;
     private String name;
     private String contact;
@@ -18,7 +19,8 @@ public class PatientModelClass {
 
 
 
-    public PatientModelClass(String patientId, String name,String contact,String petName,String petType ,int petAge,String symptoms ,String appointmentDay,  String appointmentTime,String status,String createdAt) {
+    public PatientModelClass(String _id,String patientId, String name,String contact,String petName,String petType ,int petAge,String symptoms ,String appointmentDay,  String appointmentTime,String status,String createdAt) {
+        this._id=_id;
         this.patientId = patientId;
         this.name = name;
         this.contact = contact;
@@ -32,7 +34,9 @@ public class PatientModelClass {
         this.createdAt=createdAt;
     }
 
-
+    public String get_Id() {
+        return _id;
+    }
 
     public String getPatientId() {
         return patientId;
