@@ -197,18 +197,66 @@ public class DoctorForm {
 
         // Submit button action
         submitButton.setOnAction(e -> {
-            try {
-                postDoctorAvailability(resultLabel, dayCheckBoxes);
-                app.navigateToDoctorDashboard();
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            if (validateFields() && validateImageSelection()) {
+                try {
+                    postDoctorAvailability(resultLabel, dayCheckBoxes);
+                    app.navigateToDoctorDashboard();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
         splitPane.getItems().add(grid);
         root.setCenter(splitPane);
 
+    }
+
+    /// validation function
+    private boolean validateFields() {
+        boolean isValid = true;
+
+        // Validate name field
+        if (nameField.getText().isEmpty()) {
+            showAlert("Name field is required.");
+            isValid = false;
+        }
+
+        // Validate experience field (numeric check)
+        if (!experienceField.getText().matches("\\d+")) {
+            showAlert("Experience must be a number.");
+            isValid = false;
+        }
+
+        // Validate rating field (numeric check)
+        if (!ratingField.getText().matches("\\d+")) {
+            showAlert("Rating must be a number.");
+            isValid = false;
+        }
+
+        // Validate contact field (email format)
+        if (!contactField.getText().matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+            showAlert("Invalid email format.");
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    /// validation for img
+    private boolean validateImageSelection() {
+        if (selectedImageFile == null) {
+            showAlert("Please select a doctor image.");
+            return false;
+        }
+        return true;
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Validation Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void addFormField(GridPane grid, String labelText, int row, TextField textField, int colSpan) {

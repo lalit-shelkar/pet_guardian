@@ -1,25 +1,15 @@
 package com.petguardian.views;
 
 import javafx.util.Duration;
-
-import java.util.Map;
-
-import com.google.api.Authentication;
 import com.petguardian.controllers.Pet;
-import com.petguardian.firebase.MyAuthentication;
 import com.petguardian.views.common.Navbar;
-
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -29,7 +19,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -53,6 +42,9 @@ public class HomeView {
         userName.setFont(new Font(30));
         userName.setTextFill(Color.ORANGE);
         userName.setStyle("-fx-font-weight: bold;-fx-font-family: 'Times New Roman';");
+        HBox usernameBox = new HBox(userName);
+        usernameBox.setMinWidth(1000);
+        usernameBox.setAlignment(Pos.TOP_LEFT);
 
         rootpane = new Pane();
         rootpane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 50% 50%, #F5D7C3, #ffffff);");
@@ -61,9 +53,19 @@ public class HomeView {
         iv.setLayoutX(1116);
         iv.setLayoutY(100);
         Navbar nav = new Navbar(app);
+        ImageView logOut = new ImageView(new Image("logout.png"));
+        logOut.setFitHeight(30);
+        logOut.setFitWidth(30);
+
+        HBox logoutBox = new HBox(logOut);
+        logoutBox.setMinWidth(170);
+        logoutBox.setMinHeight(50);
+        logoutBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+        logOut.setOnMouseClicked(e -> app.navigateToLoginView());
 
         // navbar
-        HBox navBox = new HBox(800, userName, nav.navBar());
+        HBox navBox = new HBox(usernameBox, nav.navBar(), logoutBox);
         rootpane.getChildren().add(iv);
         rootpane.getChildren().add(navBox);
         rootpane.getChildren().add(categoryView());
@@ -77,6 +79,7 @@ public class HomeView {
         return rootpane;
     }
 
+    @SuppressWarnings("static-access")
     private GridPane categoryView() {
         GridPane categoryView = new GridPane();
         categoryView.setLayoutX(100);

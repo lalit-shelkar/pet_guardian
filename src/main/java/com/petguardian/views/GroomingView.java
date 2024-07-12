@@ -1,9 +1,5 @@
 package com.petguardian.views;
-
-import javax.swing.plaf.ScrollBarUI;
-
 import com.petguardian.controllers.Pet;
-
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -22,9 +18,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
 import javafx.util.Duration;
-
 public class GroomingView {
         Pet app;
         ScrollPane rootPane;
@@ -154,13 +148,7 @@ public class GroomingView {
                         serviceBox.setAlignment(Pos.CENTER);
                         serviceBox.setEffect(new DropShadow());
 
-                        // Add hover effect
-                        // serviceBox.setOnMouseEntered(e -> serviceBox.setStyle("-fx-background-color:
-                        // #e0e0e0; -fx-border-color: lightgray; -fx-border-radius: 10;
-                        // -fx-background-radius: 10;"));
-                        // serviceBox.setOnMouseExited(e -> serviceBox.setStyle("-fx-background-color:
-                        // white; -fx-border-color: lightgray; -fx-border-radius: 10;
-                        // -fx-background-radius: 10;"));
+                        
                         serviceBox.setOnMouseEntered(e -> {
                                 serviceBox.setStyle(
                                                 "-fx-background-color: #e0e0e0; -fx-border-color: lightgray; -fx-border-radius: 10; -fx-background-radius: 10;");
