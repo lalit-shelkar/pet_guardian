@@ -5,6 +5,8 @@ import com.petguardian.controllers.Pet;
 import com.petguardian.views.common.Navbar;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -16,6 +18,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +42,7 @@ public class ShopCardView {
         productList.add(obj);
         productQuantities.put(obj, 1);
 
-        productsList.getChildren().add(createProductBox(obj));
+        refreshProductList();
         updateSubtotalAndTotal();
     }
 
@@ -66,7 +69,7 @@ public class ShopCardView {
 
         // Products List VBox
         // Initialize the productsList VBox
-        productList.forEach(product -> productsList.getChildren().add(createProductBox(product)));
+        refreshProductList();
 
         // Promo Code Section
         HBox promoCodeBox = new HBox(20);
@@ -103,15 +106,23 @@ public class ShopCardView {
         checkoutBox.getChildren().addAll(gPayButton, shopPayButton, paypalButton);
         checkoutBox.setAlignment(Pos.CENTER);
 
+        ///
+        gPayButton.setOnMouseClicked(e -> submit());
+        shopPayButton.setOnMouseClicked(e -> submit());
+        paypalButton.setOnMouseClicked(e -> submit());
+
         // Sidebar VBox
         VBox sideBar = new VBox(35, promoCodeBox, cartSummary, checkoutBox);
         sideBar.setAlignment(Pos.TOP_CENTER); // Align to the top
         sideBar.setPadding(new Insets(20));
         sideBar.setStyle(
                 "-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-border-color: lightgrey; -fx-border-width: 1;");
-        
+        sideBar.setPrefHeight(450);
+        sideBar.setMaxHeight(450);
+        sideBar.setMinHeight(450); // Ensure the sideBar height is fixed at 600
+
         // Main content HBox
-        HBox mainContent = new HBox(50, productsList, sideBar);
+        HBox mainContent = new HBox(150, productsList, sideBar);
         mainContent.setAlignment(Pos.CENTER);
 
         // ScrollPane for root content
@@ -194,36 +205,37 @@ public class ShopCardView {
         productBox.setOnMouseEntered(e -> productBox.setEffect(new DropShadow(20, Color.DARKGRAY)));
         productBox.setOnMouseExited(e -> productBox.setEffect(new DropShadow(10, Color.GRAY)));
 
-        // Quantity Controls Logic
-        increaseButton.setOnAction(e -> {
-            int quantity = Integer.parseInt(quantityField.getText());
-            quantity++;
-            quantityField.setText(String.valueOf(quantity));
-            productQuantities.put(product, quantity);
-            totalLabel.setText("Total: ₹" + (quantity * Integer.parseInt(product.getPrice())));
-            updateSubtotalAndTotal();
-        });
-
-        decreaseButton.setOnAction(e -> {
-            int quantity = Integer.parseInt(quantityField.getText());
-            if (quantity > 1) {
-                quantity--;
-                quantityField.setText(String.valueOf(quantity));
-                productQuantities.put(product, quantity);
-                totalLabel.setText("Total: ₹" + (quantity * Integer.parseInt(product.getPrice())));
-                updateSubtotalAndTotal();
-            }
-        });
-
         return productBox;
     }
 
-    private void updateSubtotalAndTotal() {
-        subtotalLabel.setText("Subtotal: ₹" + calculateSubtotal());
-        totalLabel.setText("Total Cost: ₹" + calculateTotal());
+    private void removeCard(ProductModelClass product) {
+        productList.remove(product);
+        productQuantities.remove(product);
+        refreshProductList();
+        updateSubtotalAndTotal();
     }
 
-    private int calculateSubtotal() {
+    private void refreshProductList() {
+        productsList.getChildren().clear();
+        if (productList.isEmpty()) {
+            Label emptyCartLabel = new Label("Cart is empty");
+            emptyCartLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+            emptyCartLabel.setTextFill(Color.RED);
+            productsList.getChildren().add(emptyCartLabel);
+        } else {
+            productList.forEach(product -> productsList.getChildren().add(createProductBox(product)));
+        }
+    }
+
+    void submit() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("success");
+        alert.setHeaderText(null);
+        alert.setContentText("Your Order Place successfully");
+        alert.showAndWait();
+    }
+
+    private double calculateSubtotal() {
         int subtotal = 0;
         for (Map.Entry<ProductModelClass, Integer> entry : productQuantities.entrySet()) {
             ProductModelClass product = entry.getKey();
@@ -233,22 +245,13 @@ public class ShopCardView {
         return subtotal;
     }
 
-    private int calculateTotal() {
-        int total = calculateSubtotal() - 9 + 9; // Example calculation with promo and shipping
-        return total;
+    private double calculateTotal() {
+        return calculateSubtotal();
     }
 
-    private void removeCard(ProductModelClass obj) {
-        productList.remove(obj);
-        productQuantities.remove(obj); // Remove the product from productQuantities
-        refreshProductList(); // Call the method to refresh the product list
-        updateSubtotalAndTotal(); // Update subtotal and total
-    }
-
-    private void refreshProductList() {
-        productsList.getChildren().clear(); // Clear the current children
-        productList.forEach(product -> productsList.getChildren().add(createProductBox(product))); // Add updated
-                                                                                                   // product boxes
+    private void updateSubtotalAndTotal() {
+        subtotalLabel.setText("Subtotal: ₹" + calculateSubtotal());
+        totalLabel.setText("Total Cost: ₹" + calculateTotal());
     }
 
     public Pane getView() {

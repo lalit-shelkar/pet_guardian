@@ -59,7 +59,8 @@ public class SplashScreen {
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.seconds(2), // Duration of the splash screen
                 event -> {
-                    app.navigateToLoginView();
+                    app.navigateToHomeView();
+
                 }));
         timeline.play();
 
