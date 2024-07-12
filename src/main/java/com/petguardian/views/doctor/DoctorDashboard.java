@@ -134,20 +134,22 @@ public class DoctorDashboard {
 
     for (PatientModelClass patient : patientsList) {
         // Parse appointment date
-
+       // String aptDay= patient.getAppointmentDay();
+        //String arr[]= aptDay.split(" ");
+       // int month=monthfinder(arr[0]);
         System.out.println("datet="+patient.getCreatedAt());
         String trimDate=patient.getCreatedAt().substring(0, 10);
       
         LocalDate appointmentDate = LocalDate.parse(trimDate, formatter);
         System.out.println("for="+appointmentDate);
 
-       // Compare dates and times
-        if (appointmentDate.isAfter(currentDate) ||
-                (appointmentDate.isEqual(currentDate) && LocalTime.parse(patient.getCreatedAt()).isAfter(currentTime))) {
-            upcomingPatientsList.add(patient);
-        } else {
-            historyPatientsList.add(patient);
-        }
+    //    // Compare dates and times
+    //     if (appointmentDate.isAfter(currentDate) ||
+    //             (appointmentDate.isEqual(currentDate) && LocalTime.parse(patient.getCreatedAt()).isAfter(currentTime))) {
+    //         upcomingPatientsList.add(patient);
+    //     } else {
+    //         historyPatientsList.add(patient);
+    //     }
     }
 
     // Sort historyPatientsList in descending order
@@ -168,7 +170,8 @@ public class DoctorDashboard {
     //upcomingPatientsList.get(0).getName();
 }
 
-
+    
+    
     private void showUpcomingPatients() {
         root.setCenter(createPatientsGrid(upcomingPatientsList, "Upcoming Patients"));
     }

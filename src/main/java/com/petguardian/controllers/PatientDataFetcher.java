@@ -22,7 +22,7 @@ import com.petguardian.firebase.MyAuthentication;
 public class PatientDataFetcher {
         public List<PatientModelClass> fetchPatientData() throws Exception {
         System.out.println("In fetching patient  data ...");
-        String apiUrl = "http://localhost:3000/getPatient?doctorId=" + MyAuthentication.getUserUid();
+        String apiUrl = "https://pet-api-two.vercel.app/getPatient?doctorId=" + MyAuthentication.getUserUid();
         URL url = new URL(apiUrl);
         System.out.println("url");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
