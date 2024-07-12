@@ -3,6 +3,7 @@ package com.petguardian.controllers;
 import com.petguardian.views.HomeView;
 import com.petguardian.Model.DoctorModelClass;
 import com.petguardian.Model.ProductModelClass;
+import com.petguardian.views.AboutUs;
 import com.petguardian.views.BookDoctorView;
 import com.petguardian.views.CatFoodView;
 import com.petguardian.views.LoginUser;
@@ -65,6 +66,12 @@ public class Pet extends Application {
     private CatFoodView catFoodView;
     private Scene catScene;
 
+    ///
+    /// about us
+    private AboutUs AboutUs;
+    private Scene AboutScene;
+   
+
     private Navbar navbarView;
 
     @Override
@@ -92,7 +99,11 @@ public class Pet extends Application {
         /// shopscreen
         shopView = new ShopView(this);
         shopScene = new Scene(shopView.getView(), 1920, 1080);
-
+        
+        ///
+                       /// about us
+        AboutUs = new AboutUs(this);
+        AboutScene = new Scene(AboutUs.getView(), 1920, 1080);
         // DogFood View
         dogFoodView = new DogFoodView(this);
         dogFoodScene = new Scene(dogFoodView.getView(), 1920, 1080);
@@ -107,15 +118,14 @@ public class Pet extends Application {
         groomingView = new GroomingView(this);
         groomingScene = new Scene(groomingView.getView(), 1920, 1080);
 
-        /// Splash screen
-        splashView = new SplashScreen(this);
-        splashScene = new Scene(splashView.getView(), 1920, 1080);
-
         /// Shopcart view
         shopCardView = new ShopCardView(this);
         shopcardScene = new Scene(shopCardView.getView(), 1920, 1080);
 
         ///
+        /// Splash screen
+        splashView = new SplashScreen(this);
+        splashScene = new Scene(splashView.getView(), 1920, 1080);
 
         ///
         /// initial screen
@@ -220,6 +230,11 @@ public class Pet extends Application {
         Scene docterScene = new Scene(doctorDashboardView.getView(), 1920, 1080);
         primaryStage.setScene(docterScene);
 
+    }
+    ///
+    public void navigationToAboutus() {
+        primaryStage.setScene(AboutScene);
+        primaryStage.show();
     }
 
     /// ignore this method

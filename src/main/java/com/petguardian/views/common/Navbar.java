@@ -35,7 +35,7 @@ public class Navbar {
         Label shop = new Label("Shop");
         Label cart = new Label("Cart");
         Label profile = new Label("Profile");
-        Label notification = new Label("Notifications");
+        Label notification = new Label("About");
 
         home.setFont(new Font(20));
         service.setFont(new Font(20));
@@ -48,6 +48,7 @@ public class Navbar {
         shop.setOnMouseClicked(e -> app.navigateToShopView());
         cart.setOnMouseClicked(e -> app.navigateToShopCardView());
         service.setOnMouseClicked(e -> app.navigateToVetarnaryView());
+        notification.setOnMouseClicked(e -> app.navigationToAboutus());
 
         hb.getChildren().addAll(home, service, shop, cart, profile, notification);
         return hb;
