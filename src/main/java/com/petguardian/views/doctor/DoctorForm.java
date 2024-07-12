@@ -219,26 +219,24 @@ public class DoctorForm {
         // Validate name field
         if (nameField.getText().isEmpty()) {
             showAlert("Name field is required.");
-            isValid = false;
+            return false;
+
         }
 
         // Validate experience field (numeric check)
         if (!experienceField.getText().matches("\\d+")) {
             showAlert("Experience must be a number.");
-            isValid = false;
+            return false;
         }
 
         // Validate rating field (numeric check)
         if (!ratingField.getText().matches("\\d+")) {
             showAlert("Rating must be a number.");
-            isValid = false;
+            return false;
         }
 
         // Validate contact field (email format)
-        if (!contactField.getText().matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            showAlert("Invalid email format.");
-            isValid = false;
-        }
+
         return isValid;
     }
 

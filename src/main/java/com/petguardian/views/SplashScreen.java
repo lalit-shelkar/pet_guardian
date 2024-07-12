@@ -60,7 +60,7 @@ public class SplashScreen {
                 Duration.seconds(2), // Duration of the splash screen
                 event -> {
 
-                    app.navigateToHomeView();
+                    app.navigateToLoginView();
 
                 }));
         timeline.play();

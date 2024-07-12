@@ -27,7 +27,6 @@ import javafx.util.Duration;
 public class CatFoodView {
     private Pet app;
     private Pane rootPane;
-    boolean isCat = true;
     ImageView mainImageview;
     String Mainpricenum;
     Label MainLabel;
@@ -51,16 +50,48 @@ public class CatFoodView {
         title.setLayoutY(100);
         title.setAlignment(Pos.TOP_CENTER);
 
-        Image image = new Image("dog.png");
-        mainImageview = new ImageView(image);
-        mainImageview.setFitWidth(500);
-        mainImageview.setPreserveRatio(true);
+        if (!productList.isEmpty()) {
+            ProductModelClass firstProduct = productList.get(0);
+            Image image = new Image(firstProduct.getImg());
+            mainImageview = new ImageView(image);
+            mainImageview.setFitWidth(500);
+            mainImageview.setFitHeight(480);
+            mainImageview.setPreserveRatio(true);
+            MainLabel = new Label(firstProduct.getName());
+            MainLabel.setTextFill(Color.BLACK);
+            MainLabel.setStyle("-fx-font-weight: bold;");
+            MainLabel.setFont(new Font(20));
+            MainLabel.setPadding(new Insets(15, 0, 0, 0));
+            Mainpricenum = firstProduct.getPrice();
+            Mainprice = new Label("Price: " + Mainpricenum);
+            Mainprice.setTextFill(Color.BLACK);
+            Mainprice.setFont(new Font(20));
+
+        } else {
+            Image image = new Image("dog.png");
+            mainImageview = new ImageView(image);
+            mainImageview.setFitWidth(500);
+            mainImageview.setFitHeight(480);
+            mainImageview.setPreserveRatio(true);
+            MainLabel = new Label("Food Royal");
+            MainLabel.setTextFill(Color.BLACK);
+            MainLabel.setStyle("-fx-font-weight: bold;");
+            MainLabel.setFont(new Font(20));
+            MainLabel.setPadding(new Insets(15, 0, 0, 0));
+            Mainprice = new Label("Price: " + Mainpricenum);
+            Mainprice.setTextFill(Color.BLACK);
+            Mainprice.setFont(new Font(20));
+        }
 
         VBox vb1 = new VBox();
         vb1.getChildren().add(mainImageview);
         vb1.setPadding(new Insets(0, 20, 0, 20));
         vb1.setPrefHeight(500);
-        vb1.setPrefWidth(300);
+        vb1.setPrefWidth(500);
+        vb1.setMinHeight(500);
+        vb1.setMinWidth(500);
+        vb1.setMaxHeight(500);
+        vb1.setMaxWidth(500);
         vb1.setStyle("-fx-background-color: linear-gradient(to bottom,rgba(251,247,230,1),rgba(215,176,177,1))");
         vb1.setAlignment(Pos.CENTER);
 
@@ -100,7 +131,7 @@ public class CatFoodView {
 
         vb2.setLayoutX(100);
         vb2.setLayoutY(200);
-        vb2.setPadding(new Insets(20, 20, 0, 20));
+        vb2.setPadding(new Insets(20, 20, 20, 20));
 
         // complete------------------------------------------
 
@@ -111,7 +142,7 @@ public class CatFoodView {
         hBoxScroll.setLayoutX(900);
         hBoxScroll.setLayoutY(150);
         hBoxScroll.setPadding(new Insets(20, 50, 0, 50));
-        hBoxScroll.setStyle("-fx-background-color: linear-gradient(from 50% 50% to 0% 0%, #F5D7C3, #ffffff);");
+        hBoxScroll.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 50% 50%, #F5D7C3, #ffffff);");
 
         VBox vBox1 = new VBox(20);
         VBox vBox2 = new VBox(20);
@@ -235,6 +266,7 @@ public class CatFoodView {
         Button Icon1 = new Button("Add to Cart");
         Icon1.setStyle(
                 "-fx-background-color: linear-gradient(to right,yellow,orange); -fx-text-fill: black;-fx-background-radius:10;-fx-font-weight: bold;");
+        Icon1.setOnMouseClicked(e -> app.addItemToCart(prObj));
 
         Icon1.setFont(new Font(15));
         Icon1.setFocusTraversable(false);
