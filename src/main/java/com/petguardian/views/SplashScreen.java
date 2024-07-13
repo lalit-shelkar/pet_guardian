@@ -42,6 +42,7 @@ public class SplashScreen {
 
         // Create the subtitle
         Text subtitle = new Text("Your Pets' Lifelong Protector");
+        
         subtitle.setFill(Color.WHITE);
         subtitle.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
 
