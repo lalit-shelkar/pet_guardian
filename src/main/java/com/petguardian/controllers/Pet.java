@@ -129,6 +129,7 @@ public class Pet extends Application {
         ///
         /// initial screen
         primaryStage.setScene(splashScene);
+        primaryStage.setTitle("Pet Guardian");
         primaryStage.show();
 
     }

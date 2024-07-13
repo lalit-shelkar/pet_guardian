@@ -129,6 +129,9 @@ public class DoctorDashboard {
     Button historyPatientsButton = new Button("History Patients");
     historyPatientsButton.setMinWidth(300);
 
+    Button refreshButton = new Button("Refresh");
+    refreshButton.setMinWidth(300);
+
     Button logOutButton = new Button("Log Out =>");
     logOutButton.setMinWidth(300);
 
@@ -147,10 +150,11 @@ public class DoctorDashboard {
     logOutButton.setStyle(buttonStyle + "-fx-text-fill: red;-fx-font-size: 24px");
     upcomingPatientsButton.setStyle(buttonStyle);
     historyPatientsButton.setStyle(buttonStyle);
+    refreshButton.setStyle(buttonStyle);
 
     // Add buttons to the navigation panel
     navigationPanel.getChildren().addAll(logo, dashboardButton, patientsButton,
-            upcomingPatientsButton, historyPatientsButton, vb, logOutButton);
+            upcomingPatientsButton, historyPatientsButton,refreshButton, vb, logOutButton);
 
     navSelectedButton = dashboardButton;
     navSelectedButton.setStyle("-fx-background-color:#f89095");
@@ -161,6 +165,7 @@ public class DoctorDashboard {
         patientsButton.setStyle(buttonStyle);
         upcomingPatientsButton.setStyle(buttonStyle);
         historyPatientsButton.setStyle(buttonStyle);
+        refreshButton.setStyle(buttonStyle);
         logOutButton.setStyle(buttonStyle + "-fx-text-fill: red;-fx-font-size: 24px");
     };
 
@@ -196,6 +201,23 @@ public class DoctorDashboard {
         showHistoryPatients();
     });
 
+    refreshButton.setOnAction(event -> {
+        resetButtonStyles.handle(event);
+        navSelectedButton = dashboardButton;
+        navSelectedButton.setStyle("-fx-background-color:#f89095");
+        showDashboard();
+    PatientDataFetcher patientDataFetcher = new PatientDataFetcher();
+    //DoctorDataFetcher doctorDataFetcher = new DoctorDataFetcher();
+        
+    try {
+       // doctorList = doctorDataFetcher.fetchDoctorData();
+       getDoctor();
+        patientsList = patientDataFetcher.fetchPatientData();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    });
+
     // Event handler for the Log Out button
     logOutButton.setOnAction(event -> {
         resetButtonStyles.handle(event);
@@ -209,16 +231,7 @@ public class DoctorDashboard {
 
 
    private void showDashboard() {
-    // Initialize patients data
-    PatientDataFetcher patientDataFetcher = new PatientDataFetcher();
-    //DoctorDataFetcher doctorDataFetcher = new DoctorDataFetcher();
-    try {
-       // doctorList = doctorDataFetcher.fetchDoctorData();
-       getDoctor();
-        patientsList = patientDataFetcher.fetchPatientData();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+   
     //calling categorize method
     categorizePatients();
     VBox dashboardView = new VBox();
@@ -270,11 +283,11 @@ public class DoctorDashboard {
     //statsBox.getChildren().add(historyPatientsBox);
 
     // Number of total patients
-    VBox totalPatientsBox = createStatBox("Total Patients", String.valueOf(patientsList.size()), "#fffacf","dashboard/salary.png");
+    VBox totalPatientsBox = createStatBox("Total Patients", String.valueOf(patientsList.size()), "#fffacf","dashboard/ppl.png");
     //statsBox.getChildren().add(totalPatientsBox);
 
     double totalEarnings = calculateTotalEarnings();
-    VBox totalEarningsBox = createStatBox("Total Earnings", String.format(Locale.US, "$%.2f", totalEarnings), "#ead9ff","dashboard/scroll.png");
+    VBox totalEarningsBox = createStatBox("Total Earnings", String.format(Locale.US, "$%.2f", totalEarnings), "#ead9ff","dashboard/salary.png");
     //statsBox.getChildren().add(totalEarningsBox);
 
 
@@ -610,7 +623,7 @@ private VBox createStatBox(String title, String value, String color,String url) 
     private GridPane createPatientsGrid(List<PatientModelClass> patients, String title) {
         GridPane patientsGrid = new GridPane();
         patientsGrid.setPadding(new Insets(15));
-        patientsGrid.setHgap(15); // Horizontal gap between columns
+        patientsGrid.setHgap(5); // Horizontal gap between columns
         patientsGrid.setVgap(40); // Vertical gap between rows
 
         // Column constraints for equal width
